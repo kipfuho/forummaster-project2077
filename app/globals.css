@@ -11,23 +11,88 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 10, 10, 10;
+    --background-end-rgb: 40, 40, 40;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  )
+  rgb(var(--background-start-rgb));
+  margin: auto;
+  min-width: 100vh;
+  min-height: 100vh;
+  width: 1366px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+h2 {
+  font-size: large;
+  font-weight: 500;
+}
+
+footer{
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+@media (max-width: 1536px){
+  body{
+    width: 1366px;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 1366px){
+  body{
+    width: 1280px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 1280px){
+  body{
+    width: 1024px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media (max-width: 1024px){
+  body{
+    width: 768px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 768px){
+  body{
+    width: 640px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: 640px){
+  body{
+    width: 475px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
