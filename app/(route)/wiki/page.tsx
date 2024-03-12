@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-
+// Wiki pages for games I play
 export default function Wiki(){
   return(
   <main>

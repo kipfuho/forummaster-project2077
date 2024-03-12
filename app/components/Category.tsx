@@ -1,10 +1,14 @@
 "use client"
-import { FC, ReactNode, useState } from "react";
+import { FC, useState } from "react";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import styles from "./component.module.css"
 import Link from "next/link";
+import { ForumCategory } from "../page";
+import { Forum } from "./Forum";
 
-export const Category:FC<{item: {name:string, path:string}, children: ReactNode}> = ({item, children}) =>{
+// Category component
+// This appear in home page
+export const Category:FC<{item: ForumCategory}> = ({item}) =>{
   const [open, setOpen] = useState(true);
 
   return(
@@ -18,7 +22,9 @@ export const Category:FC<{item: {name:string, path:string}, children: ReactNode}
         </div>
       </h2>
       <div className="divide-y divide-gray-400" hidden={!open}>
-        {children}
+        {item.forums.map((forum, index) => (
+          <Forum key={index} children={forum}/>
+        ))}
       </div>
     </div>
   )

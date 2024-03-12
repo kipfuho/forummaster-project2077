@@ -10,14 +10,64 @@
   transform: rotate(180deg); /* Rotate 180 degrees when button is clicked */
 }
 
+.header {
+  display: flex;
+  margin: auto;
+  width: 1366px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (max-width: 1536px){
+  .header{
+    width: 1366px;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 1366px){
+  .header{
+    width: 1280px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 1280px){
+  .header{
+    width: 1024px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media (max-width: 1024px){
+  .header{
+    width: 768px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
 @media (max-width: 768px){
   .logoImage{
     display: none;
+  }
+  .header{
+    width: 640px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 
 @media (max-width: 640px){
   .logoImage{
     display: none;
+  }
+  .header{
+    width: 475px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }

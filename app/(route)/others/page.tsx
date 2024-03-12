@@ -1,5 +1,7 @@
 
-
+// Others page
+// Consists of paint tool, minigame, ...
+// which will be complemented later
 export default function Others(){
   return(
     <main>
