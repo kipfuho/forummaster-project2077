@@ -20,7 +20,9 @@ export default function NavBar(){
             className={styles.logoImage} 
             src="/logo.png" alt="image" 
             width={400} 
-            height={75}
+            height={133}
+            style={{width: 400, height: 133}}
+            priority={true}
           />
         </Link>
         <div className="flex flex-grow"/>
