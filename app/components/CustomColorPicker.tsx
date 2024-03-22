@@ -1,14 +1,23 @@
 'use client'
-export default function ColorPicker() {
+
+import { Dispatch, MouseEventHandler, SetStateAction } from "react";
+
+// Simple Color picker for Text editer
+export default function ColorPicker({onChangeColor, onChangeHidden, leftAnchor, topAnchor, isHidden} : {onChangeColor : Dispatch<SetStateAction<string>>, onChangeHidden : Dispatch<SetStateAction<boolean>>, leftAnchor : number, topAnchor : number, isHidden : boolean}) {
   const getBackgroundColor = (e : Element) => {
     if (e) {
-      const bgColor = window.getComputedStyle(e).getPropertyValue("background-color");
-      console.log(bgColor);
+      onChangeColor(window.getComputedStyle(e).getPropertyValue("background-color"));
+    }
+    else {
+      onChangeColor("#000000");
     }
   };
 
 	return(
-		<div className="border p-1 inline-block">
+		<div 
+      className="border p-1 inline-block absolute bg-gray-200" 
+      style={{left: leftAnchor, top: topAnchor, display: isHidden ? "none" : ""}}
+    >
 			<div>
         <div>
           <span 
@@ -124,7 +133,12 @@ export default function ColorPicker() {
           placeholder="HEX Color"
         />
         <div className="flex flex-grow justify-center">
-          <button className="border rounded bg-red-600 px-2">OK</button>
+          <button 
+            className="border rounded bg-red-600 px-2"
+            onClick={() => onChangeHidden(true)}
+          >
+            OK
+          </button>
         </div>
       </div>
 		</div>

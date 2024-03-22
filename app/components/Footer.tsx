@@ -3,7 +3,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PersonIcon from '@mui/icons-material/Person';
 import BarChartIcon from '@mui/icons-material/BarChart';
 
-
+// Just footer
 export default function Footer(){
   return(
     <footer>

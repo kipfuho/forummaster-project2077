@@ -1,0 +1,11 @@
+.chevronButton{
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.4s ease; /* Transition for rotation */
+}
+
+.rotated {
+  transform: rotate(180deg); /* Rotate 180 degrees when button is clicked */
+}

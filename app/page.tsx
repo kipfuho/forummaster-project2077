@@ -1,20 +1,23 @@
-import { Category } from "./components/Category";
-import { Forum } from "./components/Forum";
+import Category from "./(route)/categories/components/Category";
 
-type Forum = {
-  forumName: string;
-  forumPath: string;
-};
+export type ForumType = {
+	id: number;
+	category: string; 
+	forum_name: string; 
+	about: string;
+	threads: number; 
+	messages: number;
+}
 
-export type ForumCategory = {
+export type ForumCategoryType = {
   name: string;
   path: string;
-  forums: Forum[]; // Array of Forum objects
+  category: string;
 };
 
 // Make sure typescript read the key as string
 type ForumCategories = {
-  [key: string]: ForumCategory;
+  [key: string]: ForumCategoryType;
 };
 
 // Most categories and its forums
@@ -22,105 +25,42 @@ export const ForumCategories : ForumCategories = {
   ["annoucement.1"] : {
     name: "Annoucement", 
     path: "/categories/annoucement.1", 
-    forums: [
-      {
-        forumName: "Sites Rules, News & Annoucements", 
-        forumPath: "/forums/site-rules-news-annoucement.2"
-      }
-    ]
+    category: "annoucement"
   },
   ["games.3"] : {
     name: "Games", 
     path: "/categories/games.3",
-    forums: [
-      {
-        forumName: "Hot games", 
-        forumPath: "/forums/hot-games.4"
-      },
-      {
-        forumName: "New games", 
-        forumPath: "/forums/new-games.5"
-      }
-    ]
+    category: "games"
   },
   ["mangaanime.6"] : {
     name: "Manga&Anime", 
-    path: "/categories/mangaanime.6",
-    forums: [
-      {
-        forumName: "Hot", 
-        forumPath: "/forums/hot-anime-manga.7"
-      },
-      {
-        forumName: "New Animes", 
-        forumPath: "/forums/new-animes.8"
-      },
-      {
-        forumName: "New Mangas", 
-        forumPath: "/forums/new-mangas.9"
-      }
-    ]
+    path: "/categories/manga-anime.6",
+    category: "manga-anime"
   },
   ["market.10"] : {
     name: "Market", 
     path: "/categories/market.10",
-    forums: [
-      {
-        forumName: "Buying", 
-        forumPath: "/forums/buying.11"
-      },
-      {
-        forumName: "Selling", 
-        forumPath: "/forums/selling.12"
-      },
-      {
-        forumName: "Trading", 
-        forumPath: "/forums/trading.13"
-      }
-    ]
+    category: "market"
   },
   ["development.14"] : {
     name: "Development", 
     path: "/categories/development.14",
-    forums: [
-      {
-        forumName: "Next.js", 
-        forumPath: "/forums/nextjs.15"
-      },
-      {
-        forumName: "Nodejs", 
-        forumPath: "/forums/nodejs.16"
-      }
-    ]
+    category: "development"
   },
   ["discussion.17"] : {
     name: "Discussion", 
     path: "/categories/discussion.17",
-    forums: [
-      {
-        forumName: "General Discussions", 
-        forumPath: "/forums/discussions.18"
-      }
-    ]
+    category: "discussion"
   },
   ["feedback.19"] : {
     name: "Site Feedback", 
     path: "/categories/feedback.19",
-    forums: [
-      {
-        forumName: "Features Request", 
-        forumPath: "/forums/feature-requests.20"
-      },
-      {
-        forumName: "Site problems", 
-        forumPath: "/forums/site-problems.21"
-      }
-    ]
+    category: "feedback"
   }
 };
 
 // Home page
-export default function Home() {
+export default async function Home() {
   return (
     <main className="space-y-5">
       <input
