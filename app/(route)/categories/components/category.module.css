@@ -9,3 +9,77 @@
 .rotated {
   transform: rotate(180deg); /* Rotate 180 degrees when button is clicked */
 }
+
+/*
+  last thread that got updated infomation of the forum
+  appear at home page or category page
+*/
+.forumLastThreadUpdate {
+  font-size: 0.9rem;
+  min-width: 200px;
+}
+
+.forumMeta1 {
+  display: none;
+}
+
+.forumMeta2 {
+  display: flex;
+}
+
+@media (max-width: 1536px){
+  .forumMeta1 {
+    display: none;
+  }
+}
+
+@media (max-width: 1366px){
+  .forumMeta1 {
+    display: none;
+  }
+}
+
+@media (max-width: 1280px){
+  .forumMeta1 {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px){
+  .forumMeta1 {
+    display: flex;
+  }
+  .forumMeta2 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px){
+  .forumMeta1 {
+    display: flex;
+  }
+  .forumMeta2 {
+    display: none;
+  }
+  .additionInfo{
+    display: none;
+  }
+  .forumLastThreadUpdate {
+    display: none;
+  }
+}
+
+@media (max-width: 640px){
+  .forumMeta1 {
+    display: flex;
+  }
+  .forumMeta2 {
+    display: none;
+  }
+  .additionInfo{
+    display: none;
+  }
+  .forumLastThreadUpdate {
+    display: none;
+  }
+}

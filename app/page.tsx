@@ -1,27 +1,8 @@
 import Category from "./(route)/categories/components/Category";
-
-export type ForumType = {
-	id: number;
-	category: string; 
-	forum_name: string; 
-	about: string;
-	threads: number; 
-	messages: number;
-}
-
-export type ForumCategoryType = {
-  name: string;
-  path: string;
-  category: string;
-};
-
-// Make sure typescript read the key as string
-type ForumCategories = {
-  [key: string]: ForumCategoryType;
-};
+import { CategoryDataType } from "./components/type";
 
 // Most categories and its forums
-export const ForumCategories : ForumCategories = {
+export const categoryData : CategoryDataType = {
   ["annoucement.1"] : {
     name: "Annoucement", 
     path: "/categories/annoucement.1", 
@@ -32,7 +13,7 @@ export const ForumCategories : ForumCategories = {
     path: "/categories/games.3",
     category: "games"
   },
-  ["mangaanime.6"] : {
+  ["manga-anime.6"] : {
     name: "Manga&Anime", 
     path: "/categories/manga-anime.6",
     category: "manga-anime"
@@ -68,25 +49,25 @@ export default async function Home() {
         placeholder="Quick search..."
       />
       <Category 
-        item={ForumCategories["annoucement.1"]}
+        item={categoryData["annoucement.1"]}
       />
       <Category 
-        item={ForumCategories["games.3"]}
+        item={categoryData["games.3"]}
       />
       <Category 
-        item={ForumCategories["mangaanime.6"]}
+        item={categoryData["manga-anime.6"]}
       />
       <Category 
-        item={ForumCategories["market.10"]}
+        item={categoryData["market.10"]}
       />
       <Category 
-        item={ForumCategories["development.14"]}
+        item={categoryData["development.14"]}
       />
       <Category 
-        item={ForumCategories["discussion.17"]}
+        item={categoryData["discussion.17"]}
       />
       <Category 
-        item={ForumCategories["feedback.19"]}
+        item={categoryData["feedback.19"]}
       />
     </main>
   );

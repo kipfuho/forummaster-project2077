@@ -1,63 +1,66 @@
-import PostFetch from "@/app/components/utils/PostFetch";
-import { Suspense } from "react";
-import Loading from "@/app/components/Loading";
+'use client'
+import { 
+  useEffect, 
+  useState 
+} from "react";
+import Loading from "@/app/components/layout/Loading";
 import ThreadHead from "../components/ThreadHead";
-
-export type ForumThreadType = {
-  id: number;
-  forum_id: number;
-  author_email: string;
-  thread_title: string;
-  tag: string[];
-  content: string;
-  create_time: Date;
-  last_update_time: Date;
-  replies: number;
-  views: number;
-  last_message_id: number;
-}
-
-export async function getThreads(forum_id: number) {
-  let forums = await PostFetch("user/get-thread-forum", {forum_id: forum_id}, null);
-  return forums;
-}
-
-async function getForumId(forumName: string) {
-  var forum_id = 0;
-  for (var i = forumName.length - 1; i >= 0; i--) {
-    var num = parseInt(forumName[i]);
-    if(num < 0 || num > 9) {
-      return 0;
-    }
-    if(forumName[i] === '.') {
-      break;
-    }
-    forum_id = forum_id + 10**(forumName.length - 1 - i)*num;
-  }
-  return forum_id;
-}
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Pagination from "@/app/components/ui/Pagination/Pagination";
+import { getSectionId } from "@/app/components/utils/HelperFunction";
+import { getThreadData } from "@/app/components/utils/CustomFetch";
+import { ThreadType } from "@/app/components/type";
 
 // Forum pages
-export default async function Forum({ params } : {params: {forumName:string}}){
-  var forum_id = await getForumId(params.forumName);
-  const threadsData = getThreads(forum_id);
-  const [threads] = await Promise.all([threadsData]);
+export default function Forum({ params } : {params: {forumName:string}}){
+  const pathname = usePathname();
+  const [threads, setThreads] = useState<ThreadType[] | null>(null);
+  const [done, setDone] = useState<boolean>(false); // see if data has been fetched
+  const [page, setPage] = useState(0);
+
+  // fetch threads for render
+  useEffect(() => {
+    const getForum = async () => {
+      const forum_id = getSectionId(params.forumName);
+      const threadsData = await getThreadData(forum_id);
+      if(threadsData !== null) {
+        setThreads(threadsData);
+      } else {
+        setThreads(null);
+      }
+      setDone(true);
+    }
+
+    getForum().catch((e) => console.log(e));
+  }, []);
 
   return(
     <main>
       <div className="flex mb-5">
-        <h2 className="flex flex-grow">{forum_id}</h2>
-        <a className="rounded border-transparent p-1 bg-red-700" href="/forums/site-rules-news-annoucement.2/post-thread">
+        <h2 className="flex flex-grow">{params.forumName}</h2>
+        <Link className="rounded border-transparent p-1 bg-red-700" href={pathname
+         + "/post-thread"}>
           Post thread
-        </a>
+        </Link>
       </div>
-      <Suspense fallback={<Loading/>}>
-        <div className="rounded border p-2 bg-slate-400 space-y-3">
-          {threads.map((thread: ForumThreadType, index: number) => (
-            <ThreadHead key={index} item={thread}/>
-          ))}
-        </div>
-      </Suspense>
+      <Pagination count={5} page={page} onPageChange={setPage}/>
+      {done ?
+        <div className="rounded bg-gray-600">
+          <div className="bg-gray-500 rounded-t p-2">
+            NORMAL THREADS
+          </div>
+          <div className="divide-y-[1px] z-50">
+            {threads !== null &&
+              threads.map((thread: ThreadType, index: number) => (
+                <ThreadHead key={index} item={thread}/>
+              ))
+            }
+          </div>
+        </div> :
+        <Loading/>
+      }
+      <Pagination count={5} page={page} onPageChange={setPage}/>
     </main>
   )
 }

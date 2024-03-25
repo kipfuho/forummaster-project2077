@@ -62,24 +62,20 @@ export default function Footer(){
             <span>Forum Statistics</span>
           </h3>
           <div className='flex flex-col'>
-            <div className='flex'>
+            <div className='flex justify-between'>
               <span>Threads:</span>
-              <div className='flex flex-col flex-grow'/>
               <span className='pr-5'>0</span>
             </div>
-            <div className='flex'>
+            <div className='flex justify-between'>
               <span>Messages:</span>
-              <div className='flex flex-col flex-grow'/>
               <span className='pr-5'>0</span>
             </div>
-            <div className='flex'>
+            <div className='flex justify-between'>
               <span>Members:</span>
-              <div className='flex flex-col flex-grow'/>
               <span className='pr-5'>0</span>
             </div>
-            <div className='flex'>
+            <div className='flex justify-between'>
               <span>Lastest member:</span>
-              <div className='flex flex-col flex-grow'/>
               <span className='pr-5'>?</span>
             </div>
           </div>

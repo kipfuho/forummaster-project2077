@@ -1,5 +1,6 @@
 'use client'
-import PostFetch from "@/app/components/utils/PostFetch";
+import PostFetch from "@/app/components/utils/CustomFetch";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 // Register page
@@ -8,15 +9,32 @@ export default function Register(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
+  const router = useRouter();
 
   const registerClick = async () => {
+    if(email.trim().length === 0){
+      alert("Please enter email");
+      return;
+    }
+    if(username.trim().length === 0){
+      alert("Please enter username");
+      return;
+    }
+    if(password.trim().length === 0){
+      alert("Please enter password");
+      return;
+    }
+    if(retypePassword.trim().length === 0){
+      alert("Please reenter password");
+      return;
+    }
     if(password !== retypePassword){
-      console.log("Passwords did not match!");
+      alert("Passwords did not match!");
       return;
     }
 
     try {
-      var response = await PostFetch(
+      let response = await PostFetch(
         "register",
         {
           email: email,
@@ -25,7 +43,13 @@ export default function Register(){
         },
         null
       );
-      console.log(response);
+      if(response.ok) {
+        alert("Registration successfully!");
+        router.push("/");
+      }
+      else{
+        alert("Registration failed, username or email existed");
+      }
     } catch(error) {
       console.log("Error", error);
     }

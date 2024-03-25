@@ -1,7 +1,8 @@
+
 async function getThreadId(threadName: string) {
-  var thread_id = 0;
-  for (var i = threadName.length - 1; i >= 0; i--) {
-    var num = parseInt(threadName[i]);
+  let thread_id = 0;
+  for (let i = threadName.length - 1; i >= 0; i--) {
+    let num = parseInt(threadName[i]);
     if(num < 0 || num > 9) {
       return 0;
     }
@@ -14,7 +15,7 @@ async function getThreadId(threadName: string) {
 }
 
 export default async function Thread({params}: {params: {thread: string}}) {
-	var thread_id = await getThreadId(params.thread);
+	let thread_id = await getThreadId(params.thread);
 	return(
 		<main>
 			{params.thread}

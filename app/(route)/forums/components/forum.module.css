@@ -1,0 +1,19 @@
+/* 
+  for threadhead
+  this is replies and views count of a thread
+*/
+.additionInfo {
+	font-size: 0.9rem;
+}
+
+@media (max-width: 768px){
+  .additionInfo{
+    display: none;
+  }
+}
+
+@media (max-width: 640px){
+  .additionInfo{
+    display: none;
+  }
+}

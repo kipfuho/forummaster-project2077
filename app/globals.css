@@ -40,6 +40,11 @@ main {
   padding-right: 50px;
 }
 
+h1 {
+  font-size: xx-large;
+  font-weight: 600;
+}
+
 h2 {
   font-size: large;
   font-weight: bold;

@@ -1,34 +1,54 @@
 'use client'
-import PostFetch from '@/app/components/utils/PostFetch';
+import Loading from '@/app/components/layout/Loading';
+import { GetUser, PostFetch } from '@/app/components/utils/CustomFetch';
 import KeyIcon from '@mui/icons-material/Key';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
 // Login page
 export default function Login(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  // block route if user has logged in
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userSession = await GetUser();
+      if(userSession !== null) {
+        router.push("/");
+        setTimeout(() => {
+          location.reload();
+        }, 500);
+      }
+    };
+
+    fetchUser().catch((e) => console.log(e));
+  }, []);
 
   const LoginClick = async () => {
-    try {
-      var response = await PostFetch(
-        "login",
-        {
-          username: username,
-          password: password
-        },
-        null
-      );
-      console.log(response);
-    } catch(error) {
-      console.log("Error", error);
+    let response = await PostFetch(
+      "login",
+      {
+        username: username,
+        password: password
+      },
+      null
+    );
+    
+    if(response.ok){
+      router.push("/");
+      setTimeout(() => {
+        location.reload();
+      }, 500);
     }
   }
 
   return (
-    <main>
+    <Suspense fallback={<Loading/>}>
       <div 
         className="border rounded shadow-md shadow-white w-[350px] m-auto p-5 space-y-4"
       >
@@ -73,13 +93,13 @@ export default function Login(){
         <div className="flex justify-center">
           <button 
             className="flex justify-center rounded w-[150px] bg-red-700 px-2 py-1 gap-x-2"
-            onClick={LoginClick}
+            onClick={() => LoginClick()}
           >
             <KeyIcon/>
             <span>Login</span>
           </button>
         </div>
-	    </div>
-    </main>
+      </div>
+    </Suspense>
   )
 }
