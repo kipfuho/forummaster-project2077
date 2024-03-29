@@ -3,7 +3,7 @@
 import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 
 // Simple Color picker for Text editer
-export default function ColorPicker({onChangeColor, onChangeHidden, leftAnchor, topAnchor, isHidden} : {onChangeColor : Dispatch<SetStateAction<string>>, onChangeHidden : Dispatch<SetStateAction<boolean>>, leftAnchor : number, topAnchor : number, isHidden : boolean}) {
+export default function ColorPicker({onChangeColor, onChangeHidden, leftAnchor, topAnchor, isHidden} : {onChangeColor : Dispatch<SetStateAction<string>>, onChangeHidden : any, leftAnchor : number, topAnchor : number, isHidden : boolean}) {
   const getBackgroundColor = (e : Element) => {
     if (e) {
       onChangeColor(window.getComputedStyle(e).getPropertyValue("background-color"));

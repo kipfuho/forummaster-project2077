@@ -1,36 +1,24 @@
 'use client'
 import Loading from '@/app/components/layout/Loading';
-import { GetUser, PostFetch } from '@/app/components/utils/CustomFetch';
+import UnprotectedLayout from '@/app/components/layout/UnprotectedLayout';
+import { useUserContext } from '@/app/components/layout/UserContext';
+import { PostFetch } from '@/app/components/utils/CustomFetch';
 import KeyIcon from '@mui/icons-material/Key';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import { useRouter } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Login page
 export default function Login(){
+  const [user, setUser] = useUserContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
 
-  // block route if user has logged in
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userSession = await GetUser();
-      if(userSession !== null) {
-        router.push("/");
-        setTimeout(() => {
-          location.reload();
-        }, 500);
-      }
-    };
-
-    fetchUser().catch((e) => console.log(e));
-  }, []);
-
+  // event handler for login click
   const LoginClick = async () => {
-    let response = await PostFetch(
+    // wait for response
+    const response = await PostFetch(
       "login",
       {
         username: username,
@@ -40,15 +28,18 @@ export default function Login(){
     );
     
     if(response.ok){
-      router.push("/");
-      setTimeout(() => {
-        location.reload();
-      }, 500);
+      // set user for context
+      const userData = await response.json();
+      setUser(userData);
+    } else {
+      console.log(response);
     }
   }
 
+  useEffect(() => {console.log(user)}, [])
+
   return (
-    <Suspense fallback={<Loading/>}>
+    <UnprotectedLayout>
       <div 
         className="border rounded shadow-md shadow-white w-[350px] m-auto p-5 space-y-4"
       >
@@ -100,6 +91,6 @@ export default function Login(){
           </button>
         </div>
       </div>
-    </Suspense>
+    </UnprotectedLayout>
   )
 }

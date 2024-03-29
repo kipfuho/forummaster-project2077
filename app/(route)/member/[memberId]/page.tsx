@@ -1,8 +1,8 @@
 
 export default function Member(){
   return(
-    <main>
+    <div>
       This is a member profile
-    </main>
+    </div>
   )
 }

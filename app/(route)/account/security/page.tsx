@@ -4,13 +4,14 @@ import AccountSideBar from "../component/SideBar"
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import { useState } from 'react';
+import { ProtectedLayout } from '@/app/components/layout/ProtectedLayout';
 
 export default function AccountSecurity(){
   const [existingPasswordSwitch, setExistingPasswordSwitch] = useState(false);
   const [newPasswordSwitch, setNewPasswordSwitch] = useState(false);
   const [confirmNewPasswordSwitch, setConfirmNewPasswordSwitch] = useState(false);
   return(
-    <main>
+    <ProtectedLayout>
       <div className="flex">
         <AccountSideBar/>
         <div className="ml-10 w-full">
@@ -111,6 +112,6 @@ export default function AccountSecurity(){
           </div>
         </div>
       </div>
-    </main>
+    </ProtectedLayout>
   )
 }

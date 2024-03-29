@@ -28,7 +28,7 @@ export default function Categories({ params } : {params : {categoryName : string
   }, [])
 
   return(
-    <main>
+    <div>
       <h2 className="pb-10">{category.name}</h2>
       {done ?
         <div className="rounded shadow-md bg-gray-600 divide-y divide-gray-400">
@@ -40,6 +40,6 @@ export default function Categories({ params } : {params : {categoryName : string
         </div> :
         <Loading/>  
       }
-    </main>
+    </div>
   )
 }

@@ -1,5 +1,27 @@
 // contain various type for data on the website
 
+export type PublicUserType = {
+  username: string;
+	email: string;
+  likes: number;
+  messages: number;
+  create_time: Date;
+}
+
+export type UserType = {
+	username: string;
+	email: string;
+}
+
+export type MessageType = {
+  id: number;
+	thread_id: number;
+	sender_email: string;
+	send_time: Date;
+	content: string;
+	last_update_time: Date;
+}
+
 export type ThreadType = {
   id: number;
   forum_id: number;
@@ -12,15 +34,6 @@ export type ThreadType = {
   replies: number;
   views: number;
   last_message_id: number;
-}
-
-export type MessageType = {
-  id: number;
-	thread_id: number;
-	sender_email: string;
-	send_time: Date;
-	content: string;
-	last_update_time: Date;
 }
 
 export type ForumType = {

@@ -1,5 +1,5 @@
 // custom get request to backend
-export async function GetFetch(api:string, user: {token: string, username: string, email: string, role: string} | null){
+export async function GetFetch(api:string, user: {token: string, username: string, email: string, role: string} | null) {
 	return fetch(
 		"https://localhost:3001/" + api,
 		{
@@ -11,7 +11,7 @@ export async function GetFetch(api:string, user: {token: string, username: strin
 }
 
 // custom post request to backend
-export async function PostFetch(api:string, data: any, user: {token: string, username: string, email: string, role: string} | null){
+export async function PostFetch(api:string, data: any, user: {token: string, username: string, email: string, role: string} | null) {
 	return fetch(
 		"https://localhost:3001/" + api,
 		{
@@ -25,8 +25,21 @@ export async function PostFetch(api:string, data: any, user: {token: string, use
 	)
 }
 
+export async function GetPublicUser(email: string) {
+	const response = await PostFetch(
+		"user/get-public-profile", 
+		{email: email}, 
+		null
+	);
+	if(response.ok) {
+		return response.json();
+	} else {
+		return null;
+	}
+}
+
 // send cookie to backend and get user session
-export async function GetUser(){
+export async function GetUser() {
 	const response = await fetch(
 		"https://localhost:3001/auth/profile",
 		{
@@ -43,8 +56,23 @@ export async function GetUser(){
 	}
 }
 
+// function to fetch a forum with its id
+export async function getSingleForum(forum_id: number) {
+  const response = await PostFetch(
+    "user/get-forum",
+    { forum_id: forum_id },
+    null
+  );
+
+  if(response.ok) {
+    return response.json();
+  } else {
+    return null;
+  }
+}
+
 // function to fetch forums of a category
-export async function getForumData(category: string) {
+export async function GetForumData(category: string) {
   const response = await PostFetch(
     "user/get-forum-category",
     { category: category },
@@ -59,11 +87,34 @@ export async function getForumData(category: string) {
 }
 
 // function to fetch threads of a forum
-export async function getThreadData(forum_id: number) {
+export async function GetThreadData(forum_id: number) {
   const response = await PostFetch("user/get-thread-forum", {forum_id: forum_id}, null);
   if(response.ok) {
     return response.json();
   } else {
     return null;
   }
+}
+
+// function to fetch thread and its messages with a given id
+export async function GetFullThread(thread_id: number) {
+  const response = await PostFetch("user/get-thread", {thread_id: thread_id}, null);
+  if(response.ok) {
+    return response.json();
+  } else {
+    return null;
+  }
+}
+
+// function to fetch lastest thread of a forum
+export async function GetLastestThread(forum_id: number) {
+	const response = await GetFetch(
+		`user/get-thread-lastest?forum_id=${forum_id}`,
+		null
+	);
+	if(response.ok) {
+		return response.json();
+	} else {
+		return null;
+	}
 }

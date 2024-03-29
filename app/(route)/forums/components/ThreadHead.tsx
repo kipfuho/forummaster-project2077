@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./forum.module.css";
 import { extractNameToPath } from "@/app/components/utils/HelperFunction";
 import { ThreadType } from "@/app/components/type";
+import { format } from "date-fns";
 
 export default function ThreadHead({item}: {item: ThreadType}) {
 	return(
@@ -28,7 +29,7 @@ export default function ThreadHead({item}: {item: ThreadType}) {
 							{item.author_email}
 						</div>
 						<div>
-							{item.create_time.toLocaleString()}
+							{format(item.create_time.toLocaleString(), "MMM dd, yyyy")}
 						</div>
 					</div>
 				</div>

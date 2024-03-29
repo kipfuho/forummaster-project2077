@@ -1,7 +1,11 @@
 import ChatIcon from '@mui/icons-material/Chat';
 import styles from "./category.module.css"
 import { extractNameToPath } from '@/app/components/utils/HelperFunction';
-import { ForumType } from '@/app/components/type';
+import { ForumType, MessageType, ThreadType, UserType } from '@/app/components/type';
+import { useEffect, useState } from 'react';
+import { GetLastestThread } from '@/app/components/utils/CustomFetch';
+import Loading from '@/app/components/layout/Loading';
+import { format } from 'date-fns';
 
 // first section of a forum
 // contain forum basic information
@@ -44,16 +48,43 @@ function ForumMetadata2({forum}: {forum: ForumType}) {
 
 // last section of a forum introduction
 // contain information about the thread with lastest update time
-function LastestThreadUpdate() {
+function LastestThreadUpdate({forum}: {forum: ForumType}) {
+  // data = [thread_title, last_update_time, who update it]
+  // last update time can be either the thread or a message inside the thread
+  const [data, setData] = useState<[string, Date, string] | null>(null);
+  const [done, setDone] = useState<boolean>(false);
+  
+  useEffect(() => {
+    const getData = async () => {
+      const lastestThreadData = await GetLastestThread(forum.id);
+      if(lastestThreadData !== null) {
+        setData(lastestThreadData);
+        setDone(true);
+      } else {
+        setData(null);
+        setDone(true);
+      }
+    }
+
+    getData().catch((e) => console.log(e));
+  }, []);
+  
   return(
-    <div className={styles.forumLastThreadUpdate}>
-      <div className='font-semibold'>
-        Thread name
-      </div>
-      <div className='text-gray-300'>
-        Time.Who
-      </div>
-    </div>
+    <>
+      {done ?
+        <div className={styles.forumLastThreadUpdate}>
+          <div className='font-semibold'>
+            {data !== null ? data[0] : "N/A"}
+          </div>
+          <div className='text-gray-300'>
+            {data !== null && 
+              format(data[1], "MMM dd, yyyy") + "." + data[2]
+            }
+          </div>
+        </div> :
+        <Loading/>
+      }
+    </>
   )
 }
 
@@ -66,7 +97,7 @@ export default function ForumHead({item}: {item: ForumType}) {
       </div>
       <ForumAbout forum={item}/>
       <ForumMetadata2 forum={item}/>
-      <LastestThreadUpdate/>
+      <LastestThreadUpdate forum={item}/>
     </a>
   )
 }

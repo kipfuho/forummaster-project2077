@@ -1,9 +1,10 @@
 import SaveIcon from '@mui/icons-material/Save';
 import AccountSideBar from './component/SideBar';
+import { ProtectedLayout } from '@/app/components/layout/ProtectedLayout';
 
 export default function Account(){
   return(
-    <main>
+    <ProtectedLayout>
       <div className="flex">
         <AccountSideBar/>
         <div className='ml-10 w-full'>
@@ -46,6 +47,6 @@ export default function Account(){
           </div>
         </div>
       </div>
-    </main>
+    </ProtectedLayout>
   )
 }

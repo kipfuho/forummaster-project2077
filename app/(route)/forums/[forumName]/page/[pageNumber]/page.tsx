@@ -1,7 +1,7 @@
 export default function PageNumber({params}: {params: {pageNumber: number}}) {
 	return(
-		<main>
+		<div>
 			{params.pageNumber}
-		</main>
+		</div>
 	)
 }

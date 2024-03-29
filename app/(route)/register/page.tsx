@@ -1,5 +1,6 @@
 'use client'
-import PostFetch from "@/app/components/utils/CustomFetch";
+import { UnprotectedLayout } from "@/app/components/layout/UnprotectedLayout";
+import { PostFetch } from "@/app/components/utils/CustomFetch";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -56,7 +57,7 @@ export default function Register(){
   }
 
   return(
-    <main>
+    <UnprotectedLayout>
       <div className="flex flex-col border rounded m-auto w-[350px] p-5 gap-3">
         <h2 className="text-red-800 text-center">Registration</h2>
         <input
@@ -92,6 +93,6 @@ export default function Register(){
           onClick={registerClick}
         >Verify</button>
       </div>
-    </main>
+    </UnprotectedLayout>
   )
 }

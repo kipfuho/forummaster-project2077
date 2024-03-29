@@ -9,7 +9,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse } from "@mui/material";
 import styles from "./category.module.css"
 import { CategoryType, ForumType } from "@/app/components/type";
-import { getForumData } from "@/app/components/utils/CustomFetch";
+import { GetForumData } from "@/app/components/utils/CustomFetch";
 import ForumHead from "./ForumHead";
 
 function CategoryBody({item, children}: {item: CategoryType, children: any}) {
@@ -41,7 +41,7 @@ export default function Category({item}: {item: CategoryType}) {
 
   useEffect(() => {
     const getForums = async () => {
-      const forums = await getForumData(item.category);
+      const forums = await GetForumData(item.category);
       if(forums !== null) {
         setForums(forums);
         setDone(true);

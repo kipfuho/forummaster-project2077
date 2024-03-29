@@ -4,9 +4,9 @@
 // which will be complemented later
 export default function Others(){
   return(
-    <main>
+    <div>
       <h2>Paint tool</h2>
       <h2>Minigame</h2>
-    </main>
+    </div>
   )
 }
