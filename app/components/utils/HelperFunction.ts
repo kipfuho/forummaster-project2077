@@ -5,7 +5,7 @@ export function extractNameToPath(name: string) {
     if(name[i] === " ") {
       path += "-";
     }
-    if(name[i] >= 'a' && name[i] <= 'z') {
+    if((name[i] >= 'a' && name[i] <= 'z') || (parseInt(name[i]) >= 0 && parseInt(name[i]) <= 9)) {
       path += name[i];
     }
   }

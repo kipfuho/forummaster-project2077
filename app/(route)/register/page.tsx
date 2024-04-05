@@ -1,6 +1,6 @@
 'use client'
-import { UnprotectedLayout } from "@/app/components/layout/UnprotectedLayout";
-import { PostFetch } from "@/app/components/utils/CustomFetch";
+import UnprotectedLayout from "@/app/components/layout/UnprotectedLayout";
+import { PostFetch } from "@/app/components/utils/fetch/custom";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

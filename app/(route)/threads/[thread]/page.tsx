@@ -1,11 +1,11 @@
 'use client'
 import Loading from "@/app/components/layout/Loading";
 import { MessageType, ThreadType, UserType } from "@/app/components/type";
-import { GetFullThread, GetUser } from "@/app/components/utils/CustomFetch";
 import { getSectionId } from "@/app/components/utils/HelperFunction";
 import { useEffect, useState } from "react";
 import ThreadBody from "./component/ThreadBody";
-import RichTextEditor from "@/app/components/editor/RichTextEditor";
+import { GetFullThread } from "@/app/components/utils/fetch/thread";
+import { GetUser } from "@/app/components/utils/fetch/user";
 
 
 
@@ -45,11 +45,11 @@ export default function Thread({params}: {params: {thread: string}}) {
 	return(
 		<>
       {done ?
-        <RichTextEditor>
+        <>
           {thread !== null &&
             <ThreadBody item={thread} user={user}/>
           }
-        </RichTextEditor> :
+        </> :
         <Loading/>
       }
     </>

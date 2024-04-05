@@ -3,9 +3,9 @@ import styles from "./category.module.css"
 import { extractNameToPath } from '@/app/components/utils/HelperFunction';
 import { ForumType, MessageType, ThreadType, UserType } from '@/app/components/type';
 import { useEffect, useState } from 'react';
-import { GetLastestThread } from '@/app/components/utils/CustomFetch';
 import Loading from '@/app/components/layout/Loading';
 import { format } from 'date-fns';
+import { GetLastestThread } from '@/app/components/utils/fetch/thread';
 
 // first section of a forum
 // contain forum basic information
@@ -57,13 +57,8 @@ function LastestThreadUpdate({forum}: {forum: ForumType}) {
   useEffect(() => {
     const getData = async () => {
       const lastestThreadData = await GetLastestThread(forum.id);
-      if(lastestThreadData !== null) {
-        setData(lastestThreadData);
-        setDone(true);
-      } else {
-        setData(null);
-        setDone(true);
-      }
+      setData(lastestThreadData);
+      setDone(true);
     }
 
     getData().catch((e) => console.log(e));

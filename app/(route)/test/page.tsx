@@ -1,10 +1,15 @@
 'use client'
-import RichTextEditor from "@/app/components/editor/RichTextEditor"
+import RichTextBox from "@/app/components/ui/Editor/Editor";
+import { RichTextEditorRef } from "mui-tiptap";
+import { useRef } from "react";
 
 export default function Test() {
-	return(
-		<div>
-			<RichTextEditor/>
-		</div>
-	)
+  const rteRef = useRef<RichTextEditorRef>(null);
+
+  return (
+    <div>
+      <RichTextBox rteRef={rteRef}/>
+      <button onClick={() => console.log(rteRef.current?.editor?.getHTML())}>click</button>
+    </div>
+  );
 }

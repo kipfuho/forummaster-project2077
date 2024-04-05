@@ -3,7 +3,8 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PersonIcon from '@mui/icons-material/Person';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useEffect, useState } from 'react';
-import { GetFetch } from '../utils/CustomFetch';
+import { useUserContext } from './UserContext';
+import { GetMetadata } from '../utils/fetch/data';
 
 // about myself and what this forum is about
 function About() {
@@ -45,27 +46,19 @@ function UserMenu() {
       <div className='flex flex-col gap-1'>
         <a 
           className="text-red-800 hover:underline hover:brightness-[150%]" 
-          href="/"
-        >
-          Profile
-        </a>
+          href="/account/profile"
+        >Profile</a>
         <a 
           className="text-red-800 hover:underline hover:brightness-[150%]" 
-          href="/"
-        >
-          Account Details
-        </a>
+          href="/account"
+        >Account Details</a>
         <a 
           className="text-red-800 hover:underline hover:brightness-[150%]" 
-          href="/"
-        >
-          News Feed
-        </a>
+          href="https://news.google.com/"
+        >News Feed</a>
         <a 
           className="text-red-800 hover:underline hover:brightness-[150%]" 
-          href="/">
-            Log out
-        </a>
+          href="/">Log out</a>
       </div>
     </div>
   )
@@ -77,14 +70,9 @@ function ForumStat() {
 
   useEffect(() => {
     const getMetadata = async () => {
-      const response = await GetFetch("metadata", null);
-      if(response.ok) {
-        try {
-          const data = await response.json();
-          setMetadata(data);
-        } catch(err) {
-          console.log(err);
-        }
+      const fetchData = await GetMetadata();
+      if(fetchData) {
+        setMetadata(fetchData);
       }
     }
 
@@ -120,12 +108,13 @@ function ForumStat() {
 }
 
 export default function Footer(){
+  const [user, _] = useUserContext();
   return(
     <footer>
       <div className="flex space-x-3">
         <About/>
         <QuickNavigation/>
-        <UserMenu/>
+        {user && <UserMenu/>}
         <ForumStat/>
       </div>
     </footer>

@@ -8,10 +8,10 @@ import Loading from "@/app/components/layout/Loading";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { getSectionId } from "@/app/components/utils/HelperFunction";
-import { getSingleForum } from "@/app/components/utils/CustomFetch";
 import { ForumType } from "@/app/components/type";
 import { useUserContext } from "@/app/components/layout/UserContext";
 import ForumBody from "../components/ForumBody";
+import { GetSingleForum } from "@/app/components/utils/fetch/forum";
 
 function PostThreadButton() {
   const pathname = usePathname();
@@ -31,7 +31,7 @@ export default function Forum({ params } : {params: {forumName:string}}){
   // fetch threads for render
   useEffect(() => {
     const getForum = async () => {
-      const forumData = await getSingleForum(forum_id);
+      const forumData = await GetSingleForum(forum_id);
       setForum(forumData);
     }
 

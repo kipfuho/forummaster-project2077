@@ -1,4 +1,4 @@
-export default function PageNumber({params}: {params: {pageNumber: number}}) {
+export default function ForumPageNumber({params}: {params: {pageNumber: number}}) {
 	return(
 		<div>
 			{params.pageNumber}

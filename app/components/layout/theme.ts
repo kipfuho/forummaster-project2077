@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-import { amber, deepOrange, grey } from "@mui/material/colors";
+import { amber, deepOrange, grey, purple } from "@mui/material/colors";
 
 const lightTheme = createTheme({
 	palette: {
@@ -42,14 +42,31 @@ const darkTheme = createTheme({
       contrastText: '#47008F',
     },
 		background: {
-			default: deepOrange[900],
-			paper: deepOrange[900],
+			default: grey[600],
+			paper: grey[600]
 		},
 		action: {
 			active: grey[200],
-			disabled: grey[200]
+			disabled: grey[200],
+			focus: amber[500],
+			disabledBackground: deepOrange[300],
+			selected: deepOrange[300],
+			hover: deepOrange[300]
 		},
-		divider: grey[200]
+		divider: grey[200],
+		text: {
+			primary: grey[100],
+			secondary: grey[600],
+			disabled: purple[200],
+		},
+		common: {
+			black: deepOrange[300],
+			white: amber[500]
+		},
+		info: {
+			main: deepOrange[300]
+		},
+		
 	}
 });
 

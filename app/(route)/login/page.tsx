@@ -2,7 +2,7 @@
 import Loading from '@/app/components/layout/Loading';
 import UnprotectedLayout from '@/app/components/layout/UnprotectedLayout';
 import { useUserContext } from '@/app/components/layout/UserContext';
-import { PostFetch } from '@/app/components/utils/CustomFetch';
+import { PostFetch } from '@/app/components/utils/fetch/custom';
 import KeyIcon from '@mui/icons-material/Key';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';

@@ -8,11 +8,11 @@ import Loading from "./Loading";
 import { UserAvatar } from "../ui/Avatar/UserAvatar";
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { GetFetch, GetUser } from "../utils/CustomFetch";
 import { UserType } from "../type";
 import { usePathname } from "next/navigation";
 import { Menu, MenuItem } from "@mui/material";
 import { useUserContext } from "./UserContext";
+import { GetFetch } from "../utils/fetch/custom";
 
 // navigation bar header
 // contain a logo and simple search bar
@@ -80,8 +80,12 @@ function UserSection({user}: {user: UserType}) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <Link href="/account/profile">
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+        </Link>
+        <Link href="/account">
+          <MenuItem onClick={handleClose}>My account</MenuItem>
+        </Link>
         <MenuItem onClick={logOutClick}>Logout</MenuItem>
       </Menu>
       <div className="flex items-center space-x-4">

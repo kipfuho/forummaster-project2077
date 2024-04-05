@@ -6,10 +6,9 @@ import Footer from "./components/layout/Footer";
 import UserProvider from "./components/layout/UserContextProvider";
 import { colortheme } from "./components/layout/theme";
 import { ThemeProvider } from "@mui/material";
-import { useLocalStorage } from "./components/hooks/useLocalStorage";
 import { useEffect, useState } from "react";
-import { GetUser } from "./components/utils/CustomFetch";
 import { UserType } from "./components/type";
+import { GetUser } from "./components/utils/fetch/user";
 
 const inter = Inter({ subsets: ["latin"] });
 

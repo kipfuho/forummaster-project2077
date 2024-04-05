@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Loading from "@/app/components/layout/Loading";
 import { categoryData } from "@/app/page";
 import { ForumType } from "@/app/components/type";
-import { getForumData } from "@/app/components/utils/CustomFetch";
+import { GetForumData } from "@/app/components/utils/CustomFetch";
 import ForumHead from "@/app/(route)/categories/components/ForumHead";
 
 // Category pages
@@ -14,7 +14,7 @@ export default function Categories({ params } : {params : {categoryName : string
 
   useEffect(() => {
     const getForums = async () => {
-      const forums = await getForumData(category.category);
+      const forums = await GetForumData(category.category);
       if(forums !== null) {
         setForums(forums);
         setDone(true);

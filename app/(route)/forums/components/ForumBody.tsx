@@ -3,7 +3,7 @@ import Pagination from "@/app/components/ui/Pagination/Pagination";
 import { Suspense, useEffect, useState } from "react";
 import ThreadHead from "./ThreadHead";
 import Loading from "@/app/components/layout/Loading";
-import { GetThreadData } from "@/app/components/utils/CustomFetch";
+import { GetThreadData } from "@/app/components/utils/fetch/thread";
 
 export default function ForumBody({
 	forum}: {forum: ForumType}

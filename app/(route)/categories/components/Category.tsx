@@ -9,8 +9,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse } from "@mui/material";
 import styles from "./category.module.css"
 import { CategoryType, ForumType } from "@/app/components/type";
-import { GetForumData } from "@/app/components/utils/CustomFetch";
 import ForumHead from "./ForumHead";
+import { GetForumData } from "@/app/components/utils/fetch/forum";
 
 function CategoryBody({item, children}: {item: CategoryType, children: any}) {
   const [open, setOpen] = useState(true);

@@ -5,8 +5,8 @@ import ChatIcon from '@mui/icons-material/Chat';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { PublicUserType } from "@/app/components/type";
 import { useEffect, useState } from "react";
-import { GetPublicUser } from "@/app/components/utils/CustomFetch";
 import { format } from 'date-fns'
+import { GetPublicUser } from "@/app/components/utils/fetch/user";
 
 export default function UserCard({user_mail}: {user_mail: string}) {
 	const [user, setUser] = useState<PublicUserType | null>(null);
@@ -30,7 +30,7 @@ export default function UserCard({user_mail}: {user_mail: string}) {
 	return(
 		<>
 			{user !== null ?
-				<div className="p-2 border-r-gray-500 border-r-[1px] max-w-[142px] overflow-hidden" about="author">
+				<div className="p-2 border-r-gray-500 border-r-[1px] min-w-[142px] overflow-hidden" about="author">
 					<Image className="rounded-[10rem] p-2" width={125} height={125} src="/arknights.jpg" alt="img"/>
 					<div className="text-center">{user.username}</div>
 					<div className="space-x-2">
