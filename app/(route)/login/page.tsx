@@ -1,16 +1,15 @@
 'use client'
-import Loading from '@/app/components/layout/Loading';
 import UnprotectedLayout from '@/app/components/layout/UnprotectedLayout';
 import { useUserContext } from '@/app/components/layout/UserContext';
-import { PostFetch } from '@/app/components/utils/fetch/custom';
+import { loginV2 } from '@/app/components/utils/fetch/v2/user';
 import KeyIcon from '@mui/icons-material/Key';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // Login page
 export default function Login(){
-  const [user, setUser] = useUserContext();
+  const [_, setUser] = useUserContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,25 +17,20 @@ export default function Login(){
   // event handler for login click
   const LoginClick = async () => {
     // wait for response
-    const response = await PostFetch(
-      "login",
-      {
-        username: username,
-        password: password
-      },
-      null
-    );
+    const res = await loginV2({
+			username: username,
+			password: password
+		});
     
-    if(response.ok){
+    if(res.ok){
       // set user for context
-      const userData = await response.json();
+      console.log(res);
+      const userData = await res.json();
       setUser(userData);
     } else {
-      console.log(response);
+      console.log(res);
     }
   }
-
-  useEffect(() => {console.log(user)}, [])
 
   return (
     <UnprotectedLayout>

@@ -8,8 +8,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Image from 'next/image';
 import DebounceInput from '@/app/components/ui/DebouceInput';
-import { UploadImage } from '@/app/components/utils/fetch/data';
-import { GetUserSetting } from '@/app/components/utils/fetch/user';
+import { uploadImage } from '@/app/components/utils/fetch/v1/upload';
+import { getUserProfile } from '@/app/components/utils/fetch/v1/user';
 
 function UsernameChangeModal({user}: {user:any}) {
 	const [open, setOpen] = useState<boolean>(false);
@@ -129,7 +129,7 @@ function Avatar({user, ref}: {user: any, ref?: any}) {
 			return;
 		}
 		// upload avatar to server and take url
-		const imageUrl = await UploadImage(files[0]);
+		const imageUrl = await uploadImage(files[0]);
 		if(imageUrl) {
 			setAvatarUrl(imageUrl.link);
 		} else {
@@ -176,7 +176,7 @@ export default function Detail() {
 
 	useEffect(() => {
 		const getUsertSetting = async () => {
-			const fetchData = await GetUserSetting();
+			const fetchData = await getUserProfile();
 			setUserSetting(fetchData);
 			setDone(true);
 		};

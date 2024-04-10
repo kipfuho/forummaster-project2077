@@ -30,12 +30,13 @@ import {
 } from "mui-tiptap";
 import { RefObject } from "react";
 import useExtensions from "./useExtension";
-import { UploadImage } from "../../utils/fetch/data";
+import { uploadImageV2 } from "../../utils/fetch/v2/upload";
 
 async function insertImage(files: any) {
+  console.log(files);
 	const data: any = [];
 	for(let i = 0; i < files.length; i++) {
-		let res = await UploadImage(files[i]);
+		let res = await uploadImageV2(files[i]);
 		if(res !== null) {
 			data.push({src: res.link, alt: "img"})
 		} else {

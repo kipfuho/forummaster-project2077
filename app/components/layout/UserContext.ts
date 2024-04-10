@@ -1,11 +1,11 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
-import { UserType } from "../type";
+import { UserSessionType } from "../type";
 
-export const UserContext = createContext<[UserType | null | undefined, Dispatch<SetStateAction<UserType | null | undefined>>] | undefined>(
+export const UserContext = createContext<[UserSessionType | null | undefined, Dispatch<SetStateAction<UserSessionType | null | undefined>>] | undefined>(
   undefined
 );
 
-export function useUserContext(): [UserType | null | undefined, Dispatch<SetStateAction<UserType | null | undefined>>] {
+export function useUserContext(): [UserSessionType | null | undefined, Dispatch<SetStateAction<UserSessionType | null | undefined>>] {
   const userContext = useContext(UserContext);
 	if(userContext === undefined) {
     throw new Error('useUserContext must be used within a UserContextProvider');

@@ -1,57 +1,21 @@
-'use client'
 import Loading from "@/app/components/layout/Loading";
-import { MessageType, ThreadType, UserType } from "@/app/components/type";
 import { getSectionId } from "@/app/components/utils/HelperFunction";
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import ThreadBody from "./component/ThreadBody";
-import { GetFullThread } from "@/app/components/utils/fetch/thread";
-import { GetUser } from "@/app/components/utils/fetch/user";
+import { getThread } from "@/app/components/utils/fetch/v1/thread";
+import { getMessages } from "@/app/components/utils/fetch/v1/message";
+import { getUserPublic } from "@/app/components/utils/fetch/v1/user";
 
-
-
-export default function Thread({params}: {params: {thread: string}}) {
-	const thread_id = getSectionId(params.thread);
-  const [thread, setThread] = useState<{thread: ThreadType, messages: MessageType[]} | null>(null);
-  const [user, setUser] = useState<UserType | null>(null);
-  const [done, setDone] = useState<number>(0);
-
-  useEffect(() => {
-    const fetchThread = async () => {
-      const threadData = await GetFullThread(thread_id);
-      if(threadData !== null) {
-        setThread(threadData);
-        setDone((prev) => prev + 1);
-      } else {
-        setThread(null);
-        setDone((prev) => prev + 1);
-      }
-    }
-
-    const fetchUser = async() => {
-      const userSession = await GetUser();
-      if(userSession !== null) {
-        setUser(userSession);
-        setDone((prev) => prev + 1);
-      } else {
-        setUser(null);
-        setDone((prev) => prev + 1);
-      }
-    }
-    
-    fetchThread().catch((e) => console.log(e));
-    fetchUser().catch((e) => console.log(e));
-  }, []);
+export default async function Thread({params}: {params: {thread: string}}) {
+  const thread_id = getSectionId(params.thread);
+  const thread = await getThread(thread_id);
+  const messagesData = getMessages(thread_id);
+  const userData = getUserPublic(thread.user_id);
+  const [messages, user] = await Promise.all([messagesData, userData]);
 
 	return(
-		<>
-      {done ?
-        <>
-          {thread !== null &&
-            <ThreadBody item={thread} user={user}/>
-          }
-        </> :
-        <Loading/>
-      }
-    </>
+		<Suspense fallback={<Loading/>}>
+      <ThreadBody thread={thread} messages={messages} user={user}/>
+    </Suspense>
 	)
 }

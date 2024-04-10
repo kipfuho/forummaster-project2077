@@ -1,19 +1,15 @@
 'use client'
 import ProtectedLayout from "@/app/components/layout/ProtectedLayout";
 import { useUserContext } from "@/app/components/layout/UserContext";
-import { getSectionId } from "@/app/components/utils/HelperFunction";
-import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import CreateIcon from '@mui/icons-material/Create';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import RichTextBox from "@/app/components/ui/Editor/Editor";
 import { RichTextEditorRef } from "mui-tiptap";
-import { PostFetch } from "@/app/components/utils/fetch/custom";
+import { postThreadV2 } from "@/app/components/utils/fetch/v2/thread";
 
-export default function CreateThread() {
+export default function CreateThread({params}: {params: {forumId: string}}) {
   const rteRef = useRef<RichTextEditorRef>(null);
-  const pathName = usePathname();
-  const forumId = getSectionId(pathName);
   const [threadTitle, setThreadTitle] = useState("");
   const [user, _] = useUserContext();
 
@@ -21,19 +17,15 @@ export default function CreateThread() {
     if(threadTitle.trim().length === 0) {
       alert("Enter your thread title");
     }
-    let response = await PostFetch(
-      "thread/create-thread",
-      {
-        forum_id: forumId,
-        email: user?.email,
-        thread_title: threadTitle,
-        content: rteRef.current?.editor?.getHTML(),
-        tag: []
-      },
-      null
-    );
+    let res = await postThreadV2({
+			forumId: params.forumId,
+			userId: user?.id,
+			threadTitle: threadTitle,
+			threadContent: rteRef.current?.editor?.getHTML(),
+			tag: []
+		});
     
-    if(response.ok){
+    if(res.ok){
       alert("Created");
     }
     else{

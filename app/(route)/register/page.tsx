@@ -1,6 +1,6 @@
 'use client'
 import UnprotectedLayout from "@/app/components/layout/UnprotectedLayout";
-import { PostFetch } from "@/app/components/utils/fetch/custom";
+import { registerV2 } from "@/app/components/utils/fetch/v2/user";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -35,16 +35,12 @@ export default function Register(){
     }
 
     try {
-      let response = await PostFetch(
-        "register",
-        {
-          email: email,
-          username: username,
-          password: password
-        },
-        null
-      );
-      if(response.ok) {
+      const res = await registerV2({
+        email: email,
+        username: username,
+        password: password
+      })
+      if(res.ok) {
         alert("Registration successfully!");
         router.push("/");
       }

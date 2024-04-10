@@ -1,74 +1,123 @@
+'use server'
+import { Suspense } from "react";
 import Category from "./(route)/categories/components/Category";
-import { CategoryDataType } from "./components/type";
+import Loading from "./components/layout/Loading";
+import { getAllCategoryV2 } from "./components/utils/fetch/v2/category";
 
-// Most categories and its forums
-export const categoryData : CategoryDataType = {
-  ["annoucement.1"] : {
-    name: "Annoucement", 
-    path: "/categories/annoucement.1", 
-    category: "annoucement"
-  },
-  ["games.3"] : {
-    name: "Games", 
-    path: "/categories/games.3",
-    category: "games"
-  },
-  ["manga-anime.6"] : {
-    name: "Manga&Anime", 
-    path: "/categories/manga-anime.6",
-    category: "manga-anime"
-  },
-  ["market.10"] : {
-    name: "Market", 
-    path: "/categories/market.10",
-    category: "market"
-  },
-  ["development.14"] : {
-    name: "Development", 
-    path: "/categories/development.14",
-    category: "development"
-  },
-  ["discussion.17"] : {
-    name: "Discussion", 
-    path: "/categories/discussion.17",
-    category: "discussion"
-  },
-  ["feedback.19"] : {
-    name: "Site Feedback", 
-    path: "/categories/feedback.19",
-    category: "feedback"
+export type UserDocument = {
+  _id: string;
+  username: string;
+  email: string;
+  create_time: Date;
+  avatar: string;
+  messages: number;
+  likes: number;
+  class: number;
+}
+
+export type FullUserDocument = {
+  _id: string;
+  username: string;
+  email: string;
+  create_time: Date;
+  avatar: string;
+  messages: number;
+  likes: number;
+  class: number;
+  setting: {
+    date_of_birth: string;
+    location: string;
+    website: string;
+    about: string;
+    twofa: string;
   }
-};
+}
+
+export type CategoryDocument = {
+  _id: string;
+  name: string;
+  title: string;
+  about: string;
+  forums: string[];
+}
+
+export type ForumDocument = {
+  _id: string;
+  name: string;
+  about: string;
+  threads: number;
+  messages: number;
+  delete: boolean;
+  privilege: number;
+}
+
+export type ThreadDocument = {
+  _id: string;
+  forum: string;
+  user: string;
+  title: string;
+  tag: TagDocument[];
+  create_time: Date;
+  update_time: Date;
+  replies: number;
+  views: number;
+  delete: boolean;
+  privilege: number;
+}
+
+export type MessageDocument = {
+  _id: string;
+  thread: string;
+  user: string;
+  create_time: Date;
+  update_time: Date;
+  content: string;
+  reactions: {
+    like: string[],
+    love: string[],
+    care: string[],
+    haha: string[],
+    wow: string[],
+    sad: string[],
+    angry: string[]
+  };
+  delete: boolean;
+}
+
+export type TagDocument = {
+  _id: string;
+  name: string;
+  color: string;
+}
+
+export type ReactionDocument = {
+  _id: string;
+  message: string;
+  user: string;
+  type: string;
+  create_time: Date;
+}
 
 // Home page
 export default async function Home() {
-  return (
-    <main className="space-y-5">
-      <input
-        className="rounded bg-gray-500 w-full p-2 focus:outline-none focus:brightness-[110%]"
-        placeholder="Quick search..."
-      />
-      <Category 
-        item={categoryData["annoucement.1"]}
-      />
-      <Category 
-        item={categoryData["games.3"]}
-      />
-      <Category 
-        item={categoryData["manga-anime.6"]}
-      />
-      <Category 
-        item={categoryData["market.10"]}
-      />
-      <Category 
-        item={categoryData["development.14"]}
-      />
-      <Category 
-        item={categoryData["discussion.17"]}
-      />
-      <Category 
-        item={categoryData["feedback.19"]}
-      />
-    </main>
-  );
+  const categories: CategoryDocument[] = await getAllCategoryV2()
+  if(categories) {
+    return (
+      <Suspense fallback={<Loading/>}>
+        <div className="space-y-5">
+          <input
+            className="rounded bg-gray-500 w-full p-2 focus:outline-none focus:brightness-[110%]"
+            placeholder="Quick search..."
+          />
+          {categories.map((category, index) => (
+            <Category category={category} key={index}/>
+          ))}
+        </div>
+      </Suspense>
+    );
+  } else {
+    return (
+      "Error, categories = null"
+    )
+  }
 }
