@@ -16,7 +16,7 @@ export async function getAllCategoryV2() {
   const res = await fetch(`https://localhost:3001/v2/category/get-all`, {
     method: "GET",
 		next: {
-			revalidate: 60
+			revalidate: 10
 		}
   });
   if(res.ok) {
@@ -27,6 +27,11 @@ export async function getAllCategoryV2() {
 }
 
 export async function getCategoryV2(categoryId: string) {
+  if(!categoryId) {
+		alert("categoryId is null");
+		return null;
+	}
+
   const res = await fetch(`https://localhost:3001/v2/category/get?categoryId=${categoryId}`, {
     method: "GET",
   });

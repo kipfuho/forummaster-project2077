@@ -6,7 +6,6 @@ import Loading from '@/app/components/layout/Loading';
 import Link from 'next/link';
 import { ForumDocument, MessageDocument, ThreadDocument, UserDocument } from '@/app/page';
 import { getLastestThreadV2 } from '@/app/components/utils/fetch/v2/thread';
-import { getForumV2 } from '@/app/components/utils/fetch/v2/forum';
 
 // first section of a forum
 // contain forum basic information

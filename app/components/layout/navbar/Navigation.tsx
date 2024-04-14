@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 export default function Navigation() {
 	const path = usePathname();
 	return(
-		<ol className="flex">
+		<div className="flex">
 			<Link href="/">
 				<Button>Forum</Button>
 			</Link>
@@ -16,6 +16,6 @@ export default function Navigation() {
 			<Link href="/others">
 				<Button>Others</Button>
 			</Link>
-		</ol>
+		</div>
 	)
 }

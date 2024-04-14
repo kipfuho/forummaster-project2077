@@ -46,10 +46,15 @@ export async function getCurrentUserV2() {
 }
 
 export async function getUserV2(userId: string) {
+	if(!userId) {
+		alert("userid is null");
+		return null;
+	}
+
   const res = await fetch(`https://localhost:3001/v2/user/get?userId=${userId}`, {
     method: "GET",
 		next: {
-			revalidate: 600 // 10 minutes
+			revalidate: 600
 		}
   });
 
@@ -60,8 +65,29 @@ export async function getUserV2(userId: string) {
   }
 }
 
-export async function getFullUserV2(user_id: string) {
-  const res = await fetch(`https://localhost:3001/v2/user/get-public-profile?id=${user_id}`, {
+export async function postUserV2(body: any) {
+  const res = await fetch(`https://localhost:3001/v2/user/get`, {
+    method: "POST",
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(body),
+  });
+
+  if(res.ok) {
+    return res.json();
+  } else {
+    return null;
+  }
+}
+
+export async function getFullUserV2(userId: string) {
+	if(!userId) {
+		alert("userid is null");
+		return null;
+	}
+
+  const res = await fetch(`https://localhost:3001/v2/user/get-public-profile?id=${userId}`, {
     method: "GET"
   });
 

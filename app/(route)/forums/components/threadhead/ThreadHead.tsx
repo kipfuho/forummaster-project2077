@@ -11,7 +11,9 @@ export default async function ThreadHead({thread}: {thread: ThreadDocument}) {
 	return(
 		<Link className="flex" href={"/threads/" + thread._id}>
 			<div className="flex flex-grow">
-				<UserAvatar user={threadAuthor} width={36} height={36}/>
+				<div className="px-1 self-center">
+					<UserAvatar user={threadAuthor} size={36}/>
+				</div>
 				<div className="flex-grow py-1 px-2 border-x-[1px] border-gray-400">
 					<div className="flex">
 						<div className="space-x-2">

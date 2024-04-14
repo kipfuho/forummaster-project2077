@@ -1,14 +1,14 @@
 'use client'
 import { useRef } from "react";
-import { MessageType } from "@/app/components/type";
 import { Button } from "@mui/material";
 import { RichTextEditorRef } from "mui-tiptap";
 import RichTextBox from "@/app/components/ui/Editor/Editor";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import SaveIcon from '@mui/icons-material/Save';
+import { MessageDocument } from "@/app/page";
 
-export default function MessageEditor({message}: {message: MessageType}) {
+export default function MessageEditor({message}: {message: MessageDocument}) {
 	const rteRef = useRef<RichTextEditorRef>(null);
 
 	const saveClick = async () => {
@@ -18,7 +18,7 @@ export default function MessageEditor({message}: {message: MessageType}) {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				message_id: message.id,
+				message_id: message._id,
 				content: rteRef.current?.editor?.getHTML()
 			}),
 			credentials: "include"

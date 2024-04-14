@@ -3,18 +3,17 @@ import Image from "next/image";
 import PersonIcon from '@mui/icons-material/Person';
 import ChatIcon from '@mui/icons-material/Chat';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import { PublicUserType } from "@/app/components/type";
 import { Suspense } from "react";
 import Loading from "@/app/components/layout/Loading";
 import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
-import { getUserPublic } from "@/app/components/utils/fetch/v1/user";
+import { UserDocument } from "@/app/page";
+import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
 
-export default async function UserCard({user_id}: {user_id: number}) {
-	const user: PublicUserType = await getUserPublic(user_id);
+export default async function UserCard({user}: {user: UserDocument}) {
 	return(
 		<Suspense fallback={<Loading/>}>
 			<div className="p-2 border-r-gray-500 border-r-[1px] min-w-[142px] overflow-hidden" about="author">
-				<Image className="rounded-[10rem] p-2" width={125} height={125} src="/arknights.jpg" alt="img"/>
+				<UserAvatar user={user} size={125}/>
 				<div className="text-center">{user.username}</div>
 				<div className="space-x-2">
 					<Tooltip title="Joined">

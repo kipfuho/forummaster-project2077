@@ -3,11 +3,11 @@ import { ThemeProvider } from "@emotion/react";
 import { colortheme } from "./theme"
 import UserProvider from "./UserContextProvider"
 import { useEffect, useState } from "react";
-import { UserSessionType } from "../type";
 import { getCurrentUserV2 } from "../utils/fetch/v2/user";
+import { UserDocument } from "@/app/page";
 
 export default function ContextProvider({children}: {children: any}) {
-	const [user, setUser] = useState<UserSessionType | null | undefined>(undefined);
+	const [user, setUser] = useState<UserDocument | null | undefined>(undefined);
 
   useEffect(() => {
     const getUserData = async () => {

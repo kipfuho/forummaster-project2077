@@ -1,9 +1,9 @@
 'use server'
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { getMetadata } from '../../utils/fetch/v1/category';
+import { getMetadataV2 } from '../../utils/fetch/v2/category';
 
 export default async function ForumStat() {
-	const metadata = await getMetadata();
+	const metadata = await getMetadataV2();
   return(
     <div className="w-[25%] space-y-2">
       <h3>

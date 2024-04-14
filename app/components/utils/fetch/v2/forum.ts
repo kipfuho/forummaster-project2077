@@ -1,4 +1,9 @@
 export async function getForumV2(forumId: string) {
+  if(!forumId) {
+		alert("forumId is null");
+		return null;
+	}
+
   const res = await fetch(`https://localhost:3001/v2/forum/get?forumId=${forumId}`, {
     method: "GET",
 		next: {

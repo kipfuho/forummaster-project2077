@@ -28,6 +28,7 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Highlight } from "@tiptap/extension-highlight";
 import { TextAlign } from "@tiptap/extension-text-align";
+import { HorizontalRule } from "@tiptap/extension-horizontal-rule";
 import { FontSize, HeadingWithAnchor, LinkBubbleMenuHandler, ResizableImage, TableImproved } from "mui-tiptap";
 import { useMemo } from "react";
 
@@ -90,6 +91,7 @@ export default function useExtensions({
 				openOnClick: false,
 			}),
 			LinkBubbleMenuHandler,
+			HorizontalRule,
 		
 			// Extensions
 			Gapcursor,

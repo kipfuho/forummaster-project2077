@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { UserSessionType } from "../type";
 import { UserContext } from "./UserContext";
+import { UserDocument } from "@/app/page";
 
 export type UserProviderProps = {
-  userContext: [UserSessionType | null | undefined, Dispatch<SetStateAction<UserSessionType | null | undefined>>];
+  userContext: [UserDocument | null | undefined, Dispatch<SetStateAction<UserDocument | null | undefined>>];
   children: React.ReactNode;
 };
 

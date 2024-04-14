@@ -48,7 +48,12 @@ export type ForumDocument = {
   threads: number;
   messages: number;
   delete: boolean;
-  privilege: number;
+  privilege: {
+    view: number,
+    reply: number,
+    upload: number,
+    delete: number
+  }
 }
 
 export type ThreadDocument = {
@@ -62,7 +67,12 @@ export type ThreadDocument = {
   replies: number;
   views: number;
   delete: boolean;
-  privilege: number;
+  privilege: {
+    view: number,
+    reply: number,
+    upload: number,
+    delete: number
+  }
 }
 
 export type MessageDocument = {

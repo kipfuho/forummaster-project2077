@@ -15,8 +15,8 @@ export default async function LastestMessage({thread}: {thread: ThreadDocument})
 					<p className="text-right">{data[1].username}</p>
 				</div>
 				
-				<div className={`flex && ${styles.additionInfo}`}>
-					<UserAvatar user={data[1]} width={36} height={36}/>
+				<div className={`flex px-1 ${styles.additionInfo}`}>
+					<UserAvatar user={data[1]} size={36}/>
 				</div>
 			</>
 		)

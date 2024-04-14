@@ -41,7 +41,7 @@ export default function UserSection() {
 		return(
 			<div className="flex space-x-4">
 				<button className="flex items-center space-x-2" onClick={handleClick}>
-					<UserAvatar user={user} width={34} height={34}/>
+					<UserAvatar user={user} size={36}/>
 					<span>{user.username}</span>
 				</button>
 				<Menu

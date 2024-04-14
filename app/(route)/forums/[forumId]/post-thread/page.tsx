@@ -7,11 +7,16 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import RichTextBox from "@/app/components/ui/Editor/Editor";
 import { RichTextEditorRef } from "mui-tiptap";
 import { postThreadV2 } from "@/app/components/utils/fetch/v2/thread";
+import { Box, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+import DebounceInput from "@/app/components/ui/DebouceInput";
 
 export default function CreateThread({params}: {params: {forumId: string}}) {
   const rteRef = useRef<RichTextEditorRef>(null);
   const [threadTitle, setThreadTitle] = useState("");
+  const [prefix, setPrefix] = useState("");
   const [user, _] = useUserContext();
+  const router = useRouter();
 
   const PostThreadClick = async () => {
     if(threadTitle.trim().length === 0) {
@@ -19,7 +24,7 @@ export default function CreateThread({params}: {params: {forumId: string}}) {
     }
     let res = await postThreadV2({
 			forumId: params.forumId,
-			userId: user?.id,
+			userId: user?._id,
 			threadTitle: threadTitle,
 			threadContent: rteRef.current?.editor?.getHTML(),
 			tag: []
@@ -35,19 +40,32 @@ export default function CreateThread({params}: {params: {forumId: string}}) {
 
   return(
     <ProtectedLayout>
-      <div>
+      <div className="rounded bg-gray-600 p-2">
         <h2>Post thread</h2>
-        <input
-          className="w-full rounded border p-2 my-5 bg-gray-700"
-          placeholder="Thread title"
-          value={threadTitle}
-          onChange={(e) => setThreadTitle(e.currentTarget.value)}
+        <DebounceInput
+          handleDebounce={(value) => setPrefix(value)}
+          debounceTimeout={1000}
+          placeholder='Prefix...'
+          sx={{marginBottom: "10px"}}
+          fullWidth
         />
-        <div className="rounded bg-gray-800">
+        <DebounceInput
+          handleDebounce={(value) => setThreadTitle(value)}
+          debounceTimeout={1000}
+          placeholder='Thread Title'
+          sx={{marginBottom: "10px"}}
+          fullWidth
+        />
+        <Box sx={{ margin: "0 auto" }}>
           <RichTextBox rteRef={rteRef}/>
-        </div>
-        <div className="border mt-2">
-          Options
+        </Box>
+        <div className="flex border mt-2 divide-x-[1px]">
+          <div className="min-w-[200px] text-right px-2 self-center">Options:</div>
+          <div className="p-2 space-x-1">
+            <Button variant="outlined" size="small">Attach files</Button>
+            <Button variant="outlined" size="small">Quotes</Button>
+            <Button variant="outlined" size="small">Preview</Button>
+          </div>
         </div>
         <div className="flex border border-t-0 p-3 justify-center space-x-5 bg-zinc-700">
           <button 
