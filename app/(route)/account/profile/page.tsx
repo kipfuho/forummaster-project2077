@@ -1,9 +1,7 @@
-'use client'
+import Detail from "../component/detail/Detail"
 
-import Detail from "../component/Detail"
-
-export default function AccountProfile() {
-	return(
-		<Detail/>
-	)
+export default async function AccountProfile() {
+  return(
+    <Detail/>
+  )
 }

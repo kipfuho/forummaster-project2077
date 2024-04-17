@@ -5,58 +5,52 @@ import { loginV2 } from '@/app/components/utils/fetch/v2/user';
 import KeyIcon from '@mui/icons-material/Key';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import { useState } from 'react';
+import { Button, Input } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
+
+export function SubmitButton({children}: {children: any}) {
+  const { pending } = useFormStatus()
+  return (
+    <Button
+    type="submit"
+    variant='contained'
+    disabled={pending}
+    >{children}</Button>
+  )
+}
 
 // Login page
 export default function Login(){
   const [_, setUser] = useUserContext();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [state, formAction] = useFormState(loginV2, null);
 
-  // event handler for login click
-  const LoginClick = async () => {
-    // wait for response
-    const res = await loginV2({
-			username: username,
-			password: password
-		});
-    
-    if(res.ok){
-      // set user for context
-      console.log(res);
-      const userData = await res.json();
-      setUser(userData);
-    } else {
-      console.log(res);
+  useEffect(() => {
+    if(state) {
+      setUser(state);
     }
-  }
+  }, [state]);
 
   return (
     <UnprotectedLayout>
-      <div 
+      <form 
         className="border rounded shadow-md shadow-white w-[350px] m-auto p-5 space-y-4"
+        action={formAction}
       >
         <h2 className='text-center text-red-800'>Login</h2>
+        <Input
+          name='username'
+          placeholder='Enter your username or email'
+          fullWidth
+        />
         <div>
-          <p>Enter your username or email:</p>
-          <input
-            className="w-full text-center p-1 text-black focus:outline-none"
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.currentTarget.value)}
-          />
-        </div>
-        <div>
-          <p>Enter your password:</p>
           <div className='flex'>
-            <input 
-              className="w-full text-center p-1 text-black focus:outline-none"
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
+            <Input
+              name='password'
+              placeholder='Enter your password'
+              type={showPassword ? 'text' : 'password'}
+              fullWidth
             />
             <div
               className='flex border bg-gray-800 px-2'
@@ -76,15 +70,12 @@ export default function Login(){
           </div>
         </div>
         <div className="flex justify-center">
-          <button 
-            className="flex justify-center rounded w-[150px] bg-red-700 px-2 py-1 gap-x-2"
-            onClick={() => LoginClick()}
-          >
+          <SubmitButton>
             <KeyIcon/>
             <span>Login</span>
-          </button>
+          </SubmitButton>
         </div>
-      </div>
+      </form>
     </UnprotectedLayout>
   )
 }
