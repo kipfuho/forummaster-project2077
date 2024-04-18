@@ -51,7 +51,7 @@ export default function UserSection() {
 					open={open}
 					onClose={handleClose}
 				>
-					<Link href="/account/profile">
+					<Link href={`/member/${user._id}`}>
 						<MenuItem onClick={handleClose}>Profile</MenuItem>
 					</Link>
 					<Link href="/account">
