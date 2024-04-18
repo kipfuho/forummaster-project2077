@@ -1,5 +1,5 @@
 'use client'
-import Security from '../component/Security';
+import Security from '../../component/Security';
 
 export default function AccountSecurity(){
   return(

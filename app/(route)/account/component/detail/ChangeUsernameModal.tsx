@@ -1,17 +1,22 @@
 'use client'
-import { useState } from "react";
-import { Box, Button, Modal } from "@mui/material";
-import DebounceInput from "@/app/components/ui/DebouceInput";
+import { useEffect, useState } from "react";
+import { Box, Button, Input, Modal } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import { FullUserDocument } from "@/app/page";
+import { SubmitButton } from "@/app/(route)/login/page";
+import { updateUsernameV2 } from "@/app/components/utils/fetch/v2/user";
+import { useFormState } from "react-dom";
 
 export default function UsernameChangeModal({user}: {user: FullUserDocument}) {
 	const [open, setOpen] = useState<boolean>(false);
-	const [username, setUsername] = useState<string>('');
-	const [password, setPassword] = useState<string>('');
-
-	const saveUsernameClick = async () => {
-	}
+	const [state, formAction] = useFormState(updateUsernameV2, null);
+	
+	useEffect(() => {
+		if(state) {
+			alert("Updated username");
+			setOpen(false);
+		}
+	}, [state]);
 
 	return(
 		<>
@@ -22,33 +27,37 @@ export default function UsernameChangeModal({user}: {user: FullUserDocument}) {
 				onClose={() => setOpen(false)}
 				sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
 			>
-				<Box
-					sx={{
-						width: 400,
+				<form action={formAction}>
+					<Box
+						sx={{
+							width: 400,
 						bgcolor: 'background.paper',
-						border: '2px solid #000',
-						boxShadow: 24,
-						p: 4
+							border: '2px solid #000',
+							boxShadow: 24,
+							p: 4
 					}}
-				>
-					<DebounceInput
-						handleDebounce={(value) => setUsername(value)}
-						debounceTimeout={1000}
-						placeholder='Username'
-						fullWidth
-					/>
-					<p className='mt-5 mb-2 text-[0.9rem]'>Type password to confirm change</p>
-					<DebounceInput
-						handleDebounce={(value) => setPassword(value)}
-						debounceTimeout={1000}
-						placeholder='Password'
-						fullWidth
-					/>
-					<Button sx={{marginTop: 2}} size='small' variant='outlined' onClick={saveUsernameClick}>
-						<SaveIcon/>
-						<span>Save</span>
-					</Button>
-				</Box>
+					>	<Input
+							name="userId"
+							type='hidden'
+							value={user._id}
+						/>
+						<Input
+							name='username'
+							placeholder='Username'
+							fullWidth
+						/>
+						<p className='mt-5 mb-2 text-[0.9rem]'>Type password to confirm change</p>
+						<Input
+							name='password'
+							placeholder='Password'
+							fullWidth
+						/>
+						<SubmitButton>
+							<SaveIcon/>
+							<span>Save</span>
+						</SubmitButton>
+					</Box>
+				</form>
 			</Modal>
 		</>
 	)
