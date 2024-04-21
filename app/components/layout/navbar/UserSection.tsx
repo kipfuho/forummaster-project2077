@@ -6,6 +6,7 @@ import Link from "next/link";
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useState } from "react";
+import { logoutV2 } from "../../utils/fetch/v2/user";
 
 // user section on navigation bar
 export default function UserSection() {
@@ -24,17 +25,13 @@ export default function UserSection() {
 		};
 
 		const logOutClick = async () => {
-			const result = await fetch("https://localhost:3001/v2/logout", {
-				method: "GET",
-				credentials: "include"
-			});
+			const result = await logoutV2();
 
-			if(result.ok) {
+			if(result) {
 				console.log("user session ended!");
 				setAnchorEl(null);
 				setUser(null);
 			} else {
-				console.log(result);
 				setAnchorEl(null);
 				setUser(null);
 			}

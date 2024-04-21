@@ -28,7 +28,8 @@ export default function Login(){
 
   useEffect(() => {
     if(state) {
-      setUser(state);
+      console.log(state);
+      setUser(state.user);
     }
   }, [state]);
 

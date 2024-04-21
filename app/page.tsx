@@ -82,6 +82,7 @@ export type MessageDocument = {
   create_time: Date;
   update_time: Date;
   content: string;
+  attachments: string[];
   reactions: {
     like: string[],
     love: string[],

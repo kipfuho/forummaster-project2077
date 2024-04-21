@@ -1,36 +1,67 @@
 'use server'
 import { cookies } from "next/headers";
+import { join } from "path";
 import { parseString } from "set-cookie-parser";
+
+const BE_HOST = process.env.BE_HOST ?? "";
 
 // public
 export async function registerV2(prevState: any, formData: FormData) {
-	const res = await fetch("https://localhost:3001/v2/register", {
+	let email = formData.get("email"), 
+	username = formData.get("username"), 
+	password = formData.get("password"), 
+	retypePassword = formData.get("retypePassword");
+
+	if(password !== retypePassword) {
+		return { 
+			message: "Passwords not match",
+			type: "fail"
+		};
+	}
+
+	const res = await fetch(join(BE_HOST, "v2/register"), {
 		method: "POST",
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			email: formData.get("email"),
-			username: formData.get("username"),
-			password: formData.get("password")
+			email,
+			username,
+			password
 		}),
 	});
-	return res;
+
+	const message = await res.json();
+	if(res.ok) {
+		return {
+			...message,
+			type: "success"
+		}
+	} else {
+		return {
+			...message,
+			type: "fail"
+		}
+	}
 }
 
 // public
 export async function loginV2(prevState: any, formData: FormData) {
-	const res = await fetch("https://localhost:3001/v2/login", {
+	let username = formData.get("username"),
+	password = formData.get("password");
+
+	const res = await fetch(join(BE_HOST, "v2/login"), {
 		method: "POST",
 		headers: {
 			'Content-Type': "application/json",
 			'Cookie': cookies().toString()
 		},
 		body: JSON.stringify({
-			username: formData.get("username"),
-			password: formData.get("password")
+			username,
+			password
 		})
 	});
+
 	if(res.ok) {
 		res.headers.getSetCookie().forEach(setCookieString => {
 			const setCookie = parseString(setCookieString);
@@ -40,24 +71,68 @@ export async function loginV2(prevState: any, formData: FormData) {
 				httpOnly: setCookie.httpOnly
 			});
 		});
-		return res.json();
+		const message = await res.json();
+		return {
+			...message,
+			type: "success"
+		};
 	} else {
-		return null;
+		const message = await res.json();
+		return {
+			...message,
+			type: "fail"
+		};
 	}
 }
 
 // not public
 export async function logoutV2() {
-	const res = await fetch("https://localhost:3001/v2/logout", {
+	const res = await fetch(join(BE_HOST, "v2/logout"), {
 		method: "GET",
-		credentials: "include"
+		headers: {
+			'Cookie': cookies().toString()
+		},
+		next: {
+			revalidate: 0
+		}
 	});
-	return res;
+	
+	if(res.ok) {
+		cookies().delete("jwt");
+		cookies().delete("refresh_token");
+		cookies().delete("connect.sid");
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// public
+export async function verifyEmailV2(query: string) {
+	const res = await fetch(join(BE_HOST, `v2/user/verify-email?${query}`), {
+		method: "GET",
+		next: {
+			revalidate: 0
+		}
+	});
+
+	const _message = await res.json();
+	if(res.ok) {
+		return {
+			..._message,
+			type: "success"
+		};
+	} else {
+		return {
+			..._message,
+			type: "fail"
+		};
+	}
 }
 
 // not public
 export async function getCurrentUserV2() {
-  const res = await fetch(`https://localhost:3001/v2/user/get-current`, {
+  const res = await fetch(join(BE_HOST, "v2/user/get-current"), {
     method: "GET",
     headers: {
 			'Cookie': cookies().toString()
@@ -90,7 +165,7 @@ export async function getUserV2(userId: string) {
 		return null;
 	}
 
-  const res = await fetch(`https://localhost:3001/v2/user/get?userId=${userId}`, {
+  const res = await fetch(join(BE_HOST, `v2/user/get?userId=${userId}`), {
     method: "GET",
 		next: {
 			revalidate: 600
@@ -106,7 +181,7 @@ export async function getUserV2(userId: string) {
 
 // public
 export async function postUserV2(body: any) {
-  const res = await fetch(`https://localhost:3001/v2/user/get`, {
+  const res = await fetch(join(BE_HOST, "v2/user/get"), {
     method: "POST",
 		headers: {
 			'Content-Type': 'application/json'
@@ -123,7 +198,7 @@ export async function postUserV2(body: any) {
 
 // not public
 export async function getFullUserV2() {
-  const res = await fetch(`https://localhost:3001/v2/user/get-full`, {
+  const res = await fetch(join(BE_HOST, "v2/user/get-full"), {
     method: "GET",
 		headers: {
 			'Cookie': cookies().toString()
@@ -150,7 +225,7 @@ export async function getFullUserV2() {
 }
 
 export async function updateUsernameV2(prevState: any, formData: FormData) {
-	const res = await fetch(`https://localhost:3001/v2/user/update-username`, {
+	const res = await fetch(join(BE_HOST, "v2/user/update-username"), {
     method: "POST",
 		headers: {
 			'Content-Type': "application/json",
@@ -185,7 +260,7 @@ export async function updateUsernameV2(prevState: any, formData: FormData) {
 }
 
 export async function updateEmailV2(prevState: any, formData: FormData) {
-	const res = await fetch(`https://localhost:3001/v2/user/update-email`, {
+	const res = await fetch(join(BE_HOST, "v2/user/update-email"), {
     method: "POST",
 		headers: {
 			'Content-Type': "application/json",
@@ -226,7 +301,7 @@ export async function updateSettingV2(prevState: any, formData: FormData) {
 		dob = new Date(parseInt(year.toString()), parseInt(month.toString()) - 1, parseInt(day.toString()));
 	}
 
-	const res = await fetch(`https://localhost:3001/v2/user/update`, {
+	const res = await fetch(join(BE_HOST, "v2/user/update"), {
     method: "POST",
 		headers: {
 			'Content-Type': "application/json",

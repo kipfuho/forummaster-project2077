@@ -1,5 +1,10 @@
+'use server'
+import { join } from "path";
+
+const BE_HOST = process.env.BE_HOST ?? "";
+
 export async function getMetadataV2() {
-  const res = await fetch("https://localhost:3001/v2/metadata", {
+  const res = await fetch(join(BE_HOST, "v2/metadata"), {
 		method: "GET",
 		next: {
 			revalidate: 10
@@ -13,7 +18,7 @@ export async function getMetadataV2() {
 }
 
 export async function getAllCategoryV2() {
-  const res = await fetch(`https://localhost:3001/v2/category/get-all`, {
+  const res = await fetch(join(BE_HOST, "v2/category/get-all"), {
     method: "GET",
 		next: {
 			revalidate: 10
@@ -32,7 +37,7 @@ export async function getCategoryV2(categoryId: string) {
 		return null;
 	}
 
-  const res = await fetch(`https://localhost:3001/v2/category/get?categoryId=${categoryId}`, {
+  const res = await fetch(join(BE_HOST, `v2/category/get?categoryId=${categoryId}`), {
     method: "GET",
   });
   if(res.ok) {

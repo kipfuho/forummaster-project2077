@@ -8,6 +8,7 @@ import MessageList from "./MessageList";
 
 export default async function ThreadBody({thread, offset, limit, page}: {thread: ThreadDocument, offset?: number, limit?: number, page?: number}) {
 	const [author, messages]: [UserDocument, MessageDocument[]] = await Promise.all([getUserV2(thread.user), getMessagesV2(thread._id, offset ?? 0, limit ?? 20)]);
+	
 	return(
 		<Suspense fallback={<Loading/>}>
 			<ThreadContent thread={thread} author={author} messages={messages} page={page}>

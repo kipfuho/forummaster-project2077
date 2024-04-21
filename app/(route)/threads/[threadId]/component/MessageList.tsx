@@ -1,7 +1,7 @@
 import { MessageDocument } from "@/app/page";
 import Message from "./Message";
 
-export default function MessageList({messages,}: {messages: MessageDocument[]}) {
+export default function MessageList({messages}: {messages: MessageDocument[]}) {
 	return (
 		<div>
 			{messages.map((message, index) => (

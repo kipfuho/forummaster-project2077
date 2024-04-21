@@ -11,7 +11,7 @@ export default async function Message({message}: {message: MessageDocument}) {
 		<Suspense fallback={<Loading/>}>
 			<div className="flex rounded bg-gray-600 my-5">
 				<UserCard user={user}/>
-				<MessageBody message={message}/>
+				<MessageBody _message={message} _user={user}/>
 			</div>
 		</Suspense>
 	)

@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RichTextReadOnly } from "mui-tiptap";
 import { Button } from "@mui/material";
 import { useUserContext } from "@/app/components/layout/UserContext";
@@ -8,7 +8,11 @@ import MessageEditor from "./MessageEditor";
 import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ReplyIcon from '@mui/icons-material/Reply';
-import { MessageDocument } from "@/app/page";
+import { MessageDocument, UserDocument } from "@/app/page";
+import { likeMessageV2 } from "@/app/components/utils/fetch/v2/message";
+import Link from "next/link";
+import { getFileName } from "./ReplyThread";
+import { useReplyContext } from "./ReplyBoxContext/replyContext";
 
 type Reactions = {
 	like: string[];
@@ -31,24 +35,37 @@ function ReactionBox({reactions}: {reactions: Reactions}) {
 	}
 }
 
-export default function MessageBody({message}: {message: MessageDocument}) {
+function AttachmentBox({attachments}: {attachments: string[]}) {
+	if(attachments.length > 0) {
+		return (
+			<div className="border rounded p-2 my-2">
+				<h2>Attachments</h2>
+				<div className="flex flex-col">
+					{attachments.map((link) => (
+						<Link className="text-red-600 hover:underline hover:text-red-500" href={link} target="_blank" download="">{getFileName(link)}</Link>
+					))}
+				</div>
+			</div>
+		)
+	}
+}
+
+export default function MessageBody({_message, _user}: {_message: MessageDocument, _user: UserDocument}) {
+	const [message, setMessage] = useState<MessageDocument>(_message);
 	const extensions = useExtensions();
 	const [user, _] = useUserContext();
 	const [editView, setEditView] = useState<boolean>(false);
+	const replyRteRef = useReplyContext();
 
 	const editClick = () => {
 		setEditView(true);
 	}
 
-	const likeClick = async () => {
-		if(user) {
-			
-		}
-	}
-
 	const replyClick = () => {
-		if(user) {
-
+		if(replyRteRef) {
+			const content = `<QUOTES username="${_user.username}" messageId="${_message._id}" memberId="${_user._id}">${_message.content}</QUOTES>`
+			console.log(content);
+			replyRteRef.current?.editor?.chain().insertContentAt(0, content).focus().run();
 		}
 	}
 
@@ -73,6 +90,7 @@ export default function MessageBody({message}: {message: MessageDocument}) {
 					/>
 				}
 			</div>
+			<AttachmentBox attachments={message.attachments}/>
 			<div>
 				{message.update_time !== message.create_time &&
 					<p className="text-right text-[0.9rem] text-gray-300">Last edited: {smartTimeConvert(message.update_time)}</p>
@@ -84,7 +102,12 @@ export default function MessageBody({message}: {message: MessageDocument}) {
 					<Button 
 						size="small" 
 						startIcon={<ThumbUpIcon/>}
-						onClick={likeClick}
+						onClick={async () => {
+							const result = await likeMessageV2(message._id, user._id);
+							if(result) {
+								setMessage(result);
+							}
+						}}
 					>Like</Button>
 					<Button 
 						size="small" 
