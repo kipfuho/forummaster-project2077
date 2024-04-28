@@ -1,15 +1,23 @@
 'use client'
-import RichTextBox from "@/app/components/ui/Editor/Editor";
-import { RichTextEditorRef } from "mui-tiptap";
-import { useRef } from "react";
+import { EditorContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import React from 'react'
 
-export default function Test() {
-  const rteRef = useRef<RichTextEditorRef>(null);
+import QuotesComponent from '@/app/components/ui/Editor/extensions/QuotesExtension'
+import { RichTextReadOnly } from 'mui-tiptap'
+
+export default () => {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      QuotesComponent,
+    ],
+    content: `
+    
+    `,
+  })
 
   return (
-    <div>
-      <RichTextBox rteRef={rteRef}/>
-      <button onClick={() => console.log(rteRef.current?.editor?.getHTML())}>click</button>
-    </div>
-  );
+    <RichTextReadOnly extensions={[StarterKit, QuotesComponent]} content='<QUOTES username="kip">abccddsadsa ds adsa d</QUOTES>'/>
+  )
 }

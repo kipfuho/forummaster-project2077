@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { UserType } from "../type";
 import { UserContext } from "./UserContext";
+import { UserDocument } from "@/app/page";
 
 export type UserProviderProps = {
-  userContext: [UserType | null | undefined, Dispatch<SetStateAction<UserType | null | undefined>>];
+  userContext: [UserDocument | null | undefined, Dispatch<SetStateAction<UserDocument | null | undefined>>];
   children: React.ReactNode;
 };
 

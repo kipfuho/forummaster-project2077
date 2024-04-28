@@ -28,7 +28,9 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Highlight } from "@tiptap/extension-highlight";
 import { TextAlign } from "@tiptap/extension-text-align";
+import { HorizontalRule } from "@tiptap/extension-horizontal-rule";
 import { FontSize, HeadingWithAnchor, LinkBubbleMenuHandler, ResizableImage, TableImproved } from "mui-tiptap";
+import QuotesComponent from '@/app/components/ui/Editor/extensions/QuotesExtension'
 import { useMemo } from "react";
 
 export type UseExtensionsOptions = {
@@ -90,6 +92,7 @@ export default function useExtensions({
 				openOnClick: false,
 			}),
 			LinkBubbleMenuHandler,
+			HorizontalRule,
 		
 			// Extensions
 			Gapcursor,
@@ -126,6 +129,7 @@ export default function useExtensions({
 			// We use the regular `History` (undo/redo) extension when not using
 			// collaborative editing
 			History,
+			QuotesComponent
 		];
 	}, [placeholder]);
 }

@@ -1,39 +1,66 @@
 // contain various type for data on the website
 
-export type PublicUserType = {
-  username: string;
+export type UserProfileType = {
+  id: number;
+	username: string;
 	email: string;
-  likes: number;
   messages: number;
+  likes: number;
+  avatar: string;
+  date_of_birth: Date;
+  location: string;
+  website: string;
+  about: string;
+  twofa: boolean;
+  class: number;
   create_time: Date;
 }
 
-export type UserType = {
+export type PublicUserType = {
+  id: number;
 	username: string;
 	email: string;
+  messages: number;
+  likes: number;
+  avatar: string;
+  date_of_birth: Date;
+  location: string;
+  website: string;
+  about: string;
+  class: number;
+  create_time: Date;
+}
+
+export type UserSessionType = {
+  id: number;
+	username: string;
+	email: string;
+  avatar: string;
 }
 
 export type MessageType = {
   id: number;
 	thread_id: number;
-	sender_email: string;
+	user_id: number;
 	send_time: Date;
 	content: string;
+  reactions: number[];
 	last_update_time: Date;
+  delete: boolean;
 }
 
 export type ThreadType = {
   id: number;
   forum_id: number;
-  author_email: string;
+  user_id: number;
   thread_title: string;
   tag: string[];
-  content: string;
   create_time: Date;
   last_update_time: Date;
   replies: number;
   views: number;
-  last_message_id: number;
+  delete: boolean;
+  privilege: number;
 }
 
 export type ForumType = {

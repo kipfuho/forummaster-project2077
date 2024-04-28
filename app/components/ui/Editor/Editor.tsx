@@ -1,6 +1,9 @@
-import { useTheme } from "@mui/material";
+'use client'
+import { TextFields } from "@mui/icons-material";
+import { Box, useTheme } from "@mui/material";
 import {
   LinkBubbleMenu,
+  MenuButton,
   MenuButtonAddTable,
   MenuButtonBlockquote,
   MenuButtonBold,
@@ -28,14 +31,15 @@ import {
   TableBubbleMenu,
   type RichTextEditorRef,
 } from "mui-tiptap";
-import { RefObject } from "react";
+import { RefObject, useState } from "react";
 import useExtensions from "./useExtension";
-import { UploadImage } from "../../utils/fetch/data";
+import { uploadImageV2 } from "../../utils/fetch/v2/upload";
 
 async function insertImage(files: any) {
+  console.log(files);
 	const data: any = [];
 	for(let i = 0; i < files.length; i++) {
-		let res = await UploadImage(files[i]);
+		let res = await uploadImageV2(files[i]);
 		if(res !== null) {
 			data.push({src: res.link, alt: "img"})
 		} else {
@@ -47,12 +51,26 @@ async function insertImage(files: any) {
 
 export default function RichTextBox({rteRef, content}: {rteRef: RefObject<RichTextEditorRef>, content?: string}) {
 	const theme = useTheme();
+  const [showMenuBar, setShowMenuBar] = useState(true);
 	const extensions = useExtensions({
     placeholder: "Add your own content here...",
   });
 
   return (
-    <>
+    <Box
+      sx={{
+        // An example of how editor styles can be overridden. In this case,
+        // setting where the scroll anchors to when jumping to headings. The
+        // scroll margin isn't built in since it will likely vary depending on
+        // where the editor itself is rendered (e.g. if there's a sticky nav
+        // bar on your site).
+        "& .ProseMirror": {
+          "& h1, & h2, & h3, & h4, & h5, & h6": {
+            scrollMarginTop: showMenuBar ? 50 : 0,
+          },
+        },
+      }}
+    >
       <RichTextEditor
         ref={rteRef}
         extensions={extensions}
@@ -149,6 +167,25 @@ export default function RichTextBox({rteRef, content}: {rteRef: RefObject<RichTe
             <MenuButtonRemoveFormatting />
           </MenuControlsContainer>
         )}
+        RichTextFieldProps={{
+          MenuBarProps: {
+            hide: !showMenuBar
+          },
+          footer: (
+            <MenuButton
+              value="formatting"
+              tooltipLabel={
+                showMenuBar ? "Hide formatting" : "Show formatting"
+              }
+              size="small"
+              onClick={() =>
+                setShowMenuBar((currentState) => !currentState)
+              }
+              selected={showMenuBar}
+              IconComponent={TextFields}
+            />
+          )
+        }}
         content={content}
       >
         {() => (
@@ -158,6 +195,6 @@ export default function RichTextBox({rteRef, content}: {rteRef: RefObject<RichTe
           </>
         )}
       </RichTextEditor> 
-    </>
+    </Box>
   );
 }

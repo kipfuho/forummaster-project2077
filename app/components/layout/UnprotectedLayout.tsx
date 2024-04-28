@@ -7,7 +7,7 @@ export default function UnprotectedLayout({children}: {children:any}) {
 	const [user, _] = useUserContext();
 	const router = useRouter();
 
-	if(user !== null) {
+	if(user) {
 		router.push("/");
 	} else {
 		return(children);

@@ -50,6 +50,10 @@ h2 {
   font-weight: bold;
 }
 
+ol {
+  padding-left: 40px;
+}
+
 footer{
   display: flex;
   margin: auto;
