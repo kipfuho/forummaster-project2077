@@ -15,10 +15,15 @@ import Link from "next/link";
 import { ReplyThreadV2 } from "@/app/components/utils/fetch/v2/thread";
 
 export function getFileName(link: string) {
-	const urlObj = new URL(link);
-	const pathname = urlObj.pathname;
-	const parts = pathname.split('/');
-	return parts[parts.length - 1];
+	try {
+		const urlObj = new URL(link);
+		const pathname = urlObj.pathname;
+		const parts = pathname.split('/');
+		return parts[parts.length - 1];
+	} catch(err) {
+		console.log(err);
+		return "";
+	}
 }
 
 function Attachment({links, handleDelete}: {links: string[] | null, handleDelete: any}) {

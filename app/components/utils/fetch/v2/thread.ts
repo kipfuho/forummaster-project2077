@@ -7,7 +7,7 @@ const BE_HOST = process.env.BE_HOST ?? "";
 
 export async function getThreadV2(threadId: string) {
 	if(!threadId) {
-		alert("threadId is null");
+		console.log("threadId is null");
 		return null;
 	}
 
@@ -26,7 +26,7 @@ export async function getThreadV2(threadId: string) {
 
 export async function getThreadsV2(forumId: string, offset: number = 0, limit: number = 20) {
 	if(!forumId) {
-		alert("forumId is null");
+		console.log("forumId is null");
 		return null;
 	}
 
@@ -43,9 +43,28 @@ export async function getThreadsV2(forumId: string, offset: number = 0, limit: n
 	}
 }
 
+export async function getThreadsOfUserV2(userId: string, current: string | null, limit: number = 10) {
+	if(!userId) {
+		console.log("userId is null");
+		return null;
+	}
+
+	const res = await fetch(join(BE_HOST, `v2/thread/get-user?userId=${userId}&current=${current ?? ""}&limit=${limit}`), {
+		method: "GET",
+		next: {
+			revalidate: 0
+		}
+	});
+	if(res.ok) {
+		return res.json();
+	} else {
+		return null;
+	}
+}
+
 export async function getLastestThreadV2(forumId: string) {
 	if(!forumId) {
-		alert("forumId is null");
+		console.log("forumId is null");
 		return null;
 	}
 

@@ -1,3 +1,4 @@
+'use client'
 import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
 import { UserDocument } from "@/app/page";
 import { Box, Button, Input } from "@mui/material";

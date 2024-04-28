@@ -56,3 +56,25 @@ export function smartTimeConvert(time: Date) {
     return format(time, "MMM dd, yyyy");
   }
 }
+
+export function getRoleName(classes: number) {
+  switch (classes) {
+    case 0:
+      return "Unverified Member";
+
+    case 1:
+      return "New Member";
+
+    case 2:
+      return "Uploader";
+
+    case 3:
+      return "Moderator";
+
+    case 4:
+      return "Admin";
+  
+    default:
+      return "Unknown";
+  }
+}

@@ -1,7 +1,7 @@
 'use client'
 import Loading from '@/app/components/layout/Loading';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, IconButton, Input } from '@mui/material';
+import { Box, Divider, IconButton, Input } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import UsernameChangeModal from './ChangeUsernameModal';
@@ -11,6 +11,7 @@ import { getFullUserV2 } from '@/app/components/utils/fetch/v2/user';
 import { SubmitButton } from '@/app/(route)/login/page';
 import { UserAvatar } from '@/app/components/ui/Avatar/UserAvatar';
 import { uploadImageV2 } from '@/app/components/utils/fetch/v2/upload';
+import { grey } from '@mui/material/colors';
 
 function Avatar({user}: {user: FullUserDocument}) {
 	const fileInput = useRef<HTMLInputElement | null>(null);
@@ -91,31 +92,32 @@ export default function Detail() {
 	return(
 		<>{done ?
 			<>{user ?
-				<div className='ml-10 w-full'>
-					<h2>Account details</h2>
-					<div className='rounded bg-gray-700 w-full'>
+				<div className='ml-10 w-full bg-gray-700'>
+					<h2 className='p-2'>Account details</h2>
+					<Divider sx={{borderColor: grey[500]}}/>
+					<div className='rounded w-full'>
 						<table className='w-full'>
 							<tbody>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] w-[45%]'>User name</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500 w-[45%]'>User name</td>
 									<td className='px-2 py-3'>
 										<UsernameChangeModal user={user}/>
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px]'>Email:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Email:</td>
 									<td className='px-2 py-3'>
 										<EmailChangeModal user={user}/>
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px]'>Avatar:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Avatar:</td>
 									<td className='px-2 py-3'>
 										<Avatar user={user}/>
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px]'>Date of birth:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Date of birth:</td>
 									<td className='px-2 py-3'>
 										<Input
 											name="dob_day"
@@ -138,7 +140,7 @@ export default function Detail() {
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px]'>Location:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Location:</td>
 									<td className='px-2 py-3'>
 										<Input
 											name="location"
@@ -147,7 +149,7 @@ export default function Detail() {
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px]'>About you: </td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500	'>About you: </td>
 									<td className='px-2 py-3'>
 										<Input
 											name='about'
@@ -157,7 +159,8 @@ export default function Detail() {
 								</tr>
 							</tbody>
 						</table>
-						<div className='flex justify-center p-2 border-t-[1px]'>
+						<Divider sx={{borderColor: grey[500]}}/>
+						<div className='flex justify-center p-2'>
 							<SubmitButton>
 								<SaveIcon/>
 								<span>Save</span>

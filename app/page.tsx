@@ -84,13 +84,13 @@ export type MessageDocument = {
   content: string;
   attachments: string[];
   reactions: {
-    like: string[],
-    love: string[],
-    care: string[],
-    haha: string[],
-    wow: string[],
-    sad: string[],
-    angry: string[]
+    like: number,
+    love: number,
+    care: number,
+    haha: number,
+    wow: number,
+    sad: number,
+    angry: number
   };
   delete: boolean;
 }
@@ -107,6 +107,14 @@ export type ReactionDocument = {
   user: string;
   type: string;
   create_time: Date;
+}
+
+export type AlertDocument = {
+  _id: string;
+  user: string;
+  detail: string;
+  create_time: Date;
+  read: boolean;
 }
 
 // Home page

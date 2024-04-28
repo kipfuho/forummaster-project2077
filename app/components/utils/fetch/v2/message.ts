@@ -5,6 +5,7 @@ import { parseString } from "set-cookie-parser";
 
 const BE_HOST = process.env.BE_HOST ?? "";
 
+// public
 export async function getMessagesV2(threadId: string, offset: number = 0, limit: number = 20) {
 	if(!threadId) {
 		console.log("threadId is null");
@@ -25,6 +26,7 @@ export async function getMessagesV2(threadId: string, offset: number = 0, limit:
 	}
 }
 
+// public
 export async function getLastestMessageV2(threadId: string) {
 	if(!threadId) {
 		console.log("threadId is null");
@@ -45,58 +47,30 @@ export async function getLastestMessageV2(threadId: string) {
 }
 
 // not public
-export async function likeMessageV2(messageId: string, userId: string, type: string = "like") {
+export async function reactMessageV2(messageId: string, userId: string, type: string = "like") {
 	if(!userId) {
 		console.log("User not found");
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/message/add-reaction?messageId=${messageId}&type=${type}`), {
+	const res = await fetch(join(BE_HOST, `v2/message/react?messageId=${messageId}&type=${type}`), {
 		method: "GET",
 		headers: {
 			'Cookie': cookies().toString()
 		}
 	});
 
-	if(res.ok) {
-		res.headers.getSetCookie().forEach(setCookieString => {
-			const setCookie = parseString(setCookieString);
-			cookies().set(setCookie.name, setCookie.value, {
-				path: setCookie.path,
-				secure: setCookie.secure,
-				httpOnly: setCookie.httpOnly
-			});
+	// Change jwt and refreshToken if it's embedded
+	res.headers.getSetCookie().forEach(setCookieString => {
+		const setCookie = parseString(setCookieString);
+		cookies().set(setCookie.name, setCookie.value, {
+			path: setCookie.path,
+			secure: setCookie.secure,
+			httpOnly: setCookie.httpOnly
 		});
-		const result = await res.json();
-		return result.item;
-	} else {
-		return null;
-	}
-}
-
-// not public
-export async function unlikeMessageV2(messageId: string, userId: string) {
-	if(!userId) {
-		console.log("User not found");
-		return;
-	}
-
-	const res = await fetch(join(BE_HOST, `v2/message/remove-reaction?messageId=${messageId}`), {
-		method: "GET",
-		headers: {
-			'Cookie': cookies().toString()
-		}
 	});
 
 	if(res.ok) {
-		res.headers.getSetCookie().forEach(setCookieString => {
-			const setCookie = parseString(setCookieString);
-			cookies().set(setCookie.name, setCookie.value, {
-				path: setCookie.path,
-				secure: setCookie.secure,
-				httpOnly: setCookie.httpOnly
-			});
-		});
 		const result = await res.json();
 		return result.item;
 	} else {

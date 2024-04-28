@@ -1,13 +1,12 @@
 import { Tooltip } from "@mui/material";
-import Image from "next/image";
 import PersonIcon from '@mui/icons-material/Person';
 import ChatIcon from '@mui/icons-material/Chat';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Suspense } from "react";
 import Loading from "@/app/components/layout/Loading";
-import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import { UserDocument } from "@/app/page";
 import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
+import { format } from "date-fns";
 
 export default async function UserCard({user}: {user: UserDocument}) {
 	return(
@@ -19,7 +18,7 @@ export default async function UserCard({user}: {user: UserDocument}) {
 					<Tooltip title="Joined">
 						<PersonIcon fontSize="small"/>
 					</Tooltip>
-					<span className="text-[0.9rem]">{smartTimeConvert(user.create_time)}</span>
+					<span className="text-[0.9rem]">{format(user.create_time, "MMM, dd yyyy")}</span>
 				</div>
 				<div className="overflow-hidden space-x-2">
 					<Tooltip title="Messages">

@@ -1,3 +1,4 @@
+'use client'
 import { UserDocument } from "@/app/page";
 
 export default function LastestActivity({value, index, user}: {value: number, index: number, user: UserDocument}) {
