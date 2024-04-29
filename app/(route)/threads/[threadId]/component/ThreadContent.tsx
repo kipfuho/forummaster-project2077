@@ -8,7 +8,7 @@ import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import { MessageDocument, ThreadDocument, UserDocument } from "@/app/page";
 import Pagination from "@/app/components/ui/Pagination/Pagination";
 import ReplyThread from "./ReplyThread";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { RichTextEditorRef } from "mui-tiptap";
 import ReplyContextProvider from "./ReplyBoxContext/ReplyContextProvider";
 import ImageModalContextProvider from "./ImageModalContext/ImageModalContextProvider";
@@ -17,11 +17,19 @@ import ImageModal from "./ImageModal";
 // appear at the the topmost of a thread
 // contain who made the thread and created time
 // also a edit button if you are the thread owner
-export default function ThreadContent({thread, author, page, children}: {thread: ThreadDocument, author: UserDocument, messages: MessageDocument[], page?: number, children: ReactNode}) {
+export default function ThreadContent({children, thread, author, page, currentMessageId}: {children: ReactNode, thread: ThreadDocument, author: UserDocument, messages: MessageDocument[], page?: number, currentMessageId?: string}) {
 	const [user, _] = useUserContext();
 	const replyRteRef = useRef<RichTextEditorRef>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
 	const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
+
+	// Scroll to 
+	useEffect(() => {
+		if(currentMessageId) {
+			const messageElement = document.getElementById(`message:${currentMessageId}`);
+			messageElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}, [currentMessageId]);
 
 	return (
 		<ImageModalContextProvider contextValue={[imageUrl, setImageUrl, imageModalOpen, setImageModalOpen]}>

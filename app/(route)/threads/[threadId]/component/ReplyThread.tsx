@@ -15,6 +15,9 @@ import Link from "next/link";
 import { ReplyThreadV2 } from "@/app/components/utils/fetch/v2/thread";
 
 export function getFileName(link: string) {
+	if(!link) {
+		return "";
+	}
 	try {
 		const urlObj = new URL(link);
 		const pathname = urlObj.pathname;

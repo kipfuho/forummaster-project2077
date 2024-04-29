@@ -47,7 +47,6 @@ export type ForumDocument = {
   about: string;
   threads: number;
   messages: number;
-  delete: boolean;
   privilege: {
     view: number,
     reply: number,
@@ -66,7 +65,6 @@ export type ThreadDocument = {
   update_time: Date;
   replies: number;
   views: number;
-  delete: boolean;
   privilege: {
     view: number,
     reply: number,
@@ -92,7 +90,7 @@ export type MessageDocument = {
     sad: number,
     angry: number
   };
-  delete: boolean;
+  threadPage: Record<string, number>;
 }
 
 export type TagDocument = {

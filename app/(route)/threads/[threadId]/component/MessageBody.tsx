@@ -236,8 +236,7 @@ export default function MessageBody({_message, _user}: {_message: MessageDocumen
 
 	const replyClick = () => {
 		if(replyRteRef) {
-			const content = `<QUOTES username="${_user.username}" messageId="${_message._id}" memberId="${_user._id}">${_message.content}</QUOTES>`
-			console.log(content);
+			const content = `<QUOTES username="${_user.username}" messageId="${_message._id}" memberId="${_user._id}">${_message.content}</QUOTES>`;
 			replyRteRef.current?.editor?.chain().insertContentAt(0, content).focus().run();
 		}
 	}
@@ -262,12 +261,12 @@ export default function MessageBody({_message, _user}: {_message: MessageDocumen
 				{user && user._id === message.user && !editView &&
 					<Button 
 						variant="outlined" 
-						size="small"
 						onClick={editClick}
+						sx={{height: '25px'}}
 					>Edit</Button>
 				}
 			</div>
-			<div className="flex-grow">
+			<div className="flex-grow mt-1">
 				{editView ?
 					<MessageEditor message={message}/> :
 					<RichTextReadOnly
