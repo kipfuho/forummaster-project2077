@@ -17,8 +17,8 @@ export default async function ThreadHead({thread}: {thread: ThreadDocument}) {
 				<div className="flex-grow py-1 px-2 border-x-[1px] border-gray-400">
 					<div className="flex">
 						<div className="space-x-2">
-							{thread.tag.map(tag => (
-								<span>"{tag.name}"</span>
+							{thread.tag.map((tag, index) => (
+								<span key={index}>&#34;{tag.name}&#34;</span>
 							))}
 						</div>
 						<div className="font-bold text-[1rem]">

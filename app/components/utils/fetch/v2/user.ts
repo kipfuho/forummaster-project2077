@@ -171,13 +171,16 @@ export async function getUserV2(userId: string) {
 		next: {
 			revalidate: 600
 		}
-  });
+  }).catch((e) => {
+		console.log(e);
+		return null;
+	});
 
-  if(res.ok) {
-    return res.json();
-  } else {
-    return null;
-  }
+	if(res?.ok) {
+		return res.json();
+	} else {
+		return null;
+	}
 }
 
 // public

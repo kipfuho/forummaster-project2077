@@ -13,12 +13,12 @@ import { useUserContext } from "@/app/components/context/user/UserContext";
 // edit thread page
 export default function ThreadEditBody({thread, message}: {thread: ThreadDocument, message: MessageDocument}) {
 	const [user, _] = useUserContext();
+	const [messageSelected, setMessageSelected] = useState<boolean>(false);
+	const [threadPrefix, setThreadPrefix] = useState<string>();
+	const [threadTitle, setThreadTitle] = useState<string>(thread.title);
+	const rteRef = useRef<RichTextEditorRef>(null);
+	
 	if(user) {
-		const [messageSelected, setMessageSelected] = useState<boolean>(false);
-		const [threadPrefix, setThreadPrefix] = useState<string>();
-		const [threadTitle, setThreadTitle] = useState<string>(thread.title);
-		const rteRef = useRef<RichTextEditorRef>(null);
-
 		const saveClick = async () => {
 			const res = await editThreadV2({
 				threadId: thread._id,
@@ -28,15 +28,15 @@ export default function ThreadEditBody({thread, message}: {thread: ThreadDocumen
 				threadContent: messageSelected ? rteRef.current?.editor?.getHTML() : null,
 				tag: []
 			});
-
+			
 			if(res.ok) {
 				alert("updated");
 			} else {
 				alert("failed");
 			}
 		}
-
-		return(
+		
+		return (
 			<div className="bg-gray-600 border">
 				<div className="text-center p-6 space-y-2">
 					<DebounceInput 

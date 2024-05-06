@@ -23,7 +23,7 @@ export default function ForumPageHeader({forum}: {forum: ForumDocument}) {
 					{user !== null && 
 						<>{user.class >= forum.privilege.upload ?
 							<PostThreadButton/> :
-							<p className="rounded border border-gray-400 px-1">You don't have permission to upload here</p>
+							<p className="rounded border border-gray-400 px-1">You don&#39;t have permission to upload here</p>
 						}</>
 					}
 				</>

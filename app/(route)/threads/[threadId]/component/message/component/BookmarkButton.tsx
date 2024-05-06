@@ -11,7 +11,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function BookmarkButton({user, message}: {user: UserDocument, message: MessageDocument}) {
+export default function BookmarkButton({userId, messageId}: {userId: string, messageId: string}) {
 	const [bookmark, setBookmark] = useState<BookmarkDocument | null>(null);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -25,7 +25,7 @@ export default function BookmarkButton({user, message}: {user: UserDocument, mes
 		if(bookmark) {
 			setAnchorEl(e);
 		} else {
-			const bookmark = await createBookmarkV2(user._id, message._id);
+			const bookmark = await createBookmarkV2(userId, messageId);
 			if(bookmark) {
 				setBookmark(bookmark);
 				setAnchorEl(e);
@@ -45,13 +45,13 @@ export default function BookmarkButton({user, message}: {user: UserDocument, mes
 
 	useEffect(() => {
 		const checkBookmark = async () => {
-			const bookmark = await checkBookmarkV2(user._id, message._id);
+			const bookmark = await checkBookmarkV2(userId, messageId);
 			if(bookmark) {
 				setBookmark(bookmark);
 			}
 		}
 		checkBookmark().catch((e) => console.log(e));
-	}, []);
+	}, [userId, messageId]);
 
 	const [state, formAction] = useFormState(updateBookmarkV2, null);
 	

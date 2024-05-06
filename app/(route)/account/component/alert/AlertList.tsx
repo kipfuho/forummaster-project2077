@@ -7,7 +7,7 @@ export default function AlertList({alerts}: {alerts: AlertDocument[]}) {
 	return (
 		<>
 			{alerts.map((alert, index) => (
-				<div className="flex justify-between">
+				<div className="flex justify-between" key={index}>
 					<span className="flex items-center">{index + 1 + ". " + alert.detail}</span>
 					{alert.read === false && 
 						<Tooltip 

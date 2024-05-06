@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction } from "react"
+'use client'
+import { Dispatch, ReactNode, SetStateAction, useState } from "react"
 import { ImageModalContext } from "./imageModalContext";
 
 export type ImageModalProviderProps = {
@@ -11,9 +12,11 @@ export type ImageModalProviderProps = {
   children: React.ReactNode;
 };
 
-export default function ImageModalContextProvider({contextValue, children}: ImageModalProviderProps) {
+export default function ImageModalContextProvider({children}: {children: ReactNode}) {
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
+	const [openModal, setOpenModal] = useState<boolean>(false);
 	return(
-		<ImageModalContext.Provider value={contextValue}>
+		<ImageModalContext.Provider value={[imageUrl, setImageUrl, openModal, setOpenModal]}>
 			{children}
 		</ImageModalContext.Provider>
 	)

@@ -28,8 +28,8 @@ function PostingComponent({
 					<div className="flex-grow py-1 px-2 border-gray-400">
 						<div className="flex">
 							<div className="space-x-2">
-								{thread.tag.map(tag => (
-									<span>"{tag.name}"</span>
+								{thread.tag.map((tag, index) => (
+									<span key={index}>&#34;{tag.name}&#34;</span>
 								))}
 							</div>
 							<div className="text-red-600 hover:underline">
@@ -59,8 +59,8 @@ function PostingList({
 	threads: ThreadDocument[] | null,
 	user: UserDocument
 }) {
+	const router = useRouter();
 	if(threads) {
-		const router = useRouter();
 		return (
 			<Box sx={{bgcolor: grey[700], borderRadius: 1}}>
 				<>
@@ -80,7 +80,7 @@ function PostingList({
 	} else {
 		return (
 			<div>
-				There's no postings
+				There&#39;s no postings
 			</div>
 		)
 	}
@@ -98,7 +98,7 @@ export default function Posting({value, index, user}: {value: number, index: num
 		};
 
 		getThreads().catch((e) => console.log(e));
-	}, []);
+	}, [user._id]);
 
 	return (
 	 	<div

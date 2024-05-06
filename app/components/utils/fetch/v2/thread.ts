@@ -95,6 +95,10 @@ export async function postThreadV2(body: any) {
 	return res;
 }
 
+export async function redirectQuoteMessage(forumId: string, currentMesageId: string, limit: number = 20) {
+	
+}
+
 export async function redirectFilterV2(formData: FormData) {
 	const forumId = formData.get('forumId');
 	const prefix = formData.get('prefix');

@@ -12,9 +12,28 @@ export default async function ThreadPageNumber({
 	searchParams?: { [key: string]: string | undefined }
 }) {
 	const thread: ThreadDocument = await getThreadV2(params.threadId);
-	return(
-		<Suspense fallback={<Loading/>}>
-			<ThreadBody thread={thread} offset={(params.pageNumber - 1)*20} page={params.pageNumber} currentMessageId={searchParams?.messageId}/>
-		</Suspense>
-	)
+
+	if(searchParams?.messageId) {
+		return(
+			<Suspense fallback={<Loading/>}>
+				<ThreadBody
+					thread={thread}
+					offset={(params.pageNumber - 1)*20}
+					page={params.pageNumber}
+					currentMessageId={searchParams.messageId}
+					currentMessageDone={searchParams.done ? !!searchParams.done : undefined}
+				/>
+			</Suspense>
+		)
+	} else {
+		return(
+			<Suspense fallback={<Loading/>}>
+				<ThreadBody
+					thread={thread}
+					offset={(params.pageNumber - 1)*20}
+					page={params.pageNumber}
+				/>
+			</Suspense>
+		)
+	}
 }

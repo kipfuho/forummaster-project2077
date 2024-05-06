@@ -10,12 +10,12 @@ import Loading from "@/app/components/layout/Loading";
 
 export default function Alerts() {
 	const [user, _] = useUserContext();
-	if(user) {
-		const [alerts, setAlerts] = useState<AlertDocument[]>([]);
-		const [lastAlert, setLastAlert] = useState<string>("");
-		const [loading, setLoading] = useState<boolean>(true);
+	const [alerts, setAlerts] = useState<AlertDocument[]>([]);
+	const [lastAlert, setLastAlert] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(true);
 
-		useEffect(() => {
+	useEffect(() => {
+		if(user) {
 			const getAlerts = async () => {
 				const alerts = await getAlertsV2(user._id, lastAlert, 10);
 				if(alerts) {
@@ -23,22 +23,22 @@ export default function Alerts() {
 					setLoading(false);
 				} 
 			};
-
+	
 			getAlerts().catch((e) => console.log(e));
-		}, [lastAlert]);
-		
-		return (
-			<div className="flex flex-col bg-gray-700 rounded w-full">
-				<h2 className='p-2'>Alerts</h2>
-				<Divider sx={{borderColor: grey[500]}}/>
-				<div className="flex-grow px-2 mt-2">
-					{loading ? 
-						<Loading/> :
-						<AlertList alerts={alerts}/>
-					}
-				</div>
-				<div className="text-center">Pagination</div>
+		}
+	}, [lastAlert, user]);
+	
+	return (
+		<div className="flex flex-col bg-gray-700 rounded w-full">
+			<h2 className='p-2'>Alerts</h2>
+			<Divider sx={{borderColor: grey[500]}}/>
+			<div className="flex-grow px-2 mt-2">
+				{loading ? 
+					<Loading/> :
+					<AlertList alerts={alerts}/>
+				}
 			</div>
-		)
-	}
+			<div className="text-center">Pagination</div>
+		</div>
+	)
 }

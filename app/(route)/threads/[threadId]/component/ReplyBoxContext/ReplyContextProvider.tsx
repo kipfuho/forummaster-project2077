@@ -1,15 +1,12 @@
+'use client'
 import { RichTextEditorRef } from "mui-tiptap"
-import { RefObject, useRef } from "react"
+import { ReactNode, RefObject, useState } from "react"
 import { ReplyContext } from "./replyContext";
 
-export type ReplyProviderProps = {
-  replyRteRef: RefObject<RichTextEditorRef> | null | undefined;
-  children: React.ReactNode;
-};
-
-export default function ReplyContextProvider({replyRteRef, children}: ReplyProviderProps) {
+export default function ReplyContextProvider({children}: {children: ReactNode}) {
+	const [replyRef, setReplyRef] = useState<RefObject<RichTextEditorRef> | null>();
 	return(
-		<ReplyContext.Provider value={replyRteRef}>
+		<ReplyContext.Provider value={[replyRef, setReplyRef]}>
 			{children}
 		</ReplyContext.Provider>
 	)

@@ -33,11 +33,6 @@ import { FontSize, HeadingWithAnchor, LinkBubbleMenuHandler, ResizableImage, Tab
 import QuotesComponent from '@/app/components/ui/Editor/extensions/QuotesExtension'
 import { useMemo } from "react";
 
-export type UseExtensionsOptions = {
-  /** Placeholder hint to show in the text input area before a user types a message. */
-  placeholder?: string;
-};
-
 const CustomLinkExtension = Link.extend({
   inclusive: false,
 });
@@ -50,9 +45,7 @@ const CustomSuperscript = Superscript.extend({
   excludes: "subscript",
 });
 
-export default function useExtensions({
-	placeholder
-}: UseExtensionsOptions = {}) {
+export default function useExtensions() {
 	return useMemo(() => {
 		return [
 			// We use some but not all of the extensions from
@@ -131,5 +124,5 @@ export default function useExtensions({
 			History,
 			QuotesComponent
 		];
-	}, [placeholder]);
+	}, []);
 }

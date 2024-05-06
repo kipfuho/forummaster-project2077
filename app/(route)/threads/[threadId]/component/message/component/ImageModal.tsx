@@ -2,7 +2,7 @@
 import { Modal } from "@mui/material";
 import Image from "next/image";
 import { useImageModalContext } from "../../ImageModalContext/imageModalContext";
-import { getFileName } from "../ReplyThread";
+import { getFileName } from "@/app/components/utils/HelperFunction";
 
 export function isImageFile(filename: string) {
 	// List of common image file extensions

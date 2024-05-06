@@ -1,7 +1,7 @@
 import { mergeAttributes, Node } from '@tiptap/core'
 import { ReactNodeViewRenderer } from '@tiptap/react'
 
-import Component from './QuotesComponent'
+import QuotesComponent from './QuotesComponent'
 
 export default Node.create({
   name: 'quotesComponent',
@@ -37,6 +37,6 @@ export default Node.create({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(Component)
+    return ReactNodeViewRenderer(QuotesComponent)
   },
 })

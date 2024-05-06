@@ -127,6 +127,13 @@ export type BookmarkDocument = {
   create_time: Date;
 }
 
+export type PrefixDocument = {
+  _id: string;
+  id: number;
+  name: string;
+  color: string;
+}
+
 // Home page
 export default async function Home() {
   const categories: CategoryDocument[] = await getAllCategoryV2()

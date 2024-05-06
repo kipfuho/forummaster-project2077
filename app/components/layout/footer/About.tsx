@@ -7,7 +7,7 @@ export default function About() {
         <ArticleIcon/>
         <span>About me</span>
       </h3>
-      <p>I'm Biu. I have been making this project in second semester of my 3th year in university. I'm eager to learn. I have not used Nextjs before so I chose it for my website!</p>
+      <p>I&#39;m Biu. I have been making this project in second semester of my 3th year in university. I&#39;m eager to learn. I have not used Nextjs before so I chose it for my website!</p>
     </div>
   )
 }
