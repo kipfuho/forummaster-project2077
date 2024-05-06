@@ -1,6 +1,6 @@
 'use client'
 import UnprotectedLayout from '@/app/components/layout/UnprotectedLayout';
-import { useUserContext } from '@/app/components/layout/UserContext';
+import { useUserContext } from '@/app/components/context/user/UserContext';
 import { loginV2 } from '@/app/components/utils/fetch/v2/user';
 import KeyIcon from '@mui/icons-material/Key';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
@@ -9,13 +9,14 @@ import { Button, Input } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 
-export function SubmitButton({children}: {children: any}) {
+export function SubmitButton({children, sx}: {children: any, sx?: any}) {
   const { pending } = useFormStatus()
   return (
     <Button
     type="submit"
     variant='contained'
     disabled={pending}
+    sx={sx && { ...sx}}
     >{children}</Button>
   )
 }

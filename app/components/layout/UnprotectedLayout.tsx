@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { useUserContext } from "./UserContext";
+import { useUserContext } from "../context/user/UserContext";
 
 // Layout for users who haven't logged in, who have logged in cannot enter
 export default function UnprotectedLayout({children}: {children:any}) {

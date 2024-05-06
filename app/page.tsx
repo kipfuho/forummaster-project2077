@@ -23,6 +23,9 @@ export type FullUserDocument = {
   avatar: string;
   messages: number;
   likes: number;
+  followings: string[];
+  followers: string[];
+  signature: string;
   class: number;
   setting: {
     date_of_birth: string;
@@ -47,7 +50,6 @@ export type ForumDocument = {
   about: string;
   threads: number;
   messages: number;
-  delete: boolean;
   privilege: {
     view: number,
     reply: number,
@@ -66,7 +68,6 @@ export type ThreadDocument = {
   update_time: Date;
   replies: number;
   views: number;
-  delete: boolean;
   privilege: {
     view: number,
     reply: number,
@@ -92,7 +93,7 @@ export type MessageDocument = {
     sad: number,
     angry: number
   };
-  delete: boolean;
+  threadPage: Record<string, number>;
 }
 
 export type TagDocument = {
@@ -115,6 +116,15 @@ export type AlertDocument = {
   detail: string;
   create_time: Date;
   read: boolean;
+}
+
+export type BookmarkDocument = {
+  _id: string;
+  message: string;
+  thread: string;
+  user: string;
+  detail: string;
+  create_time: Date;
 }
 
 // Home page

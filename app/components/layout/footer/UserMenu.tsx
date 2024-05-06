@@ -1,6 +1,6 @@
 'use client'
 import PersonIcon from '@mui/icons-material/Person';
-import { useUserContext } from '../UserContext';
+import { useUserContext } from '../../context/user/UserContext';
 
 export default function UserMenu() {
 	const [user, _] = useUserContext();

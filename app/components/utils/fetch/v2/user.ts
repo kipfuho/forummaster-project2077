@@ -1,4 +1,5 @@
 'use server'
+import { FullUserDocument, UserDocument } from "@/app/page";
 import { cookies } from "next/headers";
 import { join } from "path";
 import { parseString } from "set-cookie-parser";
@@ -222,6 +223,43 @@ export async function getFullUserV2() {
   } else {
     return null;
   }
+}
+
+// public
+export async function getUserDetailV2(userId: string): Promise<FullUserDocument | null> {
+	if(!userId) {
+		console.log('User not found');
+		return null;
+	}
+
+	const res = await fetch(join(BE_HOST, `v2/user/get-detail?userId=${userId}`), {
+		method: "GET",
+		next: {
+			revalidate: 0
+		}
+	});
+
+	if(res.ok) {
+		return res.json();
+	} else {
+		return null;
+	}
+}
+
+// public
+export async function filterUserV2(username: string) {
+	const res = await fetch(join(BE_HOST, `v2/user/filter?username=${username}`), {
+		method: "GET",
+		next: {
+			revalidate: 0
+		}
+	});
+
+	if(res.ok) {
+		return res.json();
+	} else {
+		return null;
+	}
 }
 
 export async function updateUsernameV2(prevState: any, formData: FormData) {

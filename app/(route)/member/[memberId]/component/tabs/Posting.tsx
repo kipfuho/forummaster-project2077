@@ -1,22 +1,81 @@
 'use client'
+import ThreadHead from "@/app/(route)/forums/components/threadhead/ThreadHead";
 import Loading from "@/app/components/layout/Loading";
+import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
 import { getThreadsOfUserV2 } from "@/app/components/utils/fetch/v2/thread";
+import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import { ThreadDocument, UserDocument } from "@/app/page";
+import { Box, Button, Divider } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-function Thread() {
-
+function PostingComponent({
+	user,
+	thread
+}: {
+	user: UserDocument,
+	thread: ThreadDocument,
+}) {
+	return (
+		<>
+			<Link className="flex px-2 py-1" href={"/threads/" + thread._id}>
+				<div className="flex flex-grow">
+					<div className="px-1 self-center">
+						<UserAvatar user={user} size={36}/>
+					</div>
+					<div className="flex-grow py-1 px-2 border-gray-400">
+						<div className="flex">
+							<div className="space-x-2">
+								{thread.tag.map(tag => (
+									<span>"{tag.name}"</span>
+								))}
+							</div>
+							<div className="text-red-600 hover:underline">
+								{thread.title}
+							</div>
+						</div>
+						<div className="flex space-x-4 text-[0.9rem]">
+							<div>
+								{user.username}
+							</div>
+							<div>
+								{smartTimeConvert(thread.create_time)}
+							</div>
+						</div>
+					</div>
+				</div>
+			</Link>
+			<Divider sx={{borderColor: grey[400]}}/>
+		</>
+	)
 }
 
-function PostingList({threads}: {threads: ThreadDocument[] | null}) {
+function PostingList({
+	threads,
+	user
+}: {
+	threads: ThreadDocument[] | null,
+	user: UserDocument
+}) {
 	if(threads) {
+		const router = useRouter();
 		return (
-			<div>
-				{threads.map((thread) => (
-					<p>{thread._id}</p>
-				))}
-			</div>
+			<Box sx={{bgcolor: grey[700], borderRadius: 1}}>
+				<>
+					{threads?.map((thread: ThreadDocument, index: number) => (
+						<PostingComponent key={index} thread={thread} user={user}/>
+					))}
+					<p className="text-right p-2">
+						<Button
+							variant="contained"
+							sx={{height: 25, width: 90, padding: 0}}
+							onClick={() => router.push(`/search/member?userId=${user._id}`)}
+						>See more</Button>
+					</p>
+				</>
+			</Box>
 		)
 	} else {
 		return (
@@ -47,7 +106,7 @@ export default function Posting({value, index, user}: {value: number, index: num
 			hidden={value !== index}
 	 	>
 			{done ? 
-				<PostingList threads={threads}/> :
+				<PostingList threads={threads} user={user}/> :
 				<Loading/>
 			}
 		</div>

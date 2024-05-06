@@ -6,6 +6,27 @@ import { parseString } from "set-cookie-parser";
 const BE_HOST = process.env.BE_HOST ?? "";
 
 // public
+export async function getMessageV2(messageId: string) {
+	if(!messageId) {
+		console.log("Message not found");
+		return null;
+	}
+
+	const res = await fetch(join(BE_HOST, `v2/message/get?messageId=${messageId}`), {
+		method: "GET",
+		next: {
+			revalidate: 0
+		}
+	});
+
+	if(res.ok) {
+		return res.json();
+	} else {
+		return null;
+	}
+}
+
+// public
 export async function getMessagesV2(threadId: string, offset: number = 0, limit: number = 20) {
 	if(!threadId) {
 		console.log("threadId is null");
@@ -17,8 +38,8 @@ export async function getMessagesV2(threadId: string, offset: number = 0, limit:
 		next: {
 			revalidate: 5
 		}
-	}
-	);
+	});
+
 	if(res.ok) {
 		return res.json();
 	} else {
@@ -39,6 +60,7 @@ export async function getLastestMessageV2(threadId: string) {
 			revalidate: 0
 		}
 	});
+	
 	if(res.ok) {
 		return res.json();
 	} else {

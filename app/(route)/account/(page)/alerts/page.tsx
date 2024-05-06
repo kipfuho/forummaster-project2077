@@ -5,7 +5,7 @@ import AlertList from "../../component/alert/AlertList";
 import { getAlertsV2 } from "@/app/components/utils/fetch/v2/alert";
 import { useEffect, useState } from "react";
 import { AlertDocument } from "@/app/page";
-import { useUserContext } from "@/app/components/layout/UserContext";
+import { useUserContext } from "@/app/components/context/user/UserContext";
 import Loading from "@/app/components/layout/Loading";
 
 export default function Alerts() {
