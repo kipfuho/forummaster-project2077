@@ -4,21 +4,10 @@ import { MessageDocument, ThreadDocument, UserDocument } from "@/app/page";
 import { getUserV2 } from "@/app/components/utils/fetch/v2/user";
 import { getMessagesV2, getMessageV2 } from "@/app/components/utils/fetch/v2/message";
 import ThreadContent from "./ThreadContent";
-import MessageList from "./MessageList";
+import MessageList from "./message/MessageList";
+import { redirect } from "next/navigation";
 
-async function DefaultPage({thread, offset, limit, page}: {thread: ThreadDocument, offset?: number, limit?: number, page?: number}) {
-	const [author, messages]: [UserDocument, MessageDocument[]] = await Promise.all([getUserV2(thread.user), getMessagesV2(thread._id, offset ?? 0, limit ?? 20)]);
-	
-	return(
-		<Suspense fallback={<Loading/>}>
-			<ThreadContent thread={thread} author={author} messages={messages} page={page}>
-				<MessageList messages={messages}/>
-			</ThreadContent>
-		</Suspense>
-	)
-}
-
-export default async function ThreadBody({thread, currentMessageId, offset, limit, page}: {thread: ThreadDocument, currentMessageId: string | undefined, offset?: number, limit?: number, page?: number}) {
+export default async function ThreadBody({thread, currentMessageId, offset, limit, page}: {thread: ThreadDocument, currentMessageId?: string, offset?: number, limit?: number, page?: number}) {
 	if(currentMessageId) {
 		const currentMessage: MessageDocument = await getMessageV2(currentMessageId);
 		if(currentMessage) {
@@ -35,10 +24,14 @@ export default async function ThreadBody({thread, currentMessageId, offset, limi
 					messages = await getMessagesV2(thread._id, (currentMessagePage - 1)*(limit ?? 20), limit ?? 20);
 				}
 			}
+
+			if(currentMessagePage != page) {
+				redirect(`/threads/${thread._id}/page/${currentMessagePage}?messageId=${currentMessageId}`);
+			}
 			
 			return(
 				<Suspense fallback={<Loading/>}>
-					<ThreadContent thread={thread} author={author} messages={messages} page={currentMessagePage} currentMessageId={currentMessageId}>
+					<ThreadContent thread={thread} author={author} page={currentMessagePage} currentMessageId={currentMessageId}>
 						<MessageList messages={messages}/>
 					</ThreadContent>
 				</Suspense>
@@ -50,7 +43,7 @@ export default async function ThreadBody({thread, currentMessageId, offset, limi
 			
 	return(
 		<Suspense fallback={<Loading/>}>
-			<ThreadContent thread={thread} author={author} messages={messages} page={page}>
+			<ThreadContent thread={thread} author={author} page={page}>
 				<MessageList messages={messages}/>
 			</ThreadContent>
 		</Suspense>

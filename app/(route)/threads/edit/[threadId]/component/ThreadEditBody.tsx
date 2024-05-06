@@ -8,7 +8,7 @@ import { RichTextEditorRef } from "mui-tiptap";
 import { useRef, useState } from "react";
 import SaveIcon from '@mui/icons-material/Save';
 import { editThreadV2 } from "@/app/components/utils/fetch/v2/thread";
-import { useUserContext } from "@/app/components/layout/UserContext";
+import { useUserContext } from "@/app/components/context/user/UserContext";
 
 // edit thread page
 export default function ThreadEditBody({thread, message}: {thread: ThreadDocument, message: MessageDocument}) {

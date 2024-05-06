@@ -1,4 +1,4 @@
-import { useUserContext } from '@/app/components/layout/UserContext';
+import { useUserContext } from '@/app/components/context/user/UserContext';
 import { logoutV2 } from '@/app/components/utils/fetch/v2/user';
 import ArticleIcon from '@mui/icons-material/Article';
 import Link from 'next/link';

@@ -4,7 +4,7 @@ import { RichTextEditorRef } from "mui-tiptap";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import ReplyIcon from '@mui/icons-material/Reply';
-import { useUserContext } from "@/app/components/layout/UserContext";
+import { useUserContext } from "@/app/components/context/user/UserContext";
 import { RefObject, useRef, useState } from "react";
 import { Button, Snackbar } from "@mui/material";
 import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";

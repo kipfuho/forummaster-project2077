@@ -1,6 +1,6 @@
 'use client'
 import ProtectedLayout from "@/app/components/layout/ProtectedLayout";
-import { useUserContext } from "@/app/components/layout/UserContext";
+import { useUserContext } from "@/app/components/context/user/UserContext";
 import { useRef, useState } from "react";
 import CreateIcon from '@mui/icons-material/Create';
 import VisibilityIcon from '@mui/icons-material/Visibility';

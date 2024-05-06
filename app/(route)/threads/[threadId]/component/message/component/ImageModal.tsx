@@ -1,8 +1,8 @@
 'use client'
 import { Modal } from "@mui/material";
 import Image from "next/image";
-import { useImageModalContext } from "./ImageModalContext/imageModalContext";
-import { getFileName } from "./ReplyThread";
+import { useImageModalContext } from "../../ImageModalContext/imageModalContext";
+import { getFileName } from "../ReplyThread";
 
 export function isImageFile(filename: string) {
 	// List of common image file extensions

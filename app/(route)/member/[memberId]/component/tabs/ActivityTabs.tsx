@@ -17,7 +17,7 @@ export default function ActivityTabs({user}: {user: UserDocument}) {
 
   return (
     <Box sx={{ width: '100%', marginTop: "20px" }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Profile Posts"/>
           <Tab label="Lastest Activity"/>

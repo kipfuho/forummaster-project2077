@@ -23,6 +23,9 @@ export type FullUserDocument = {
   avatar: string;
   messages: number;
   likes: number;
+  followings: string[];
+  followers: string[];
+  signature: string;
   class: number;
   setting: {
     date_of_birth: string;
@@ -113,6 +116,15 @@ export type AlertDocument = {
   detail: string;
   create_time: Date;
   read: boolean;
+}
+
+export type BookmarkDocument = {
+  _id: string;
+  message: string;
+  thread: string;
+  user: string;
+  detail: string;
+  create_time: Date;
 }
 
 // Home page
