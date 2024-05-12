@@ -2,7 +2,7 @@ import Loading from "@/app/components/layout/Loading";
 import { Suspense } from "react";
 import ForumPageHeader from "../../../components/ForumPageHeader";
 import { ForumDocument } from "@/app/page";
-import ForumBody from "../../../components/ForumBody";
+import ForumBody from "../../../components/Forum";
 import { getForumV2 } from "@/app/components/utils/fetch/v2/forum";
 
 export default async function ForumPageNumber({

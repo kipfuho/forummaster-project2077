@@ -1,4 +1,3 @@
-'use client'
 import DebounceInput from "@/app/components/ui/DebouceInput";
 import { filterUserV2 } from "@/app/components/utils/fetch/v2/user";
 import { ForumDocument, UserDocument } from "@/app/page";
@@ -6,8 +5,8 @@ import { Box, Divider, Input, Menu, MenuItem, Select } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dynamic from "next/dynamic";
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
-import { SubmitButton } from "../../login/page";
 import { redirectFilterV2 } from "@/app/components/utils/fetch/v2/thread";
+import { SubmitButton } from "@/app/(route)/login/page";
 
 const AuthorFilteredList = dynamic(() => import('./AuthorFilteredList'));
 

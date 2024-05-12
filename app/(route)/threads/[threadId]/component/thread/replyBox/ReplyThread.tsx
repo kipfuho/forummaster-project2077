@@ -127,7 +127,9 @@ export default function ReplyThread({
 						</div>
 					</div>
 					<form>
-						<input 
+						<input
+							className="hidden"
+							title="what?"
 							ref={fileInputRef} 
 							type="file"
 							multiple
@@ -138,7 +140,6 @@ export default function ReplyThread({
 			
 								event.target.value = ""; // Clear the input so the same file can be re-uploaded
 							}}
-							style={{display: "none"}}
 						/>
 					</form>
 				</div>

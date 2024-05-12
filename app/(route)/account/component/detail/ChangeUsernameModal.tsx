@@ -31,7 +31,7 @@ export default function UsernameChangeModal({user}: {user: FullUserDocument}) {
 					<Box
 						sx={{
 							width: 400,
-						bgcolor: 'background.paper',
+							bgcolor: 'background.paper',
 							border: '2px solid #000',
 							boxShadow: 24,
 							p: 4

@@ -1,7 +1,5 @@
 'use server'
-import { join } from "path";
-
-const BE_HOST = process.env.BE_HOST ?? "";
+import { publicRequest } from "./common";
 
 // public
 export async function getForumV2(forumId: string) {
@@ -10,15 +8,9 @@ export async function getForumV2(forumId: string) {
 		return null;
 	}
 
-  const res = await fetch(join(BE_HOST, `v2/forum/get?forumId=${forumId}`), {
-    method: "GET",
-		next: {
-			revalidate: 10 // 10 seconds
-		}
+  return await publicRequest({
+    method: 'GET',
+    endpoint: `v2/forum/get?forumId=${forumId}`,
+    revaliate: 10
   });
-  if(res.ok) {
-    return res.json();
-  } else {
-    return null;
-  }
 }

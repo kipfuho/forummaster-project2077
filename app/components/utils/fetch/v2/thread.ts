@@ -1,98 +1,85 @@
 'use server'
 import { ThreadDocument } from "@/app/page";
-import { cookies } from "next/headers";
+import { nonPublicRequest, publicRequest } from "./common";
 import { redirect } from "next/navigation";
-import { join } from "path";
-import { parseString } from "set-cookie-parser";
 
-const BE_HOST = process.env.BE_HOST ?? "";
-
-export async function getThreadV2(threadId: string) {
+// public
+export async function getThreadV2(
+	threadId: string
+): Promise<ThreadDocument | null> {
 	if(!threadId) {
 		console.log("threadId is null");
 		return null;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/thread/get?threadId=${threadId}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/thread/get?threadId=${threadId}`
 	});
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
-export async function getThreadsV2(forumId: string, offset: number = 0, limit: number = 20) {
+// public
+export async function getThreadsV2(
+	forumId: string,
+	offset: number = 0,
+	limit: number = 20
+): Promise<ThreadDocument[] | null> {
 	if(!forumId) {
 		console.log("forumId is null");
 		return null;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/thread/get?forumId=${forumId}&offset=${offset}&limit=${limit}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/thread/get?forumId=${forumId}&offset=${offset}&limit=${limit}`
 	});
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
-export async function getThreadsOfUserV2(userId: string, current: string | null, limit: number = 10) {
+// public
+export async function getThreadsOfUserV2(
+	userId: string,
+	current: string | null,
+	limit: number = 10
+): Promise<ThreadDocument[] | null> {
 	if(!userId) {
 		console.log("userId is null");
 		return null;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/thread/get-user?userId=${userId}&current=${current ?? ""}&limit=${limit}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/thread/get-user?userId=${userId}&current=${current ?? ""}&limit=${limit}`
 	});
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
-export async function getLastestThreadV2(forumId: string) {
+// public
+export async function getLastestThreadV2(
+	forumId: string
+): Promise<ThreadDocument | null> {
 	if(!forumId) {
 		console.log("forumId is null");
 		return null;
 	}
 
-  const res = await fetch(join(BE_HOST, `v2/thread/get-lastest?forumId=${forumId}`), {
-    method: "GET",
-    next: {
-      revalidate: 0 // no cache, should be updated every time
-    }
-  });
-  if(res.ok) {
-    return res.json();
-  } else {
-    return null;
-  }
+  return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/thread/get-lastest?forumId=${forumId}`
+	})
 }
 
-export async function postThreadV2(body: any) {
-	const res = await fetch(join(BE_HOST, "v2/thread/create"), {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(body),
-		credentials: "include"
+// public
+export async function postThreadV2(formData: FormData) {
+	return await nonPublicRequest({
+		method: 'POST',
+		endpoint: "v2/thread/create",
+		body: {
+			forumId: formData.get('forumId'),
+			userId: formData.get('userId'),
+			prefixIds: formData.get('prefixIds'),
+			threadTitle: formData.get('threadTitle'),
+			tag: formData.get('tags'),
+		}
 	});
-	return res;
 }
 
 export async function redirectQuoteMessage(forumId: string, currentMesageId: string, limit: number = 20) {
@@ -151,81 +138,39 @@ export async function filterThreadV2(
 		body.filterOptions.last_update_within = new Date(new Date().getTime() - filterOptions.last_update);
 	}
 
-	const res = await fetch(join(BE_HOST, 'v2/thread/get'), {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(body),
-		next: {
-			revalidate: 0
-		}
-	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return {
-			count: 0,
-			threads: []
-		};
-	}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: 'v2/thread/get',
+		body
+	}) ?? { count: 0, threads: null}
 }
 
-export async function editThreadV2(body: any) {
-	const res = await fetch(join(BE_HOST, "v2/thread/update"), {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(body),
-		credentials: "include"
-	});
-	return res;
+export async function editThreadV2(formData: FormData) {
+	return await nonPublicRequest({
+		method: 'POST',
+		endpoint: "v2/thread/update",
+		body: {
+			threadId: formData.get('threadId'),
+			threadPrefixIds: String(formData.get('threadPrefixIds') ?? '').split(',').map(Number).filter((val) => {return val > 0}),
+			threadTitle: formData.get('threadTitle'),
+			threadContent: formData.get('threadContent'),
+			tag: formData.get('tag'),
+		}
+	})
 }
 
 // not public
-export async function ReplyThreadV2(threadId: string, userId: string, content: string | undefined, attachments: string[]) {
-	if(!userId) {
-		console.log("User not found");
-		return;
-	}
-
-	const res = await fetch(join(BE_HOST, "v2/thread/reply"), {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json',
-			'Cookie': cookies().toString()
-		},
-		body: JSON.stringify({
-			threadId,
-			userId,
-			content,
-			attachments
-		}),
-		credentials: "include"
-	});
-
-	res.headers.getSetCookie().forEach(setCookieString => {
-		const setCookie = parseString(setCookieString);
-		cookies().set(setCookie.name, setCookie.value, {
-			path: setCookie.path,
-			secure: setCookie.secure,
-			httpOnly: setCookie.httpOnly
-		});
-	});
-
-	if(res.ok) {
-		const result = await res.json();
-		return {
-			...result,
-			type: "success"
+export async function ReplyThreadV2(formData: FormData) {
+	const res = await nonPublicRequest({
+		method: 'POST',
+		endpoint: "v2/thread/reply",
+		body: {
+			threadId: formData.get('threadId'),
+			userId: formData.get('userId'),
+			content: formData.get('content'),
+			attachments: String(formData.get('attachments') ?? '').split(',').filter((val) => {return val;})
 		}
-	} else {
-		const result = await res.json();
-		return {
-			...result,
-			type: "fail"
-		}
-	}
+	})
+
+	return res ? {...res, type: 'success'} : {...res, type: 'fail'}
 }

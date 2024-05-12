@@ -1,9 +1,5 @@
 'use server'
-import { cookies } from "next/headers";
-import { join } from "path";
-import { parseString } from "set-cookie-parser";
-
-const BE_HOST = process.env.BE_HOST ?? "";
+import { publicRequest } from "./common";
 
 // public
 export async function getReactionV2(userId: string, messageId: string) {
@@ -16,18 +12,10 @@ export async function getReactionV2(userId: string, messageId: string) {
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/reaction/get?userId=${userId}&messageId=${messageId}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/reaction/get?userId=${userId}&messageId=${messageId}`
 	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
 // public
@@ -37,18 +25,10 @@ export async function getReactionsOfMessageV2(messageId: string, current: string
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/reaction/get-many?messageId=${messageId}&current=${current ?? ""}&limit=${limit}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/reaction/get-many?messageId=${messageId}&current=${current ?? ""}&limit=${limit}`
 	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
 // public
@@ -58,16 +38,8 @@ export async function getReactionByIdV2(reactionId: string) {
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/reaction/get?reactionId=${reactionId}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
-	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/reaction/get?reactionId=${reactionId}`
+	})
 }

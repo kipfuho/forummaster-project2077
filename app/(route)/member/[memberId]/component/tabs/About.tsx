@@ -7,21 +7,29 @@ import { grey } from "@mui/material/colors";
 import { format, getYear, subYears } from "date-fns";
 import { useEffect, useState } from "react";
 
-export default function About({value, index, user}: {value: number, index: number, user: UserDocument}) {
+export default function About({
+	value,
+	index,
+	member
+}: {
+	value: number,
+	index: number,
+	member: UserDocument
+}) {
 	const [detailedUser, setDetailedUser] = useState<FullUserDocument | null>(null);
 	const [done, setDone] = useState<boolean>(false);
 	
 	useEffect(() => {
-		if(user) {
+		if(member) {
 			const getDetail = async () => {
-				const detailedUser = await getUserDetailV2(user._id);
+				const detailedUser = await getUserDetailV2(member._id);
 				setDetailedUser(detailedUser);
 				setDone(true);
 			}
 
 			getDetail().catch((e) => console.log(e));
 		}
-	}, [user]);
+	}, [member]);
 	
 	return (
 		<div

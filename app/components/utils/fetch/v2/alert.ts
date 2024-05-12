@@ -1,9 +1,5 @@
 'use server'
-import { cookies } from "next/headers";
-import { join } from "path";
-import { parseString } from "set-cookie-parser";
-
-const BE_HOST = process.env.BE_HOST ?? "";
+import { publicRequest } from "./common";
 
 // public
 export async function getAlertByIdV2(alertId: string) {
@@ -12,18 +8,10 @@ export async function getAlertByIdV2(alertId: string) {
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/alert/get?alertId=${alertId}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/alert/get?alertId=${alertId}`
 	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
 // public
@@ -33,16 +21,8 @@ export async function getAlertsV2(userId: string, current: string, limit: number
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/alert/get?userId=${userId}&current=${current}&limit=${limit}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/alert/get?userId=${userId}&current=${current}&limit=${limit}`
 	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }

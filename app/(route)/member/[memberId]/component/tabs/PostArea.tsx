@@ -3,7 +3,15 @@ import { UserDocument } from "@/app/page";
 import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
-export default function PostArea({value, index, user}: {value: number, index: number, user: UserDocument}) {
+export default function PostArea({
+	value,
+	index,
+	member
+}: {
+	value: number,
+	index: number,
+	member: UserDocument
+}) {
 	return (
 		<div
 			role="tabpanel"

@@ -1,73 +1,40 @@
-import ThreadList from "./ThreadList";
-import { Suspense } from "react";
-import Loading from "@/app/components/layout/Loading";
-import { ForumDocument, ThreadDocument } from "@/app/page";
-import { filterThreadV2, getThreadsV2 } from "@/app/components/utils/fetch/v2/thread";
-import Pagination from "@/app/components/ui/Pagination/Pagination";
-import ThreadListHeader from "./ThreadListHeader";
+'use client'
+import { ForumDocument, PrefixDocument, ThreadDocument } from "@/app/page";
+import { Box, Button } from "@mui/material";
+import dynamic from "next/dynamic";
+import { ReactNode, useState } from "react";
+import FilterPrefix from "./forumbody/FilterPrefix";
 
-export default async function ForumBody({
-	forum, 
-	offset, 
-	limit, 
-	page,
-	filterOptions
+const FilterThreadBox = dynamic(() => import('./forumbody/FilterThreadBox'));
+
+export default function ForumBody({
+	children,
+	forum,
+	prefixes
 }: {
-	forum: ForumDocument, 
-	offset?: number, 
-	limit?: number, 
-	page?: number,
-	filterOptions: {
-		prefix: string[] | undefined,
-		author: string | undefined,
-		last_update: number | undefined,
-		sort_type: string,
-		descending: boolean
-	}
+	children: ReactNode,
+	forum: ForumDocument,
+	prefixes: PrefixDocument[]
 }) {
-	if(filterOptions.prefix || filterOptions.author || filterOptions.last_update) {
-		const {count, threads} = await filterThreadV2(forum._id, offset ?? 0, limit ?? 20, filterOptions);
-		const query = [
-			filterOptions.prefix && "prefix=" + filterOptions.prefix.join(','),
-			filterOptions.author && "author=" + filterOptions.author,
-			filterOptions.last_update && "last_update=" + filterOptions.last_update,
-			filterOptions.sort_type !== 'update_time' && "sort_type=" +  filterOptions.sort_type,
-			filterOptions.descending === false && "ascending=1",
-		].filter((item) => {return item}).join('&');
+	const [anchor, setAnchor] = useState<null | HTMLElement>(null);
 
-		return (
-			<Suspense fallback={<Loading/>}>
-				<Pagination
-					size={5}
-					totalPage={Math.floor((count - 1) / 20) + 1}
-					page={page ?? 1}
-					link={`/forums/${forum._id}/page/`}
-					query={query}
+	return (
+		<div className="rounded bg-gray-600">
+			<FilterPrefix prefixes={prefixes}/>
+			<div className="flex justify-between bg-gray-500 rounded-t p-2">
+				<span>Filter go there!</span>
+				<Button
+					variant="outlined"
+					sx={{height: 25}}
+					onClick={(e) => setAnchor(e.currentTarget)}
+				>Filter</Button>
+				<FilterThreadBox
+					anchor={anchor}
+					setAnchor={setAnchor}
+					forum={forum}
 				/>
-				<div className="rounded bg-gray-600">
-					<ThreadListHeader forum={forum}/>
-					<ThreadList threads={threads}/>
-				</div>
-				<Pagination
-					size={5}
-					totalPage={Math.floor((count - 1) / 20) + 1}
-					page={page ?? 1}
-					link={`/forums/${forum._id}/page/`}
-					query={query}
-				/>
-			</Suspense>
-		)
-	} else {
-		const threads: ThreadDocument[] = await getThreadsV2(forum._id, offset ?? 0, limit ?? 20);
-		return(
-			<Suspense fallback={<Loading/>}>
-				<Pagination size={5} totalPage={Math.floor((forum.threads - 1) / 20) + 1} page={page ?? 1} link={`/forums/${forum._id}/page/`}/>
-				<div className="rounded bg-gray-600">
-					<ThreadListHeader forum={forum}/>
-					<ThreadList threads={threads}/>
-				</div>
-				<Pagination size={5} totalPage={Math.floor((forum.threads - 1) / 20) + 1} page={page ?? 1} link={`/forums/${forum._id}/page/`}/>
-			</Suspense>
-		)
-	}
+			</div>
+			{children}
+		</div>
+	)
 }

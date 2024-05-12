@@ -1,5 +1,5 @@
 import Loading from "@/app/components/layout/Loading";
-import ForumBody from "../components/ForumBody";
+import ForumBody from "../components/Forum";
 import { Suspense } from "react";
 import ForumPageHeader from "../components/ForumPageHeader";
 import { getForumV2 } from "@/app/components/utils/fetch/v2/forum";
