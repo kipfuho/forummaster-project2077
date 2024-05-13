@@ -23,14 +23,14 @@ export default function Register(){
   };
 
   useEffect(() => {
-    if(state && state.type === 'success') {
+    if(state && state.type === 'success' && router) {
       setOpen(true);
       setTimeout(() => {
         setOpen(false);
         router.push("/");
       }, 3000);
     }
-  }, state);
+  }, [state, router]);
 
   return(
     <UnprotectedLayout>

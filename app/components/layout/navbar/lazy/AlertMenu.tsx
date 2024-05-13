@@ -29,7 +29,7 @@ export default function AlertMenu({user}: {user: UserDocument}) {
 		}
 
 		getAlerts().catch((e) => console.log(e));
-	}, []);
+	}, [user]);
 
 	return (
 		<>
@@ -64,7 +64,7 @@ export default function AlertMenu({user}: {user: UserDocument}) {
 									</Link>
 								))}
 							</> :
-							<p className="px-4 text-[0.9rem]">You don't have any alerts</p>
+							<p className="px-4 text-[0.9rem]">You don&#39;t have any alerts</p>
 						}
 					<Divider sx={{borderColor: grey[500], marginY: 1}}/>
 					<Link className="text-red-500 px-4 hover:underline" href='/account/alerts'>Show all</Link>

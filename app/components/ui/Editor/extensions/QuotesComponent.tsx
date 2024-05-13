@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
-export default (props: any) => {
+export default function QuotesComponent(props: any) {
   const path = usePathname();
   const [message, setMessage] = useState<MessageDocument | null>(null);
   const [done, setDone] = useState<boolean>(false);
@@ -21,7 +21,7 @@ export default (props: any) => {
     }
 
     getQuotedMessage().catch((e) => console.log(e));
-  }, []);
+  }, [props.node.attrs.messageId]);
 
   return (
     <NodeViewWrapper>
@@ -40,7 +40,7 @@ export default (props: any) => {
             <>
               {message ?
                 <div dangerouslySetInnerHTML={{__html: message.content}}/> :
-                <p>Message doesn't exist</p>
+                <p>Message doesn&#39;t exist</p>
               }
             </> :
             <Loading/>

@@ -32,7 +32,7 @@ export default function Login(){
       console.log(state);
       setUser(state.user);
     }
-  }, [state]);
+  }, [state, setUser]);
 
   return (
     <UnprotectedLayout>

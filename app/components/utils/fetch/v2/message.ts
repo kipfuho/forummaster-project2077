@@ -1,9 +1,5 @@
 'use server'
-import { cookies } from "next/headers";
-import { join } from "path";
-import { parseString } from "set-cookie-parser";
-
-const BE_HOST = process.env.BE_HOST ?? "";
+import { nonPublicRequest, publicRequest } from "./common";
 
 // public
 export async function getMessageV2(messageId: string) {
@@ -12,18 +8,10 @@ export async function getMessageV2(messageId: string) {
 		return null;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/message/get?messageId=${messageId}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/message/get?messageId=${messageId}`
 	});
-
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
 }
 
 // public
@@ -32,19 +20,12 @@ export async function getMessagesV2(threadId: string, offset: number = 0, limit:
 		console.log("threadId is null");
 		return null;
 	}
-	
-	const res = await fetch(join(BE_HOST, `v2/message/get?threadId=${threadId}&offset=${offset}&limit=${limit}`), {
-		method: "GET",
-		next: {
-			revalidate: 5
-		}
-	});
 
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/message/get?threadId=${threadId}&offset=${offset}&limit=${limit}`,
+		revaliate: 5
+	});
 }
 
 // public
@@ -53,19 +34,11 @@ export async function getLastestMessageV2(threadId: string) {
 		console.log("threadId is null");
 		return null;
 	}
-
-	const res = await fetch(join(BE_HOST, `v2/message/get-lastest?threadId=${threadId}`), {
-		method: "GET",
-		next: {
-			revalidate: 0
-		}
-	});
 	
-	if(res.ok) {
-		return res.json();
-	} else {
-		return null;
-	}
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/message/get-lastest?threadId=${threadId}`
+	});
 }
 
 // not public
@@ -75,27 +48,23 @@ export async function reactMessageV2(messageId: string, userId: string, type: st
 		return;
 	}
 
-	const res = await fetch(join(BE_HOST, `v2/message/react?messageId=${messageId}&type=${type}`), {
-		method: "GET",
-		headers: {
-			'Cookie': cookies().toString()
+	return await nonPublicRequest({
+		method: 'GET',
+		endpoint: `v2/message/react?messageId=${messageId}&type=${type}`
+	})
+}
+
+// not public
+export async function updateMessageV2(
+	messageId: string,
+	content: string
+) {
+	return await nonPublicRequest({
+		method: 'POST',
+		endpoint: 'v2/message/update-message',
+		body: {
+			messageId,
+			content
 		}
 	});
-
-	// Change jwt and refreshToken if it's embedded
-	res.headers.getSetCookie().forEach(setCookieString => {
-		const setCookie = parseString(setCookieString);
-		cookies().set(setCookie.name, setCookie.value, {
-			path: setCookie.path,
-			secure: setCookie.secure,
-			httpOnly: setCookie.httpOnly
-		});
-	});
-
-	if(res.ok) {
-		const result = await res.json();
-		return result.item;
-	} else {
-		return null;
-	}
 }

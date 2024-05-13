@@ -6,11 +6,11 @@ import Profile from "./component/Profile";
 import ActivityTabs from "./component/tabs/ActivityTabs";
 
 export default async function Member({params}: {params: {memberId: string}}){
-  const user: UserDocument = await getUserV2(params.memberId);
+  const member: UserDocument = await getUserV2(params.memberId);
   return(
     <Suspense fallback={<Loading/>}>
-      <Profile user={user}/>
-      <ActivityTabs user={user}/>
+      <Profile member={member}/>
+      <ActivityTabs member={member}/>
     </Suspense>
   )
 }

@@ -78,3 +78,18 @@ export function getRoleName(classes: number) {
       return "Unknown";
   }
 }
+
+export function getFileName(link: string) {
+	if(!link) {
+		return "";
+	}
+	try {
+		const urlObj = new URL(link);
+		const pathname = urlObj.pathname;
+		const parts = pathname.split('/');
+		return parts[parts.length - 1];
+	} catch(err) {
+		console.log(err);
+		return "";
+	}
+}

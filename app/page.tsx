@@ -64,6 +64,7 @@ export type ThreadDocument = {
   user: string;
   title: string;
   tag: TagDocument[];
+  prefix: PrefixDocument[];
   create_time: Date;
   update_time: Date;
   replies: number;
@@ -124,6 +125,26 @@ export type BookmarkDocument = {
   thread: string;
   user: string;
   detail: string;
+  create_time: Date;
+}
+
+export type PrefixDocument = {
+  _id: string;
+  id: number;
+  name: string;
+  color: string;
+}
+
+export type ProfilePostingDocument = {
+  _id: string;
+  user: string;
+  user_wall: string;
+  message: string;
+  replies: Array<{
+    user: string,
+    message: string,
+    create_time: Date
+  }>;
   create_time: Date;
 }
 

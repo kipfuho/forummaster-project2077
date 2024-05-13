@@ -1,48 +1,34 @@
 'use server'
-import { join } from "path";
+import { publicRequest } from "./common";
 
-const BE_HOST = process.env.BE_HOST ?? "";
-
+// public
 export async function getMetadataV2() {
-  const res = await fetch(join(BE_HOST, "v2/metadata"), {
-		method: "GET",
-		next: {
-			revalidate: 10
-		}
-	});
-  if(res.ok) {
-		return res.json();
-	} else {
-		return [0, 0, 0, "N/A"];
-	}
-}
-
-export async function getAllCategoryV2() {
-  const res = await fetch(join(BE_HOST, "v2/category/get-all"), {
-    method: "GET",
-		next: {
-			revalidate: 10
-		}
+  return await publicRequest({
+    method: 'GET',
+    endpoint: 'v2/metadata',
+    revaliate: 10
   });
-  if(res.ok) {
-    return res.json();
-  } else {
-    return null;
-  }
 }
 
+// public
+export async function getAllCategoryV2() {
+  return await publicRequest({
+    method: 'GET',
+    endpoint: "v2/category/get-all",
+    revaliate: 86400
+  })
+}
+
+// public
 export async function getCategoryV2(categoryId: string) {
   if(!categoryId) {
 		alert("categoryId is null");
 		return null;
 	}
 
-  const res = await fetch(join(BE_HOST, `v2/category/get?categoryId=${categoryId}`), {
-    method: "GET",
-  });
-  if(res.ok) {
-    return res.json();
-  } else {
-    return null;
-  }
+  return await publicRequest({
+    method: 'GET',
+    endpoint: `v2/category/get?categoryId=${categoryId}`,
+    revaliate: 86400
+  })
 }

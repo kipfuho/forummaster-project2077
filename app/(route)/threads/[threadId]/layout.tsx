@@ -1,5 +1,7 @@
 import { ReactNode, Suspense } from "react";
-import Loading from "./loading";
+import ReplyContextProvider from "./component/ReplyBoxContext/ReplyContextProvider";
+import Loading from "@/app/components/layout/Loading";
+import ImageModalContextProvider from "./component/ImageModalContext/ImageModalContextProvider";
 
 export default function ThreadLayout({
 	children
@@ -8,7 +10,11 @@ export default function ThreadLayout({
 }) {
 	return (
 		<Suspense fallback={<Loading/>}>
-			{children}
+			<ImageModalContextProvider>
+				<ReplyContextProvider>
+					{children}
+				</ReplyContextProvider>
+			</ImageModalContextProvider>
 		</Suspense>
 	)
 }

@@ -1,5 +1,4 @@
-'use client'
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { Button } from "@mui/material";
 import { RichTextEditorRef } from "mui-tiptap";
 import RichTextBox from "@/app/components/ui/Editor/Editor";
@@ -7,28 +6,28 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import SaveIcon from '@mui/icons-material/Save';
 import { MessageDocument } from "@/app/page";
+import { updateMessageV2 } from "@/app/components/utils/fetch/v2/message";
 
-export default function MessageEditor({message}: {message: MessageDocument}) {
+export default function MessageEditor({
+	message,
+	setMessage,
+	setEditView
+}: {
+	message: MessageDocument,
+	setMessage: Dispatch<SetStateAction<MessageDocument>>,
+	setEditView: Dispatch<SetStateAction<boolean>>
+}) {
 	const rteRef = useRef<RichTextEditorRef>(null);
 
 	const saveClick = async () => {
-		const res = await fetch("https://localhost:3001/message/update-message", {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				message_id: message._id,
-				content: rteRef.current?.editor?.getHTML()
-			}),
-			credentials: "include"
-		});
+		const content = rteRef.current?.editor?.getHTML();
+		if(content) {
+			const result = await updateMessageV2(message._id, content);
 
-		if(res.ok) {
-			alert("updated");
-			location.reload();
-		} else {
-			alert("failed");
+			if(result) {
+				setMessage(result);
+				setEditView(false);
+			}
 		}
 	}
 
@@ -47,7 +46,11 @@ export default function MessageEditor({message}: {message: MessageDocument}) {
 				</div>
 				<div className="flex-grow"></div>
 				<div className="flex">
-					<Button variant="outlined" size="small" onClick={saveClick}>
+					<Button
+						variant="outlined"
+						size="small"
+						onClick={saveClick}
+					>
 						<SaveIcon/>
 						<span>Save</span>
 					</Button>

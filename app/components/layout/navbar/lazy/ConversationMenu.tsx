@@ -31,7 +31,7 @@ export default function ConversationMenu() {
         <Box sx={{width: 300, bgcolor: grey[900], paddingY: 1}}>
 				<p className="px-4">Conversations</p>
 					<Divider sx={{borderColor: grey[500], marginY: 1}}/>
-					<div className="px-4 mb-2 text-[0.9rem]">You don't have any conversations</div>
+					<div className="px-4 mb-2 text-[0.9rem]">You don&#39;t have any conversations</div>
 					<Divider sx={{borderColor: grey[500], marginBottom: 1}}/>
 					<Link className="text-red-500 px-4 hover:underline" href='/conversations'>Show all</Link>
 				</Box>

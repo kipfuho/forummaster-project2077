@@ -31,7 +31,7 @@ export default function ReportMenu({
 		}
 
 		checkReport().catch((e) => console.log(e));
-	}, [user]);
+	}, [user, message._id]);
 
 	return (
 		<Menu

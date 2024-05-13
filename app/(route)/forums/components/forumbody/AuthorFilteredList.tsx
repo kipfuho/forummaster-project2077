@@ -3,7 +3,15 @@ import { Box, Menu, MenuItem } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
-export default function AuthorFilteredList({anchor, setAnchor, authors}: {anchor: null | RefObject<HTMLInputElement>, setAnchor: Dispatch<SetStateAction<RefObject<HTMLInputElement> | null>>, authors: null | UserDocument[]}) {
+export default function AuthorFilteredList({
+	anchor,
+	setAnchor,
+	authors
+}: {
+	anchor: null | RefObject<HTMLInputElement>,
+	setAnchor: Dispatch<SetStateAction<RefObject<HTMLInputElement> | null>>,
+	authors: null | UserDocument[]
+}) {
   const open = Boolean(anchor);
 	const handleClose = () => {
     setAnchor(null);

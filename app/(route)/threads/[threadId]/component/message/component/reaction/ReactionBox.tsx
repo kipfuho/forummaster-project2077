@@ -60,7 +60,7 @@ export default function ReactionBox({message, curReaction}: {message: MessageDoc
 		}
 
 		getSomeReactions().catch((e) => console.log(e));
-	}, [curReaction]);
+	}, [curReaction, message._id]);
 	
 	if(totalReactions > 0) {
 		return (

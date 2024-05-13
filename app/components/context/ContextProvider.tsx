@@ -22,7 +22,7 @@ export default function ContextProvider({children}: {children: any}) {
 
 		const intervalId = setInterval(getUserData, 60000);
 		return () => clearInterval(intervalId);
-  }, []);
+  }, [setUser]);
 
 	return(
 		<ThemeProvider theme={colortheme["dark"]}>
