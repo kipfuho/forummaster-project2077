@@ -160,16 +160,16 @@ export async function editThreadV2(formData: FormData) {
 }
 
 // not public
-export async function ReplyThreadV2(formData: FormData) {
+export async function ReplyThreadV2(body: {
+	threadId: string,
+	userId: string,
+	content: string,
+	attachments: string[]
+}) {
 	const res = await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/thread/reply",
-		body: {
-			threadId: formData.get('threadId'),
-			userId: formData.get('userId'),
-			content: formData.get('content'),
-			attachments: String(formData.get('attachments') ?? '').split(',').filter((val) => {return val;})
-		}
+		body
 	})
 
 	return res ? {...res, type: 'success'} : {...res, type: 'fail'}

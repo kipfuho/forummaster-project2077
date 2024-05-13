@@ -1,15 +1,33 @@
 'use client'
 import { UserDocument } from "@/app/page";
 import { Box, Tab, Tabs } from "@mui/material";
-import { SyntheticEvent, useState } from "react";
+import { ReactNode, SyntheticEvent, useState } from "react";
 import dynamic from "next/dynamic";
 
-// laze load
+// lazy load
 const ProfilePost = dynamic(() => import('./ProfilePost'));
 const LastestActivity = dynamic(() => import('./LastestActivity'));
 const Posting = dynamic(() => import('./Posting'));
 const About = dynamic(() => import('./About'));
 const PostArea = dynamic(() => import('./PostArea'));
+
+function TabContent({
+  children,
+  value,
+  index
+}: {
+  children: ReactNode,
+  value: number,
+  index: number
+}) {
+  return (
+    <div
+			role="tabpanel"
+		>
+			{value === index && children}
+		</div>
+  )
+}
 
 // user is the profile user
 export default function ActivityTabs({
@@ -34,11 +52,21 @@ export default function ActivityTabs({
           <Tab label="Post Areas"/>
         </Tabs>
       </Box>
-			<ProfilePost value={value} index={0} member={member}/>
-			<LastestActivity value={value} index={1} member={member}/>
-			<Posting value={value} index={2} member={member}/>
-			<About value={value} index={3} member={member}/>
-			<PostArea value={value} index={4} member={member}/>
+      <TabContent value={value} index={0}>
+			  <ProfilePost member={member}/>
+      </TabContent>
+      <TabContent value={value} index={1}>
+			  <LastestActivity member={member}/>
+      </TabContent>
+      <TabContent value={value} index={2}>
+			  <Posting member={member}/>
+      </TabContent>
+      <TabContent value={value} index={3}>
+			  <About member={member}/>
+      </TabContent>
+      <TabContent value={value} index={4}>
+			  <PostArea member={member}/>
+      </TabContent>
     </Box>
   );
 }

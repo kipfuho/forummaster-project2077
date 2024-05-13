@@ -220,3 +220,11 @@ export async function followUserV2(userId: string) {
 		endpoint: `v2/user/follow?userId=${userId}`
 	})
 }
+
+// public
+export async function getUserPostAreaV2(userId: string) {
+	return await publicRequest({
+		method: 'GET',
+		endpoint: `v2/user/get-post-stats?userId=${userId}`
+	})
+}

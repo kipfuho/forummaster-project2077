@@ -35,7 +35,7 @@ export default function FollowButton({
 			<Tooltip title={follow ? 'Unfollow this member' : 'Follow this member'}>
 				<Button
 					variant="outlined"
-					sx={{fontSize: '12px', height: '25px', width: '50px'}}
+					sx={{fontSize: '12px', height: '25px', width: '80px'}}
 					onClick={followClick}
 				>{follow ? 'Unfollow' : 'Follow'}</Button>
 			</Tooltip>

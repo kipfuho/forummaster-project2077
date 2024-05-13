@@ -4,16 +4,15 @@ import { getUserDetailV2 } from "@/app/components/utils/fetch/v2/user";
 import { FullUserDocument, UserDocument } from "@/app/page";
 import { Box, Divider } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { format, getYear, subYears } from "date-fns";
 import { useEffect, useState } from "react";
+import FollowingList from "./about/FollowingList";
+import FollowerList from "./about/FollowerList";
+import UserDetail from "./about/UserDetail";
+import Signature from "./about/Signature";
 
 export default function About({
-	value,
-	index,
 	member
 }: {
-	value: number,
-	index: number,
 	member: UserDocument
 }) {
 	const [detailedUser, setDetailedUser] = useState<FullUserDocument | null>(null);
@@ -32,48 +31,27 @@ export default function About({
 	}, [member]);
 	
 	return (
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-		>
-			<Box sx={{bgcolor: grey[700], borderRadius: 1}}>
-				{done ?
-					<>
-						{detailedUser ?
-							<>
-								<div className="p-2">
-									<p>
-										<span>Birthday: </span>
-										<span>
-											{detailedUser.setting.date_of_birth ? `${format(detailedUser.setting.date_of_birth, "MMM dd, YYYY")} (Age: ${getYear(new Date()) - getYear(detailedUser.setting.date_of_birth)})` : "Unset"}
-										</span>
-									</p>
-									<p>
-										<span>Location: </span>
-										<span>{detailedUser.setting.location ? detailedUser.setting.location : "Unset"}</span>
-									</p>
-								</div>
-								<Divider sx={{borderColor: grey[400]}}/>
-								<div className="p-2">
-									Signature: None
-								</div>
-								<Divider sx={{borderColor: grey[400]}}/>
-								<div className="p-2">
-									<span>Followings: </span>
-									<span>{detailedUser.followings.length}</span>
-								</div>
-								<Divider sx={{borderColor: grey[400]}}/>
-								<div className="p-2">
-									<span>Followers: </span>
-									<span>{detailedUser.followers.length}</span>
-								</div>
-							</> :
-							<>Error fetching user</>
-						}
-					</> :
-					<Loading/>
-				}
-			</Box>
-		</div>
+		<Box sx={{bgcolor: grey[700], borderRadius: 1}}>
+			{done ?
+				<>
+					{detailedUser ?
+						<>
+							<UserDetail member={detailedUser}/>
+
+							<Divider sx={{borderColor: grey[400]}}/>
+							<Signature member={detailedUser}/>
+
+							<Divider sx={{borderColor: grey[400]}}/>
+							<FollowingList member={detailedUser}/>
+
+							<Divider sx={{borderColor: grey[400]}}/>
+							<FollowerList member={detailedUser}/>
+						</> :
+						<>Error fetching user</>
+					}
+				</> :
+				<Loading/>
+			}
+		</Box>
 	)
 }

@@ -19,7 +19,6 @@ export default function ProfilePostingList({
 			const result = await getProfilePostV2(member._id, lastPp ?? '');
 			if(result) {
 				setPps(pps.concat(result.item));
-				console.log(result);
 			}
 		};
 
@@ -27,7 +26,7 @@ export default function ProfilePostingList({
 	}, [lastPp]);
 
 	return (
-		<Box marginTop={1} sx={{backgroundColor: grey[800], padding: 1, borderRadius: 1}}>
+		<Box marginTop={1} sx={{backgroundColor: grey[800], borderRadius: 1}}>
 			{pps.map((pp, index) => (
 				<ProfilePostingItem key={index} profilePosting={pp}/>
 			))}

@@ -90,12 +90,8 @@ function PostingList({
 }
 
 export default function Posting({
-	value,
-	index,
 	member
 }: {
-	value: number,
-	index: number,
 	member: UserDocument
 }) {
 	const [threads, setThreads] = useState<ThreadDocument[] | null>(null);
@@ -112,14 +108,11 @@ export default function Posting({
 	}, [member._id]);
 
 	return (
-	 	<div
-			role="tabpanel"
-			hidden={value !== index}
-	 	>
+	 	<>
 			{done ? 
 				<PostingList threads={threads} member={member}/> :
 				<Loading/>
 			}
-		</div>
+		</>
 	)
 }

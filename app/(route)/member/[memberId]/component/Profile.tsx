@@ -3,6 +3,7 @@ import SquareAvatar from "./SquareAvatar";
 import { Button, Divider } from "@mui/material";
 import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import dynamic from "next/dynamic";
+import ReportButton from "./ReportButton";
 
 const FollowButton = dynamic(() => import('./FollowButton'));
 
@@ -18,10 +19,7 @@ export default function Profile({
 				<div className="h-[50%]">
 					<div className="flex flex-grow justify-between">
 						<span className="text-[2rem]">{member.username}</span>
-						<Button
-							variant="contained" 
-							sx={{height: '30px'}}
-						>Report</Button>
+						<ReportButton memberId={member._id}/>
 					</div>
 					<div>
 						<span className="text-gray-400">Formerly known as:</span>

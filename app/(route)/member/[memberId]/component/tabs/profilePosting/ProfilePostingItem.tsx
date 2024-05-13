@@ -64,7 +64,7 @@ export default function ProfilePostingItem({
 						<span className="self-center">{rep.message}</span>
 					</Box>
 				))}
-				<ReplyProfilePost/>
+				<ReplyProfilePost profilePosting={profilePosting}/>
 			</Box>
 		</Box>
 	)

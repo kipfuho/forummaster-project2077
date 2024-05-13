@@ -36,7 +36,12 @@ export default function ReplyThread({
 
 	const replyClick = async () => {
 		if(user) {
-			const res = await ReplyThreadV2(thread_id, user._id, rteRef.current?.editor?.getHTML(), links ?? []);
+			const res = await ReplyThreadV2({
+				threadId: thread_id,
+				userId: user._id,
+				content: rteRef.current?.editor?.getHTML() ?? '',
+				attachments: links ?? []
+			});
 
 			setState(res);
 			setOpen(true);
