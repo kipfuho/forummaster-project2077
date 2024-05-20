@@ -1,28 +1,38 @@
 import { getProfilePostV2 } from "@/app/components/utils/fetch/v2/profilepost";
 import { ProfilePostingDocument, UserDocument } from "@/app/page";
-import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button } from "@mui/material";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ProfilePostingItem from "./ProfilePostingItem";
 import { grey } from "@mui/material/colors";
 
 export default function ProfilePostingList({
 	member,
+	pps,
+	setPps
 }: {
-	member: UserDocument
+	member: UserDocument,
+	pps: ProfilePostingDocument[],
+	setPps: Dispatch<SetStateAction<ProfilePostingDocument[]>>
 }) {
-	// pps: profilePostingS
-	const [pps, setPps] = useState<ProfilePostingDocument[]>([]);
 	const [lastPp, setLastPp] = useState<string | null>(null);
+	const [showmore, setShowmore] = useState<boolean>(true);
+	const [done, setDone] = useState<boolean>(false);
 
 	useEffect(() => {
-		const getPp = async () => {
-			const result = await getProfilePostV2(member._id, lastPp ?? '');
-			if(result) {
-				setPps(pps.concat(result.item));
-			}
-		};
-
-		getPp().catch((e) => console.log(e));
+		// make sure we wont fetch data twice
+		if(lastPp || !pps.length) {
+			const getPp = async () => {
+				setDone(false);
+				const result = await getProfilePostV2(member._id, lastPp ?? '');
+				setPps([...pps, ...result.item]);
+				setDone(true);
+				if(result.item.length < 5) {
+					setShowmore(false);
+				}
+			};
+	
+			getPp().catch((e) => console.log(e));
+		}
 	}, [lastPp]);
 
 	return (
@@ -30,6 +40,16 @@ export default function ProfilePostingList({
 			{pps.map((pp, index) => (
 				<ProfilePostingItem key={index} profilePosting={pp}/>
 			))}
+			<Box padding={1}>
+				{showmore &&
+					<Button
+						variant="outlined"
+						disabled={!done}
+						sx={{height: '30px', width: '110px', padding: 0}}
+						onClick={() => setLastPp(pps[pps.length - 1]._id)}
+					>Show more</Button>
+				}
+			</Box>
 		</Box>
 	)
 }

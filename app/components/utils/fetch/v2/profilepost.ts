@@ -3,12 +3,18 @@ import { ProfilePostingDocument } from "@/app/page";
 import { nonPublicRequest, publicRequest } from "./common";
 
 // not public
-export async function postProfilePostV2(formData: FormData) {
+export async function postProfilePostV2(
+	prevState: any,
+	formData: FormData
+): Promise<{message: string, item: ProfilePostingDocument | null}> {
 	const userId = formData.get('userId'), userWallId = formData.get('userWallId'), message = formData.get('message');
 
 	if(!userId || !userWallId) {
 		console.log('User not found');
-		return null;
+		return {
+			message: 'User not found',
+			item: null
+		}
 	}
 
 	return await nonPublicRequest({
@@ -19,11 +25,11 @@ export async function postProfilePostV2(formData: FormData) {
 			userWallId,
 			message
 		}
-	})
+	}) ?? {message: 'Error creating new profile posting', item: null}
 }
 
 // not public
-export async function replyProfilePostV2(formData: FormData) {
+export async function replyProfilePostV2(prevState: any, formData: FormData) {
 	const ppId = formData.get('ppId'), userId = formData.get('userId'), message = formData.get('message');
 
 	if(!ppId) {

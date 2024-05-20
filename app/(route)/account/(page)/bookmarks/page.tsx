@@ -1,5 +1,11 @@
-export default function Bookmarks() {
+import { Box } from "@mui/material";
+import BookmarkList from "./components/BookmarkList";
+
+export default async function Bookmarks() {
 	return (
-		<div>a</div>
+		<Box>
+			<span className="font-semibold text-[1.2rem]">Bookmarks</span>
+			<BookmarkList/>
+		</Box>
 	)
 }

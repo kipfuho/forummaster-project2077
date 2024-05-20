@@ -1,7 +1,13 @@
 'use server'
+import { BookmarkDocument } from "@/app/page";
 import { nonPublicRequest, publicRequest } from "./common";
 
-// not public
+/**
+ * Create a new bookmark
+ * @param userId : user's _id
+ * @param messageId : message's _id
+ * @returns Newly created bookmark
+ */
 export async function createBookmarkV2(userId: string, messageId: string) {
 	if(!userId || !messageId) {
 		console.log("User or message not found");
@@ -19,7 +25,28 @@ export async function createBookmarkV2(userId: string, messageId: string) {
 	});
 }
 
-// public
+/**
+ * Get bookmarks of a user
+ * @param limit : number of records return
+ * @param current : find records below this record
+ * @returns Array of bookmarks
+ */
+export async function getBookmarkV2(
+	limit: number,
+	current: string | undefined
+): Promise<Array<BookmarkDocument>> {	
+	return await nonPublicRequest({
+		method: 'GET',
+		endpoint: `v2/bookmark/get?limit=${limit ?? 20}&current=${current ?? ''}`,
+	}) ?? [];
+}
+
+/**
+ * Check if a user has bookmarked a message
+ * @param userId : user's _id
+ * @param messageId : message's _id
+ * @returns Found bookmark
+ */
 export async function checkBookmarkV2(userId: string, messageId: string) {
 	if(!userId || !messageId) {
 		console.log("User or Message not found");
@@ -32,7 +59,12 @@ export async function checkBookmarkV2(userId: string, messageId: string) {
 	});
 }
 
-// not public
+/**
+ * Update a bookmark
+ * @param prevState : previous state of Form
+ * @param formData : current form's data
+ * @returns Updated bookmark
+ */
 export async function updateBookmarkV2(prevState: any, formData: FormData) {
 	return await nonPublicRequest({
 		method: 'POST',
@@ -44,7 +76,11 @@ export async function updateBookmarkV2(prevState: any, formData: FormData) {
 	});
 }
 
-// not public
+/**
+ * Delete a bookmark
+ * @param bookmarkId : Bookmark to be deleted 
+ * @returns boolean
+ */
 export async function deleteBookmarkV2(bookmarkId: string) {
 	if(!bookmarkId) {
 		console.log("Bookmark not found");

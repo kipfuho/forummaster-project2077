@@ -1,5 +1,5 @@
 'use client'
-import { Divider } from "@mui/material";
+import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import AlertList from "../../component/alert/AlertList";
 import { getAlertsV2 } from "@/app/components/utils/fetch/v2/alert";
@@ -29,16 +29,28 @@ export default function Alerts() {
 	}, [lastAlert, user]);
 	
 	return (
-		<div className="flex flex-col bg-gray-700 rounded w-full">
-			<h2 className='p-2'>Alerts</h2>
-			<Divider sx={{borderColor: grey[500]}}/>
-			<div className="flex-grow px-2 mt-2">
-				{loading ? 
-					<Loading/> :
-					<AlertList alerts={alerts}/>
+		<>
+			<h2>Alerts</h2>
+			<Box
+				display='flex'
+				flexDirection='column'
+				borderRadius={1}
+				mt={2}
+				sx={{backgroundColor: grey[700]}}
+			>
+				{alerts.length > 0 ? 
+					<>
+						<div className="flex-grow px-2 mt-2">
+							{loading ? 
+								<Loading/> :
+								<AlertList alerts={alerts}/>
+							}
+						</div>
+						<div className="text-center">Pagination</div>
+					</> : 
+					<p>You do not have any recent alerts!</p>
 				}
-			</div>
-			<div className="text-center">Pagination</div>
-		</div>
+			</Box>
+		</>
 	)
 }

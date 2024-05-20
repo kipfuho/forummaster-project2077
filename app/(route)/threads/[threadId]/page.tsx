@@ -11,21 +11,27 @@ export default async function Thread({
 	params: {threadId: string},
 	searchParams?: { [key: string]: string | undefined }
 }) {
-	const thread: ThreadDocument = await getThreadV2(params.threadId);
-	if(searchParams?.messageId) {
-		return(
-			<Suspense fallback={<Loading/>}>
-				<ThreadBody
-					thread={thread}
-					currentMessageId={searchParams.messageId}
-				/>
-			</Suspense>
-		)
+	const thread = await getThreadV2(params.threadId);
+	if(thread) {
+		if(searchParams?.messageId) {
+			return(
+				<Suspense fallback={<Loading/>}>
+					<ThreadBody
+						thread={thread}
+						currentMessageId={searchParams.messageId}
+					/>
+				</Suspense>
+			)
+		} else {
+			return(
+				<Suspense fallback={<Loading/>}>
+					<ThreadBody thread={thread}/>
+				</Suspense>
+			)
+		}
 	} else {
-		return(
-			<Suspense fallback={<Loading/>}>
-				<ThreadBody thread={thread}/>
-			</Suspense>
+		return (
+			<p>Something went wrong!</p>
 		)
 	}
 }

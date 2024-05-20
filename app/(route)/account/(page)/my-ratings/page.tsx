@@ -1,7 +1,7 @@
 export default function MyRatings() {
 	return (
 		<div>
-			b
+			To be implemented!
 		</div>
 	)
 }

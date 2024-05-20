@@ -1,5 +1,10 @@
 import { differenceInMinutes, differenceInSeconds, format, isThisWeek, isToday, isYesterday } from "date-fns";
 
+/**
+ * Convert a string to usable url path
+ * @param name 
+ * @returns non-space string
+ */
 export function extractNameToPath(name: string) {
   let path = "";
   name = name.toLowerCase();
@@ -14,6 +19,11 @@ export function extractNameToPath(name: string) {
   return path;
 }
 
+/**
+ * Return the number after '.' of a section
+ * @param pathName 
+ * @returns Section's id
+ */
 export function getSectionId(pathName: string) {
   let id = 0, i = 0;
   // id will start after '.'
@@ -34,6 +44,11 @@ export function getSectionId(pathName: string) {
   return id;
 }
 
+/**
+ * Convert time to comprehensive string
+ * @param time 
+ * @returns converted time string
+ */
 export function smartTimeConvert(time: Date) {
   if(isToday(time)) {
     let min_dif = differenceInMinutes(Date.now(), time);
@@ -57,6 +72,45 @@ export function smartTimeConvert(time: Date) {
   }
 }
 
+/**
+ * Return all the texts inside <p> tag of a given string
+ * @param content 
+ * @returns string[]
+ */
+export function getPTagText(content: string) {
+  const regex = /<p>(.*?)<\/p>/g;
+  const matches = [];
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    matches.push(match[1]);
+  }
+
+  return matches;
+}
+
+/**
+ * Clip the text to the last word, clipped text's length < maxLength
+ * @param text 
+ * @param maxLength 
+ * @param pad 
+ * @returns Clipped text + pad
+ */
+export function clipText(text: string, maxLength: number, pad: string) {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  while(text[maxLength] != ' ') {
+    maxLength--;
+  }
+  return text.slice(0, maxLength) + pad;
+}
+
+/**
+ * Return role name for user
+ * @param classes 
+ * @returns Role name
+ */
 export function getRoleName(classes: number) {
   switch (classes) {
     case 0:
@@ -79,6 +133,11 @@ export function getRoleName(classes: number) {
   }
 }
 
+/**
+ * Return file name from a link (the link must contain file name)
+ * @param link 
+ * @returns File's name
+ */
 export function getFileName(link: string) {
 	if(!link) {
 		return "";

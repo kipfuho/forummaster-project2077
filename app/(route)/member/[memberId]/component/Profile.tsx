@@ -21,10 +21,12 @@ export default function Profile({
 						<span className="text-[2rem]">{member.username}</span>
 						<ReportButton memberId={member._id}/>
 					</div>
-					<div>
-						<span className="text-gray-400">Formerly known as:</span>
-						<span>?</span>
-					</div>
+					{member.oldUsername &&
+						<div>
+							<span className="text-gray-400">Formerly known as:</span>
+							<span>{member.oldUsername}</span>
+						</div>
+					}
 				</div>
 				<div className="h-[35%] flex justify-between">
 					<div className="flex flex-col items-center">

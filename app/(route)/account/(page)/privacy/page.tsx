@@ -1,7 +1,7 @@
 export default function Privacy() {
 	return (
 		<div>
-			Privacy options
+			To be implemented!
 		</div>
 	)
 }

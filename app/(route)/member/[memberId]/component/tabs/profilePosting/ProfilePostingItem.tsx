@@ -2,7 +2,7 @@ import Loading from "@/app/components/layout/Loading";
 import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
 import { getUserV2 } from "@/app/components/utils/fetch/v2/user";
 import { ProfilePostingDocument, UserDocument } from "@/app/page";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import ReplyProfilePost from "./ReplyProfilePost";
@@ -13,6 +13,7 @@ export default function ProfilePostingItem({
 }: {
 	profilePosting: ProfilePostingDocument
 }) {
+	const [pp, setPp] = useState<ProfilePostingDocument>(profilePosting);
 	const [ppUser, setppUser] = useState<UserDocument | null>(null);
 	const [repUsers, setRepsUser] = useState<UserDocument[]>([]);
 	const [lastRep, setLastRep] = useState<number>(3);
@@ -20,14 +21,14 @@ export default function ProfilePostingItem({
 
 	useEffect(() => {
 		const getppUser = async () => {
-			const result = await getUserV2(profilePosting.user);
+			const result = await getUserV2(pp.user);
 			setppUser(result);
 			setDone(true);
 		};
 		
 		const getRepUser = async () => {
 			const result = await Promise.all(
-				profilePosting.replies.slice(0, lastRep).map(async (reply) => {
+				pp.replies.slice(0, lastRep).map(async (reply) => {
 					const replyuser = await getUserV2(reply.user);
 					return replyuser;
 				})
@@ -40,7 +41,7 @@ export default function ProfilePostingItem({
 
 		getppUser().catch((e) => console.log(e));
 		getRepUser().catch((e) => console.log(e));
-	}, []);
+	}, [pp.replies, lastRep]);
 	
 	return (
 		<Box marginBottom={1}>
@@ -51,20 +52,28 @@ export default function ProfilePostingItem({
 				borderRadius={1}
 			>
 				{ppUser ? <Box marginRight={1}><UserAvatar user={ppUser} size={36}/></Box> : <Loading/>}
-				<span className="self-center">{profilePosting.message}</span>
+				<span className="self-center">{pp.message}</span>
 			</Box>
 			<Box sx={{marginLeft: 5}}>
-				{profilePosting.replies.slice(0, lastRep).map((rep, index) => (
+				{pp.replies.slice(0, lastRep).map((rep, index) => (
 					<Box
 						key={index}
 						display='flex'
 						padding='5px'
 					>
-						{repUsers[index] ? <Box marginRight={1}><UserAvatar user={ppUser} size={36}/></Box> : <Loading/>}
+						{repUsers[index] ? <Box marginRight={1}><UserAvatar user={repUsers[index]} size={36}/></Box> : <Loading/>}
 						<span className="self-center">{rep.message}</span>
 					</Box>
 				))}
-				<ReplyProfilePost profilePosting={profilePosting}/>
+				{pp.replies.length > lastRep &&
+					<Button
+						onClick={() => setLastRep(lastRep + 3)}
+					>Show more replies</Button>
+				}
+				<ReplyProfilePost
+					profilePosting={pp}
+					setPp={setPp}
+				/>
 			</Box>
 		</Box>
 	)

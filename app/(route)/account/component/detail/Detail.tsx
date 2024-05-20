@@ -9,9 +9,9 @@ import EmailChangeModal from './ChangeEmailModal';
 import { FullUserDocument } from '@/app/page';
 import { getFullUserV2 } from '@/app/components/utils/fetch/v2/user';
 import { SubmitButton } from '@/app/(route)/login/page';
-import { UserAvatar } from '@/app/components/ui/Avatar/UserAvatar';
 import { uploadImageV2 } from '@/app/components/utils/fetch/v2/upload';
 import { grey } from '@mui/material/colors';
+import { UserAvatarNoLink } from '@/app/components/ui/Avatar/UserAvatarNoLink';
 
 function Avatar({user}: {user: FullUserDocument}) {
 	const fileInput = useRef<HTMLInputElement | null>(null);
@@ -49,7 +49,7 @@ function Avatar({user}: {user: FullUserDocument}) {
 						width={100} 
 						height={100}
 					/> :
-					<UserAvatar size={100} user={user}/>
+					<UserAvatarNoLink size={100} user={user}/>
 				}
 			</IconButton>
 			<Input
@@ -59,6 +59,7 @@ function Avatar({user}: {user: FullUserDocument}) {
 			/>
 			<p className='text-[0.9rem] text-gray-400'>Click the image to change your avatar.</p>
 			<input
+				hidden={true}
 				ref={fileInput}
 				type="file"
 				accept="image/*"
@@ -68,7 +69,6 @@ function Avatar({user}: {user: FullUserDocument}) {
 						await handleAvatarClick(event.target.files);
 					}
 				}}
-				style={{ display: "none" }} // Hide this input
 			/>
 		</>
 	)
@@ -92,32 +92,37 @@ export default function Detail() {
 	return(
 		<>{done ?
 			<>{user ?
-				<div className='ml-10 w-full bg-gray-700'>
+				<Box
+					width='full'
+					ml={5}
+					borderRadius={1}
+					sx={{backgroundColor: grey[700]}}
+				>
 					<h2 className='p-2'>Account details</h2>
 					<Divider sx={{borderColor: grey[500]}}/>
 					<div className='rounded w-full'>
 						<table className='w-full'>
 							<tbody>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500 w-[45%]'>User name</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-400 w-[45%]'>User name</td>
 									<td className='px-2 py-3'>
 										<UsernameChangeModal user={user}/>
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Email:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-400'>Email:</td>
 									<td className='px-2 py-3'>
 										<EmailChangeModal user={user}/>
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Avatar:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-400'>Avatar:</td>
 									<td className='px-2 py-3'>
 										<Avatar user={user}/>
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Date of birth:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-400'>Date of birth:</td>
 									<td className='px-2 py-3'>
 										<Input
 											name="dob_day"
@@ -140,7 +145,7 @@ export default function Detail() {
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500'>Location:</td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-400'>Location:</td>
 									<td className='px-2 py-3'>
 										<Input
 											name="location"
@@ -149,7 +154,7 @@ export default function Detail() {
 									</td>
 								</tr>
 								<tr>
-									<td className='px-2 py-3 text-right border-r-[1px] border-gray-500	'>About you: </td>
+									<td className='px-2 py-3 text-right border-r-[1px] border-gray-400	'>About you: </td>
 									<td className='px-2 py-3'>
 										<Input
 											name='about'
@@ -167,7 +172,7 @@ export default function Detail() {
 							</SubmitButton>
 						</div>
 					</div>
-				</div> :
+				</Box> :
 				<p>Error!</p>
 			}</> :
 			<Loading/>
