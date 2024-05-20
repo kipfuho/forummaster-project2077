@@ -1,7 +1,8 @@
 'use client'
-import { UserDocument } from "@/app/page";
+import { ProfilePostingDocument, UserDocument } from "@/app/page";
 import UpdateStatus from "./profilePosting/UpdateStatus";
 import ProfilePostingList from "./profilePosting/ProfilePostingList";
+import { useState } from "react";
 
 // component to show a list of profile posting message of a user
 export default function ProfilePost({
@@ -9,10 +10,21 @@ export default function ProfilePost({
 }: {
 	member: UserDocument
 }) {
+	// pps: profilePostingS
+	const [pps, setPps] = useState<ProfilePostingDocument[]>([]);
+
 	return (
 		<>
-			<UpdateStatus member={member}/>
-			<ProfilePostingList member={member}/>
+			<UpdateStatus
+				member={member}
+				pps={pps}
+				setPps={setPps}
+			/>
+			<ProfilePostingList
+				member={member}
+				pps={pps}
+				setPps={setPps}
+			/>
 		</>
 	)
 }

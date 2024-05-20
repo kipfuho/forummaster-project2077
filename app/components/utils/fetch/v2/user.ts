@@ -67,7 +67,11 @@ export async function logoutV2() {
 	}
 }
 
-// public
+/**
+ * Verify email for a user
+ * @param query : query string
+ * @returns boolean
+ */
 export async function verifyEmailV2(query: string) {
 	const res = await publicRequest({
 		method: 'GET',
@@ -77,7 +81,10 @@ export async function verifyEmailV2(query: string) {
 	return res ? {...res, type: 'success'} : {message: 'Error', type: 'fail'}
 }
 
-// not public
+/**
+ * Found user belong to current session
+ * @returns User of this session
+ */
 export async function getCurrentUserV2() {
   return await nonPublicRequest({
 		method: 'GET',
@@ -85,8 +92,14 @@ export async function getCurrentUserV2() {
 	});
 }
 
-// public
-export async function getUserV2(userId: string) {
+/**
+ * Find user with _id 'userId'
+ * @param userId : user's _id to find
+ * @returns User
+ */
+export async function getUserV2(
+	userId: string
+): Promise<UserDocument | null> {
 	if(!userId) {
 		console.log("User not found");
 		return null;

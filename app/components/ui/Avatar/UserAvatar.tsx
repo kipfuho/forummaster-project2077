@@ -2,7 +2,17 @@ import { Box } from "@mui/material"
 import Image from "next/image"
 import Link from "next/link"
 
-export const UserAvatar = ({user, size}: {user: any, size: number}) => {
+export const UserAvatar = ({
+	user,
+	size
+}: {
+	user: {
+		_id: string,
+		avatar: string | null,
+		username: string
+	},
+	size: number
+}) => {
 	if(user.avatar) {
 		return(
 			<Link

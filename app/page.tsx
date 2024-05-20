@@ -4,8 +4,12 @@ import Category from "./(route)/categories/components/Category";
 import Loading from "./components/layout/Loading";
 import { getAllCategoryV2 } from "./components/utils/fetch/v2/category";
 
+/**
+ * User class
+ */
 export type UserDocument = {
   _id: string;
+  oldUsername: string;
   username: string;
   email: string;
   create_time: Date;
@@ -15,8 +19,12 @@ export type UserDocument = {
   class: number;
 }
 
+/**
+ * User class with sensitive information
+ */
 export type FullUserDocument = {
   _id: string;
+  oldUsername: string;
   username: string;
   email: string;
   create_time: Date;
@@ -36,6 +44,9 @@ export type FullUserDocument = {
   }
 }
 
+/**
+ * Category class
+ */
 export type CategoryDocument = {
   _id: string;
   name: string;

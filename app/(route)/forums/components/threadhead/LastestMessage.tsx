@@ -5,7 +5,7 @@ import { MessageDocument, ThreadDocument, UserDocument } from "@/app/page";
 import { getLastestMessageV2 } from "@/app/components/utils/fetch/v2/message";
 
 export default async function LastestMessage({thread}: {thread: ThreadDocument}) {
-	const data: [MessageDocument, UserDocument] = await getLastestMessageV2(thread._id);
+	const data: [MessageDocument, UserDocument] | null = await getLastestMessageV2(thread._id);
 
 	if(data) {
 		return(
@@ -22,7 +22,7 @@ export default async function LastestMessage({thread}: {thread: ThreadDocument})
 		)
 	} else {
 		return (
-			"Error"
+			<p>Something went wrong!</p>
 		)
 	}
 }
