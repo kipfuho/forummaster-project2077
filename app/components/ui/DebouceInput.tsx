@@ -6,6 +6,11 @@ type DebounceProps = {
   debounceTimeout: number;
 };
 
+/**
+ * Debouce Input
+ * @param props 
+ * @returns 
+ */
 export default function DebounceInput(props: InputProps & DebounceProps) {
   const { handleDebounce, debounceTimeout, ...rest } = props;
 

@@ -1,9 +1,13 @@
 'use server'
-import { ThreadDocument } from "@/app/page";
+import { MessageDocument, ThreadDocument, UserDocument } from "@/app/page";
 import { nonPublicRequest, publicRequest } from "./common";
 import { redirect } from "next/navigation";
 
-// public
+/**
+ * Find a thread by its id
+ * @param threadId : thread's _id
+ * @returns ThreadDoc
+ */
 export async function getThreadV2(
 	threadId: string
 ): Promise<ThreadDocument | null> {
@@ -18,44 +22,60 @@ export async function getThreadV2(
 	});
 }
 
-// public
+/**
+ * Find threads of a forum
+ * @param forumId : forum's _id
+ * @param offset : number of records will skip
+ * @param limit : number of records will return
+ * @returns ThreadDoc[]
+ */
 export async function getThreadsV2(
 	forumId: string,
 	offset: number = 0,
 	limit: number = 20
-): Promise<ThreadDocument[] | null> {
+): Promise<ThreadDocument[]> {
 	if(!forumId) {
 		console.log("forumId is null");
-		return null;
+		return [];
 	}
 
 	return await publicRequest({
 		method: 'GET',
 		endpoint: `v2/thread/get?forumId=${forumId}&offset=${offset}&limit=${limit}`
-	});
+	}) ?? [];
 }
 
-// public
+/**
+ * Find threads made by a user
+ * @param userId : user's _id
+ * @param current : return records below this
+ * @param limit : number of records will return
+ * @returns ThreadDoc[]
+ */
 export async function getThreadsOfUserV2(
 	userId: string,
 	current: string | null,
 	limit: number = 10
-): Promise<ThreadDocument[] | null> {
+): Promise<ThreadDocument[]> {
 	if(!userId) {
 		console.log("userId is null");
-		return null;
+		return [];
 	}
 
 	return await publicRequest({
 		method: 'GET',
 		endpoint: `v2/thread/get-user?userId=${userId}&current=${current ?? ""}&limit=${limit}`
-	});
+	}) ?? [];
 }
 
-// public
+/**
+ * Find lastest thread of a forum
+ * @param forumId : forum's _id
+ * @returns [ThreadDoc, MessageDoc, UserDoc]
+ */
 export async function getLastestThreadV2(
 	forumId: string
-): Promise<ThreadDocument | null> {
+): Promise<[ThreadDocument, MessageDocument, UserDocument] | null> {
 	if(!forumId) {
 		console.log("forumId is null");
 		return null;
@@ -64,11 +84,17 @@ export async function getLastestThreadV2(
   return await publicRequest({
 		method: 'GET',
 		endpoint: `v2/thread/get-lastest?forumId=${forumId}`
-	})
+	});
 }
 
-// public
-export async function postThreadV2(formData: FormData) {
+/**
+ * Create a new thread and return it
+ * @param formData 
+ * @returns ThreadDoc
+ */
+export async function postThreadV2(
+	formData: FormData
+): Promise<ThreadDocument | null> {
 	return await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/thread/create",
@@ -86,7 +112,13 @@ export async function redirectQuoteMessage(forumId: string, currentMesageId: str
 	
 }
 
-export async function redirectFilterV2(formData: FormData) {
+/**
+ * Redirect user to query URL
+ * @param formData : query options
+ */
+export async function redirectFilterV2(
+	formData: FormData
+) {
 	const forumId = formData.get('forumId');
 	const prefix = formData.get('prefix');
 	const author = formData.get('author');
@@ -102,9 +134,17 @@ export async function redirectFilterV2(formData: FormData) {
 	].filter((item) => {return item}).join('&');
 	console.log(query);
 
-	redirect(`/forums/${forumId}?${query}`)
+	redirect(`/forums/${forumId}?${query}`);
 }
 
+/**
+ * Find threads satisfies filter options
+ * @param forumId 
+ * @param offset 
+ * @param limit 
+ * @param filterOptions 
+ * @returns {Object} : { count: number, threads: ThreadDoc[]}
+ */
 export async function filterThreadV2(
 	forumId: string, 
 	offset: number, 
@@ -115,10 +155,11 @@ export async function filterThreadV2(
 		last_update?: number, 
 		sort_type: string, 
 		descending: boolean
-	}): Promise<{
-		count: number,
-		threads: ThreadDocument[]
-	}> {
+	}
+): Promise<{
+	count: number,
+	threads: ThreadDocument[]
+}> {
 	const body: any = {
 		forumId,
 		offset,
@@ -145,7 +186,14 @@ export async function filterThreadV2(
 	}) ?? { count: 0, threads: null}
 }
 
-export async function editThreadV2(formData: FormData) {
+/**
+ * Update a thread and return it
+ * @param formData 
+ * @returns ThreadDoc
+ */
+export async function editThreadV2(
+	formData: FormData
+): Promise<ThreadDocument | null> {
 	return await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/thread/update",
@@ -156,16 +204,25 @@ export async function editThreadV2(formData: FormData) {
 			threadContent: formData.get('threadContent'),
 			tag: formData.get('tag'),
 		}
-	})
+	});
 }
 
-// not public
-export async function ReplyThreadV2(body: {
-	threadId: string,
-	userId: string,
-	content: string,
-	attachments: string[]
-}) {
+/**
+ * Reply to a thread and return the message
+ * @param body 
+ * @returns {Object} : { message: string, item: MessageDoc }
+ */
+export async function ReplyThreadV2(
+	body: {
+		threadId: string,
+		userId: string,
+		content: string,
+		attachments: string[]
+	}
+): Promise<{
+	message: string,
+	item: MessageDocument
+}> {
 	const res = await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/thread/reply",

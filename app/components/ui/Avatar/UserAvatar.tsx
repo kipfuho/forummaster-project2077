@@ -2,6 +2,11 @@ import { Box } from "@mui/material"
 import Image from "next/image"
 import Link from "next/link"
 
+/**
+ * Custom Avatar with Link to profile
+ * @param param.user : UserDoc
+ * @param param.size : avatar size
+ */
 export const UserAvatar = ({
 	user,
 	size

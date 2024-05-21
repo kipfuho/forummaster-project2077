@@ -1,8 +1,17 @@
 'use server'
+import { AlertDocument } from "@/app/page";
 import { nonPublicRequest } from "./common";
 
-// not public
-export async function createReportV2(prevState: any, formData: FormData) {
+/**
+ * Create new report for a message and return it
+ * @param prevState 
+ * @param formData 
+ * @returns ReportDoc
+ */
+export async function createReportV2(
+	prevState: any,
+	formData: FormData
+): Promise<AlertDocument | null> {
 	return nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/report/create",
@@ -15,8 +24,16 @@ export async function createReportV2(prevState: any, formData: FormData) {
 	});
 }
 
-// not public
-export async function checkReportV2(userId: string, messageId: string) {
+/**
+ * Check if a message has been reported by a usear
+ * @param userId : user's _id
+ * @param messageId : message's _id
+ * @returns boolean
+ */
+export async function checkReportV2(
+	userId: string,
+	messageId: string
+): Promise<boolean> {
 	if(!userId || !messageId) {
 		console.log("User or message not found");
 		return false;

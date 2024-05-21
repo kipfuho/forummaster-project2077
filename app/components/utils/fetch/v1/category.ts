@@ -1,3 +1,8 @@
+/**
+ * return category given its id
+ * @param categoryId : category's id
+ * @returns CategoryDoc
+ */
 export async function getCategory(categoryId: number) {
   const res = await fetch(`https://localhost:3001/v1/category/${categoryId}`, {
     method: "GET",

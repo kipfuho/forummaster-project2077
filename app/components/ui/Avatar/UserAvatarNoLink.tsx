@@ -1,6 +1,11 @@
 import { Box } from "@mui/material"
 import Image from "next/image"
 
+/**
+ * Custom Avatar without Link
+ * @param param.user : UserDoc
+ * @param param.size : avatar size
+ */
 export const UserAvatarNoLink = ({
 	user,
 	size

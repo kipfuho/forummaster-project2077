@@ -14,10 +14,29 @@ function arrayFromNumber(size: number, page: number, totalPage: number) {
 	return result;
 }
 
-// size: number of index button appear on pagination
-// total page: total page needed to populate
-// page: page index
-export default function Pagination({ size, totalPage, page, link, query }: { size: number, totalPage: number, page: number, link: string, query?: string }) {
+/**
+ * Custom pagination with Link
+ * @param param.size: number of index button appear on pagination
+ * @param param.totalPage: total page needed to populate
+ * @param param.page: current page
+ * @param param.link: link
+ * @param param.query: query for link
+ * @returns 
+ */
+export default function Pagination({
+	size,
+	totalPage,
+	page,
+	link,
+	query
+}: {
+	size: number,
+	totalPage:
+	number,
+	page: number,
+	link: string,
+	query?: string
+}) {
 	const items: number[] = arrayFromNumber(size - 2, page, totalPage);
 	const router = useRouter();
 	return(

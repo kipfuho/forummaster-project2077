@@ -69,7 +69,7 @@ export async function getLastestMessageV2(
  * @param messageId : message's _id
  * @param userId : user's _id
  * @param type : reaction type
- * @returns JSON( message-string, item-JSON(message-MessageDoc, reaction-ReactionDoc) )
+ * @returns {Object} : { message: string, item: { message: MessageDoc, reaction: ReactionDoc } }
  */
 export async function reactMessageV2(
 	messageId: string,

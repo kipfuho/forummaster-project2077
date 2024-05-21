@@ -11,6 +11,10 @@ const MessageEditor = dynamic(() => import('./MessageEditor'));
 const MessageUserSectionHeader = dynamic(() => import('./component/MessageUserSectionHeader'));
 const MessageUserSectionFooter = dynamic(() => import('./component/MessageUserSectionFooter'));
 
+/**
+ * Body of a message in a thread
+ * @returns 
+ */
 export default function MessageBody({_message, author}: {_message: MessageDocument, author: UserDocument}) {
 	const [message, setMessage] = useState<MessageDocument>(_message);
 	const [editView, setEditView] = useState<boolean>(false);

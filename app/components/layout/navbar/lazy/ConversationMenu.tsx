@@ -1,4 +1,4 @@
-import { Box, Divider, Menu } from "@mui/material";
+import { Box, Button, Divider, Menu } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,9 +16,10 @@ export default function ConversationMenu() {
 
 	return (
 		<>
-			<button className="text-gray-400 hover:text-gray-300" onClick={handleClick}>
-				<MailIcon/>
-			</button>
+			<Button
+        variant="outlined"
+        onClick={handleClick}
+      ><MailIcon/></Button>
 			<Menu
         id="basic-menu"
         anchorEl={anchorEl}

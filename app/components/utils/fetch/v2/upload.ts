@@ -1,5 +1,10 @@
 import { join } from "path";
 
+/**
+ * Upload an image to the server and return its link
+ * @param image 
+ * @returns 
+ */
 export async function uploadImageV2(image: any) {
 	const formData = new FormData();
 	formData.append("image", image);

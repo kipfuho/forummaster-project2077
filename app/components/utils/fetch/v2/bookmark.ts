@@ -8,7 +8,10 @@ import { nonPublicRequest, publicRequest } from "./common";
  * @param messageId : message's _id
  * @returns Newly created bookmark
  */
-export async function createBookmarkV2(userId: string, messageId: string) {
+export async function createBookmarkV2(
+	userId: string,
+	messageId: string
+): Promise<BookmarkDocument | null> {
 	if(!userId || !messageId) {
 		console.log("User or message not found");
 		return null;
@@ -47,7 +50,10 @@ export async function getBookmarkV2(
  * @param messageId : message's _id
  * @returns Found bookmark
  */
-export async function checkBookmarkV2(userId: string, messageId: string) {
+export async function checkBookmarkV2(
+	userId: string,
+	messageId: string
+): Promise<BookmarkDocument | null> {
 	if(!userId || !messageId) {
 		console.log("User or Message not found");
 		return null;
@@ -65,7 +71,10 @@ export async function checkBookmarkV2(userId: string, messageId: string) {
  * @param formData : current form's data
  * @returns Updated bookmark
  */
-export async function updateBookmarkV2(prevState: any, formData: FormData) {
+export async function updateBookmarkV2(
+	prevState: any,
+	formData: FormData
+): Promise<BookmarkDocument | null> {
 	return await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/bookmark/update",
@@ -81,7 +90,9 @@ export async function updateBookmarkV2(prevState: any, formData: FormData) {
  * @param bookmarkId : Bookmark to be deleted 
  * @returns boolean
  */
-export async function deleteBookmarkV2(bookmarkId: string) {
+export async function deleteBookmarkV2(
+	bookmarkId: string
+): Promise<BookmarkDocument | null> {
 	if(!bookmarkId) {
 		console.log("Bookmark not found");
 		return null;
