@@ -15,7 +15,7 @@ export default function CategoryBody({category, children}: {category: CategoryDo
       <h2 className={`rounded-t flex bg-red-900 py-1 px-3 ${open ? "" : "rounded"}`}>
         <Link className="hover:underline self-center" href={link}>{category.title}</Link>
         <div className="flex flex-grow justify-end">
-          <button className={`${styles.chevronButton} ${open ? styles.rotated:''}`} onClick={() => setOpen(prev => !prev)}>
+          <button title={open ? 'Hide' : 'Show'} type="button" className={`${styles.chevronButton} ${open ? styles.rotated:''}`} onClick={() => setOpen(prev => !prev)}>
             <ExpandLessIcon fontSize='large'/>
           </button>
         </div>

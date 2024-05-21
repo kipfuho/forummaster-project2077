@@ -8,11 +8,17 @@ import { MessageDocument, ThreadDocument } from "@/app/page";
 
 // edit thread page
 export default async function EditThread({params}: {params: {threadId: string}}) {
-	const [thread, message]: [ThreadDocument, MessageDocument[]] = await Promise.all([getThreadV2(params.threadId), getMessagesV2(params.threadId, 0, 1)]);
+	const [thread, message]: [ThreadDocument | null, MessageDocument[]] = await Promise.all([getThreadV2(params.threadId), getMessagesV2(params.threadId, 0, 1)]);
 
-	return(
-		<Suspense>
-			<ThreadEditBody thread={thread} message={message[0]}/>
-		</Suspense>
-	)
+	if(thread) {
+		return(
+			<Suspense>
+				<ThreadEditBody thread={thread} message={message[0]}/>
+			</Suspense>
+		)
+	} else {
+		return (
+			<p>Something went wrong!</p>
+		)
+	}
 }

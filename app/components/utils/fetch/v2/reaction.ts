@@ -1,5 +1,5 @@
 'use server'
-import { ReactionDocument } from "@/app/page";
+import { ReactionDocument, UserDocument } from "@/app/page";
 import { publicRequest } from "./common";
 
 /**
@@ -38,7 +38,10 @@ export async function getReactionsOfMessageV2(
 	messageId: string,
 	current: string | null,
 	limit: number = 3
-): Promise<ReactionDocument[]> {
+): Promise<Array<{
+	reaction: ReactionDocument,
+	user: UserDocument
+}>> {
 	if(!messageId) {
 		console.log("Message not found");
 		return [];

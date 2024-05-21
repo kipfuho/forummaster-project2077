@@ -15,14 +15,20 @@ async function getForums(ids: string[]) {
 
 // Category pages
 export default async function Categories({ params } : {params : {categoryId : string}}){
-  const category: CategoryDocument = await getCategoryV2(params.categoryId);
-  const forums: ForumDocument[] = await getForums(category.forums);
-  return(
-    <Suspense fallback={<Loading/>}>
-      <h2 className="pb-5">{category.title}</h2>
-      <div className="rounded shadow-md bg-gray-600">
-        <ForumList forums={forums}/>
-      </div>
-    </Suspense>
-  )
+  const category: CategoryDocument | null = await getCategoryV2(params.categoryId);
+  if(category) {
+    const forums: ForumDocument[] = await getForums(category.forums);
+    return(
+      <Suspense fallback={<Loading/>}>
+        <h2 className="pb-5">{category.title}</h2>
+        <div className="rounded shadow-md bg-gray-600">
+          <ForumList forums={forums}/>
+        </div>
+      </Suspense>
+    )
+  } else {
+    return (
+      <p>Something went wrong!</p>
+    )
+  }
 }

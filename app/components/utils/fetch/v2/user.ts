@@ -14,7 +14,7 @@ export async function registerV2(
 	formData: FormData
 ): Promise<{
 	message: string,
-	type: string
+	type: any
 }> {
 	let email = formData.get("email"), 
 			username = formData.get("username"), 

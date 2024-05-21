@@ -10,7 +10,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import { editThreadV2 } from "@/app/components/utils/fetch/v2/thread";
 import { useUserContext } from "@/app/components/context/user/UserContext";
 
-// edit thread page
+/**
+ * Component for Thread editing
+ */
 export default function ThreadEditBody({thread, message}: {thread: ThreadDocument, message: MessageDocument}) {
 	const [user, _] = useUserContext();
 	const [messageSelected, setMessageSelected] = useState<boolean>(false);
@@ -20,7 +22,7 @@ export default function ThreadEditBody({thread, message}: {thread: ThreadDocumen
 	
 	if(user) {
 		const saveClick = async () => {
-			const res = await editThreadV2({
+			const result = await editThreadV2({
 				threadId: thread._id,
 				userId: user?._id,
 				threadPrefix,
@@ -29,7 +31,7 @@ export default function ThreadEditBody({thread, message}: {thread: ThreadDocumen
 				tag: []
 			});
 			
-			if(res.ok) {
+			if(result) {
 				alert("updated");
 			} else {
 				alert("failed");

@@ -11,29 +11,35 @@ export default async function ThreadPageNumber({
 	params: {threadId: string, pageNumber: number},
 	searchParams?: { [key: string]: string | undefined }
 }) {
-	const thread: ThreadDocument = await getThreadV2(params.threadId);
+	const thread: ThreadDocument | null = await getThreadV2(params.threadId);
 
-	if(searchParams?.messageId) {
-		return(
-			<Suspense fallback={<Loading/>}>
-				<ThreadBody
-					thread={thread}
-					offset={(params.pageNumber - 1)*20}
-					page={params.pageNumber}
-					currentMessageId={searchParams.messageId}
-					currentMessageDone={searchParams.done ? !!searchParams.done : undefined}
-				/>
-			</Suspense>
-		)
+	if(thread) {
+		if(searchParams?.messageId) {
+			return(
+				<Suspense fallback={<Loading/>}>
+					<ThreadBody
+						thread={thread}
+						offset={(params.pageNumber - 1)*20}
+						page={params.pageNumber}
+						currentMessageId={searchParams.messageId}
+						currentMessageDone={searchParams.done ? !!searchParams.done : undefined}
+					/>
+				</Suspense>
+			)
+		} else {
+			return(
+				<Suspense fallback={<Loading/>}>
+					<ThreadBody
+						thread={thread}
+						offset={(params.pageNumber - 1)*20}
+						page={params.pageNumber}
+					/>
+				</Suspense>
+			)
+		}
 	} else {
-		return(
-			<Suspense fallback={<Loading/>}>
-				<ThreadBody
-					thread={thread}
-					offset={(params.pageNumber - 1)*20}
-					page={params.pageNumber}
-				/>
-			</Suspense>
+		return (
+			<p>Something went wrong!</p>
 		)
 	}
 }

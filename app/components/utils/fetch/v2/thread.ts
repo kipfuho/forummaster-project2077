@@ -188,22 +188,16 @@ export async function filterThreadV2(
 
 /**
  * Update a thread and return it
- * @param formData 
+ * @param body 
  * @returns ThreadDoc
  */
 export async function editThreadV2(
-	formData: FormData
+	body: any
 ): Promise<ThreadDocument | null> {
 	return await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/thread/update",
-		body: {
-			threadId: formData.get('threadId'),
-			threadPrefixIds: String(formData.get('threadPrefixIds') ?? '').split(',').map(Number).filter((val) => {return val > 0}),
-			threadTitle: formData.get('threadTitle'),
-			threadContent: formData.get('threadContent'),
-			tag: formData.get('tag'),
-		}
+		body: body
 	});
 }
 

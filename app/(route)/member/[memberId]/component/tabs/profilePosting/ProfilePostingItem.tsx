@@ -15,7 +15,7 @@ export default function ProfilePostingItem({
 }) {
 	const [pp, setPp] = useState<ProfilePostingDocument>(profilePosting);
 	const [ppUser, setppUser] = useState<UserDocument | null>(null);
-	const [repUsers, setRepsUser] = useState<UserDocument[]>([]);
+	const [repUsers, setRepsUser] = useState<Array<UserDocument | null>>([]);
 	const [lastRep, setLastRep] = useState<number>(3);
 	const [done, setDone] = useState<boolean>(false);
 
