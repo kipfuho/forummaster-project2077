@@ -6,6 +6,7 @@ export default function AttachmentBox({attachments}: {attachments: string[]}) {
 
 	if(attachments.length > 0) {
 		const attachmentClick = (imageUrl: string) => {
+			console.log(imageUrl);
 			setImage(imageUrl);
 			setOpen(true);
 		}

@@ -6,10 +6,12 @@ import { Dispatch, SetStateAction } from "react";
 export default function MessageUserSectionHeader({
 	messageId,
 	messageUserId,
+	editView,
 	setEditView
 }: {
 	messageId: string,
 	messageUserId: string,
+	editView: boolean,
 	setEditView: Dispatch<SetStateAction<boolean>>
 }) {
 	const [user, _] = useUserContext();
@@ -21,8 +23,8 @@ export default function MessageUserSectionHeader({
 					<Button
 						variant="outlined"
 						sx={{height: '25px'}}
-						onClick={() => setEditView(true)}
-					>Edit</Button>
+						onClick={() => setEditView(!editView)}
+					>{editView ? 'Cancel' : 'Edit'}</Button>
 				}
 			</span>
 		)

@@ -10,7 +10,7 @@ export default function ReplyAttachment({
 	links: string[] | null,
 	handleDelete: any
 }) {
-	if(links) {
+	if(links && links.length > 0) {
 		const deleteClick = (link: string) => {
 			handleDelete(link);
 		}

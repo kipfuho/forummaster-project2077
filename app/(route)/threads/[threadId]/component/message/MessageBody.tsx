@@ -6,6 +6,7 @@ import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import { MessageDocument, UserDocument } from "@/app/page";
 import AttachmentBox from "./component/AttachmentBox";
 import dynamic from "next/dynamic";
+import ImageModal from "./component/ImageModal";
 
 const MessageEditor = dynamic(() => import('./MessageEditor'));
 const MessageUserSectionHeader = dynamic(() => import('./component/MessageUserSectionHeader'));
@@ -27,6 +28,7 @@ export default function MessageBody({_message, author}: {_message: MessageDocume
 				<MessageUserSectionHeader
 					messageId={message._id}
 					messageUserId={message.user}
+					editView={editView}
 					setEditView={setEditView}
 				/>
 			</div>
@@ -43,7 +45,12 @@ export default function MessageBody({_message, author}: {_message: MessageDocume
 					/>
 				}
 			</div>
-			<AttachmentBox attachments={message.attachments}/>
+			{!editView &&
+				<>
+					<AttachmentBox attachments={message.attachments}/>
+					<ImageModal/>
+				</>
+			}
 			<MessageUserSectionFooter
 				authorUsername={author.username}
 				message={message}

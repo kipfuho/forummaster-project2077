@@ -75,16 +75,18 @@ export async function reactMessageV2(
 	messageId: string,
 	userId: string,
 	type: string = "like"
-): Promise<{message: string, item: { message: MessageDocument, reaction: ReactionDocument}} | null> {
+): Promise<{ message: MessageDocument, reaction: ReactionDocument} | null> {
 	if(!userId) {
 		console.log("User not found");
 		return null;
 	}
 
-	return await nonPublicRequest({
+	const res: {message: string, item: { message: MessageDocument, reaction: ReactionDocument}} | null = await nonPublicRequest({
 		method: 'GET',
 		endpoint: `v2/message/react?messageId=${messageId}&type=${type}`
-	})
+	});
+
+	return res?.item ?? null;
 }
 
 /**
@@ -94,15 +96,15 @@ export async function reactMessageV2(
  * @returns updated message
  */
 export async function updateMessageV2(
-	messageId: string,
-	content: string
+	body: {
+		messageId: string,
+		content: string,
+		attachments: string[]
+	}
 ): Promise<MessageDocument> {
 	return await nonPublicRequest({
 		method: 'POST',
-		endpoint: 'v2/message/update-message',
-		body: {
-			messageId,
-			content
-		}
+		endpoint: 'v2/message/update',
+		body: body
 	})
 }
