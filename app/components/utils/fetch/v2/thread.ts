@@ -93,18 +93,12 @@ export async function getLastestThreadV2(
  * @returns ThreadDoc
  */
 export async function postThreadV2(
-	formData: FormData
+	body: any
 ): Promise<ThreadDocument | null> {
 	return await nonPublicRequest({
 		method: 'POST',
 		endpoint: "v2/thread/create",
-		body: {
-			forumId: formData.get('forumId'),
-			userId: formData.get('userId'),
-			prefixIds: formData.get('prefixIds'),
-			threadTitle: formData.get('threadTitle'),
-			tag: formData.get('tags'),
-		}
+		body: body
 	});
 }
 

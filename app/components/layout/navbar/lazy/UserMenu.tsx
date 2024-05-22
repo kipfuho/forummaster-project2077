@@ -1,4 +1,5 @@
 import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
+import { UserAvatarNoLink } from "@/app/components/ui/Avatar/UserAvatarNoLink";
 import { logoutV2 } from "@/app/components/utils/fetch/v2/user";
 import { getRoleName } from "@/app/components/utils/HelperFunction";
 import { UserDocument } from "@/app/page";
@@ -34,8 +35,13 @@ export default function UserMenu({user, setUser}: {user: UserDocument, setUser: 
 
 	return (
 		<>
-			<button className="flex items-center space-x-2" onClick={handleClick}>
-				<UserAvatar user={user} size={30}/>
+			<button
+				className="flex items-center space-x-2"
+				type="button"
+				title="Open menu"
+				onClick={handleClick}
+			>
+				<UserAvatarNoLink user={user} size={30}/>
 				<span className="text-[0.9rem]">{user.username}</span>
 			</button>
 			<Menu

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import BookmarkList from "./components/BookmarkList";
+import BookmarkList from "../../components/bookmark/BookmarkList";
 
 export default async function Bookmarks() {
 	return (

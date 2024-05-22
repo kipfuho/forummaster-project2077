@@ -61,7 +61,8 @@ export async function nonPublicRequest(options: {
 	method: 'GET' | 'POST',
 	endpoint: string,
 	body?: any,
-	revaliate?: number
+	revaliate?: number,
+	form?: boolean
 }) {
 	let res;
 	if(options.method === 'GET') {
@@ -73,6 +74,14 @@ export async function nonPublicRequest(options: {
 			next: {
 				revalidate: options.revaliate ?? 0
 			}
+		});
+	} else if(options.form) {
+		res = await fetch(join(BE_HOST, options.endpoint), {
+			method: 'POST',
+			headers: {
+				'Cookie': cookies().toString()
+			},
+			body: options.body
 		});
 	} else {
 		res = await fetch(join(BE_HOST, options.endpoint), {

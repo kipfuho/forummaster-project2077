@@ -1,4 +1,4 @@
-import Detail from "./component/detail/Detail"
+import Detail from "./components/detail/Detail"
 
 export default async function Account(){
   return(

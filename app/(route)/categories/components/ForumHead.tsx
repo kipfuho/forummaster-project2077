@@ -49,7 +49,7 @@ function ForumMetadata2({forum}: {forum: ForumDocument}) {
 // last section of a forum introduction
 // contain information about the thread with lastest update time
 async function LastestThreadUpdate({forum}: {forum: ForumDocument}) {
-  const data: [ThreadDocument, MessageDocument, UserDocument] = await getLastestThreadV2(forum._id);
+  const data: [ThreadDocument, MessageDocument, UserDocument] | null = await getLastestThreadV2(forum._id);
   if(data) {
     return(
       <div className={styles.forumLastThreadUpdate}>
