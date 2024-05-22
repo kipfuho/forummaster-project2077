@@ -2,6 +2,11 @@ import { smartTimeConvert } from "@/app/components/utils/HelperFunction";
 import { ThreadDocument, UserDocument } from "@/app/page";
 import { Button } from "@mui/material";
 
+/**
+ * Component showing thread's title
+ * Containing prefixes, thread's author and create time
+ * @returns 
+ */
 export default function ThreadTitle({
 	thread,
 	author

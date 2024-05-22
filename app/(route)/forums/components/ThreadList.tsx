@@ -1,25 +1,32 @@
 import { ThreadDocument, UserDocument } from "@/app/page";
 import { getUserV2 } from "@/app/components/utils/fetch/v2/user";
-import ThreadTitle from "./threadhead/ThreadTitle";
-import ThreadMetadata from "./threadhead/ThreadMetadata";
+import ThreadTitle from "./threadHead/ThreadTitle";
+import ThreadMetadata from "./threadHead/ThreadMetadata";
 import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
 import Link from "next/link";
-import LastestMessage from "./threadhead/LastestMessage";
+import LastestMessage from "./threadHead/LastestMessage";
 
 async function Item({thread}: {thread: ThreadDocument}) {
-	const threadAuthor: UserDocument = await getUserV2(thread.user);
-	return (
-		<Link className="flex" href={"/threads/" + thread._id}>
-			<div className="flex flex-grow">
-				<div className="px-1 self-center">
-					<UserAvatar user={threadAuthor} size={36}/>
+	const threadAuthor: UserDocument | null = await getUserV2(thread.user);
+	
+	if(threadAuthor) {
+		return (
+			<Link className="flex" href={"/threads/" + thread._id}>
+				<div className="flex flex-grow">
+					<div className="px-1 self-center">
+						<UserAvatar user={threadAuthor} size={36}/>
+					</div>
+					<ThreadTitle thread={thread} author={threadAuthor}/>
+					<ThreadMetadata thread={thread}/>
+					<LastestMessage thread={thread}/>
 				</div>
-				<ThreadTitle thread={thread} author={threadAuthor}/>
-				<ThreadMetadata thread={thread}/>
-				<LastestMessage thread={thread}/>
-			</div>
-		</Link>
-	)
+			</Link>
+		)
+	} else {
+		return (
+			<p>Something went wrong!</p>
+		)
+	}
 }
 
 export default function ThreadList({

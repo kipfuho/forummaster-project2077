@@ -6,8 +6,16 @@ import { parseString } from "set-cookie-parser";
 
 const BE_HOST = process.env.BE_HOST ?? "";
 
-// public
-// meaning we won't need to send cookie for this type of request
+/**
+ * Made a public request to endpoint of backend server
+ * Public mean no cookies sent or received
+ * @param options : JSON
+ * @param options.method : 'GET' or 'POST'
+ * @param options.endpoint : API's endpoint
+ * @param options.body : body for 'POST' request
+ * @param options.revaliate : cache's revalidate time
+ * @returns data
+ */
 export async function publicRequest(options: {
 	method: 'GET' | 'POST',
 	endpoint: string,
@@ -39,13 +47,22 @@ export async function publicRequest(options: {
 	}
 }
 
-// non public
-// meaning we need to send cookie for this type of request
+/**
+ * Made a non-public request to endpoint of backend server
+ * Non-public mean cookies sent and received
+ * @param options : JSON
+ * @param options.method : 'GET' or 'POST'
+ * @param options.endpoint : API's endpoint
+ * @param options.body : body for 'POST' request
+ * @param options.revaliate : cache's revalidate time
+ * @returns data
+ */
 export async function nonPublicRequest(options: {
 	method: 'GET' | 'POST',
 	endpoint: string,
 	body?: any,
-	revaliate?: number
+	revaliate?: number,
+	form?: boolean
 }) {
 	let res;
 	if(options.method === 'GET') {
@@ -57,6 +74,14 @@ export async function nonPublicRequest(options: {
 			next: {
 				revalidate: options.revaliate ?? 0
 			}
+		});
+	} else if(options.form) {
+		res = await fetch(join(BE_HOST, options.endpoint), {
+			method: 'POST',
+			headers: {
+				'Cookie': cookies().toString()
+			},
+			body: options.body
 		});
 	} else {
 		res = await fetch(join(BE_HOST, options.endpoint), {

@@ -7,6 +7,9 @@ import { NextAppDirEmotionCacheProvider } from "tss-react/next/appDir";
 
 const inter = Inter({ subsets: ["latin"] });
 
+/**
+ * Root Layout
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

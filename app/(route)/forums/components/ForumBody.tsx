@@ -3,9 +3,9 @@ import { ForumDocument, PrefixDocument, ThreadDocument } from "@/app/page";
 import { Box, Button } from "@mui/material";
 import dynamic from "next/dynamic";
 import { ReactNode, useState } from "react";
-import FilterPrefix from "./forumbody/FilterPrefix";
+import FilterPrefix from "./forumBody/FilterPrefix";
 
-const FilterThreadBox = dynamic(() => import('./forumbody/FilterThreadBox'));
+const FilterThreadBox = dynamic(() => import('./forumBody/FilterThreadBox'));
 
 export default function ForumBody({
 	children,

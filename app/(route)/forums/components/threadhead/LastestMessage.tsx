@@ -4,6 +4,11 @@ import { UserAvatar } from "@/app/components/ui/Avatar/UserAvatar";
 import { MessageDocument, ThreadDocument, UserDocument } from "@/app/page";
 import { getLastestMessageV2 } from "@/app/components/utils/fetch/v2/message";
 
+/**
+ * Component showing lastest message of a thread
+ * Specifically time of the change and user who did it
+ * @returns 
+ */
 export default async function LastestMessage({thread}: {thread: ThreadDocument}) {
 	const data: [MessageDocument, UserDocument] | null = await getLastestMessageV2(thread._id);
 

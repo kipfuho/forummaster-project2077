@@ -1,10 +1,17 @@
 'use server'
+import { ForumDocument } from "@/app/page";
 import { publicRequest } from "./common";
 
-// public
-export async function getForumV2(forumId: string) {
+/**
+ * Get forum by its id
+ * @param forumId 
+ * @returns ForumDoc
+ */
+export async function getForumV2(
+  forumId: string
+): Promise<ForumDocument | null> {
   if(!forumId) {
-		alert("forumId is null");
+		console.log("Forum not found");
 		return null;
 	}
 

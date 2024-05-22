@@ -2,15 +2,24 @@
 import { ProfilePostingDocument } from "@/app/page";
 import { nonPublicRequest, publicRequest } from "./common";
 
-// not public
+/**
+ * Create new profile post and return it
+ * @param prevState : previous form state
+ * @param formData 
+ * @returns {Object} : { message: string, item: ProfilePostDoc }
+ */
 export async function postProfilePostV2(
 	prevState: any,
 	formData: FormData
-): Promise<{message: string, item: ProfilePostingDocument | null}> {
-	const userId = formData.get('userId'), userWallId = formData.get('userWallId'), message = formData.get('message');
+): Promise<{
+	message: string,
+	item: ProfilePostingDocument | null
+}> {
+	const userId = formData.get('userId'),
+				userWallId = formData.get('userWallId'),
+				message = formData.get('message');
 
 	if(!userId || !userWallId) {
-		console.log('User not found');
 		return {
 			message: 'User not found',
 			item: null
@@ -25,21 +34,38 @@ export async function postProfilePostV2(
 			userWallId,
 			message
 		}
-	}) ?? {message: 'Error creating new profile posting', item: null}
+	}) ?? { message: 'Error creating new profile posting', item: null }
 }
 
-// not public
-export async function replyProfilePostV2(prevState: any, formData: FormData) {
-	const ppId = formData.get('ppId'), userId = formData.get('userId'), message = formData.get('message');
+/**
+ * Reply to a profile post and return it
+ * @param prevState 
+ * @param formData 
+ * @returns {Object} : { message: string, item: ProfilePostDoc }
+ */
+export async function replyProfilePostV2(
+	prevState: any,
+	formData: FormData
+): Promise<{
+	message: string,
+	item: ProfilePostingDocument | null
+}> {
+	const ppId = formData.get('ppId'),
+				userId = formData.get('userId'),
+				message = formData.get('message');
 
 	if(!ppId) {
-		console.log('Profile posting not found');
-		return null;
+		return {
+			message: 'Profile posting not found',
+			item: null,
+		}
 	}
 
 	if(!userId) {
-		console.log('User not found');
-		return null;
+		return {
+			message: 'User not found',
+			item: null,
+		}
 	}
 
 	return await nonPublicRequest({
@@ -50,11 +76,21 @@ export async function replyProfilePostV2(prevState: any, formData: FormData) {
 			userId,
 			message
 		}
-	});
+	}) ?? { message: 'Something went wrong!', item: null };
 }
 
-// public
-export async function getProfilePostV2(userId: string, current: string, limit: number = 5): Promise<{
+/**
+ * Find profile posts of a user
+ * @param userId : user's _id
+ * @param current : return records below this
+ * @param limit : number of records will return
+ * @returns {Object} : { message: string, item: ProfilePostDoc[] }
+ */
+export async function getProfilePostV2(
+	userId: string,
+	current: string,
+	limit: number = 5
+): Promise<{
 	message: string,
 	item: ProfilePostingDocument[]
 }> {

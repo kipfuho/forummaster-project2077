@@ -1,6 +1,11 @@
 import { ThreadDocument } from "@/app/page";
 import styles from "../forum.module.css";
 
+/**
+ * Component showing thread's metadata
+ * Specifically number of replies and views
+ * @returns 
+ */
 export default function ThreadMetadata({thread}: {thread: ThreadDocument}) {
 	return (
 		<div className={`w-[115px] py-1 px-2 ${styles.additionInfo}`}>

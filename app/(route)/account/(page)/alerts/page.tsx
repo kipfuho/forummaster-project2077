@@ -1,7 +1,7 @@
 'use client'
 import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import AlertList from "../../component/alert/AlertList";
+import AlertList from "../../components/alert/AlertList";
 import { getAlertsV2 } from "@/app/components/utils/fetch/v2/alert";
 import { useEffect, useState } from "react";
 import { AlertDocument } from "@/app/page";

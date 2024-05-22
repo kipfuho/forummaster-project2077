@@ -1,17 +1,25 @@
 'use server'
-import { FullUserDocument, UserDocument } from "@/app/page";
+import { ForumDocument, FullUserDocument, UserDocument } from "@/app/page";
 import { nonPublicRequest, publicRequest } from "./common";
 import { cookies } from "next/headers";
 
-// public
+/**
+ * Register a new account
+ * @param prevState 
+ * @param formData 
+ * @returns {Object} : { message: string, type: 'success' | 'fail' }
+ */
 export async function registerV2(
 	prevState: any,
 	formData: FormData
-) {
+): Promise<{
+	message: string,
+	type: any
+}> {
 	let email = formData.get("email"), 
-	username = formData.get("username"), 
-	password = formData.get("password"), 
-	retypePassword = formData.get("retypePassword");
+			username = formData.get("username"), 
+			password = formData.get("password"), 
+			retypePassword = formData.get("retypePassword");
 
 	if(password !== retypePassword) {
 		return { 
@@ -33,11 +41,20 @@ export async function registerV2(
 	return res ? {...res, type: 'success'} : {message: 'Error', type: 'fail'}
 }
 
-// public
+/**
+ * Login user
+ * @param prevState 
+ * @param formData 
+ * @returns {Object} : { message: string, user: UserDoc, type: string}
+ */
 export async function loginV2(
 	prevState: any,
 	formData: FormData
-) {
+): Promise<{
+	message: string,
+	type: string,
+	user: UserDocument
+}> {
 	const res = await nonPublicRequest({
 		method: 'POST',
 		endpoint: 'v2/login',
@@ -50,8 +67,11 @@ export async function loginV2(
 	return res ? {...res, type: 'success'} : {message: 'Error', type: 'fail'}
 }
 
-// not public
-export async function logoutV2() {
+/**
+ * Logout a user
+ * @returns boolean
+ */
+export async function logoutV2(): Promise<boolean> {
 	const res = await nonPublicRequest({
 		method: 'GET',
 		endpoint: 'v2/logout'
@@ -70,20 +90,25 @@ export async function logoutV2() {
 /**
  * Verify email for a user
  * @param query : query string
- * @returns boolean
+ * @returns {Object} : { message: string, type: 'success' | 'fail' }
  */
-export async function verifyEmailV2(query: string) {
+export async function verifyEmailV2(
+	query: string
+): Promise<{
+	message: string,
+	type: string
+}> {
 	const res = await publicRequest({
 		method: 'GET',
 		endpoint: `v2/user/verify-email?${query}`
 	})
 
-	return res ? {...res, type: 'success'} : {message: 'Error', type: 'fail'}
+	return res ? {...res, type: 'success'} : {message: 'Something went wrong', type: 'fail'}
 }
 
 /**
  * Found user belong to current session
- * @returns User of this session
+ * @returns UserDoc
  */
 export async function getCurrentUserV2() {
   return await nonPublicRequest({
@@ -95,7 +120,7 @@ export async function getCurrentUserV2() {
 /**
  * Find user with _id 'userId'
  * @param userId : user's _id to find
- * @returns User
+ * @returns UserDoc
  */
 export async function getUserV2(
 	userId: string
@@ -112,8 +137,14 @@ export async function getUserV2(
 	});
 }
 
-// public
-export async function postUserV2(body: any) {
+/**
+ * Find user with POST method
+ * @param body : information
+ * @returns UserDoc
+ */
+export async function postUserV2(
+	body: any
+): Promise<UserDocument | null> {
   return await publicRequest({
 		method: 'POST',
 		endpoint: "v2/user/get",
@@ -121,15 +152,22 @@ export async function postUserV2(body: any) {
 	});
 }
 
-// not public
-export async function getFullUserV2() {
+/**
+ * Find all information exclude password of an user
+ * @returns FullUserDoc
+ */
+export async function getFullUserV2(): Promise<FullUserDocument | null> {
   return await nonPublicRequest({
 		method: 'GET',
 		endpoint: "v2/user/get-full"
 	});
 }
 
-// public
+/**
+ * Find user's detail excluding email, password, ...
+ * @param userId : user's _id
+ * @returns FullUserDoc
+ */
 export async function getUserDetailV2(
 	userId: string
 ): Promise<FullUserDocument | null> {
@@ -144,17 +182,26 @@ export async function getUserDetailV2(
 	})
 }
 
-// public
+/**
+ * Filter users start with 'username'
+ * @param username : filter
+ * @returns UserDoc[]
+ */
 export async function filterUserV2(
 	username: string
-) {
+): Promise<UserDocument[]> {
 	return await publicRequest({
 		method: 'GET',
 		endpoint: `v2/user/filter?username=${username}`
-	});
+	}) ?? [];
 }
 
-// non public
+/**
+ * Update username of user
+ * @param prevState 
+ * @param formData 
+ * @returns boolean
+ */
 export async function updateUsernameV2(
 	prevState: any,
 	formData: FormData
@@ -170,7 +217,12 @@ export async function updateUsernameV2(
 	});
 }
 
-// non public
+/**
+ * Update email of user
+ * @param prevState 
+ * @param formData 
+ * @returns boolean
+ */
 export async function updateEmailV2(
 	prevState: any,
 	formData: FormData
@@ -186,7 +238,12 @@ export async function updateEmailV2(
 	});
 }
 
-// non public
+/**
+ * Update setting of user
+ * @param prevState 
+ * @param formData 
+ * @returns boolean
+ */
 export async function updateSettingV2(
 	prevState: any, 
 	formData: FormData
@@ -211,7 +268,11 @@ export async function updateSettingV2(
 	})
 }
 
-// not public
+/**
+ * Check if a user follow another user
+ * @param userId : another user
+ * @returns boolean
+ */
 export async function checkFollowUserV2(
 	userId: string
 ) {
@@ -221,7 +282,11 @@ export async function checkFollowUserV2(
 	});
 }
 
-// not public
+/**
+ * Follow an user
+ * @param userId : user's _id to follow
+ * @returns boolean
+ */
 export async function followUserV2(userId: string) {
 	if(!userId) {
 		console.log("User not found");
@@ -234,10 +299,19 @@ export async function followUserV2(userId: string) {
 	})
 }
 
-// public
-export async function getUserPostAreaV2(userId: string) {
+/**
+ * Statistics user posts on forum
+ * @param userId 
+ * @returns Array<{ count: number, forum: ForumDoc }>
+ */
+export async function getUserPostAreaV2(
+	userId: string
+): Promise<Array<{
+	count: number,
+	forum: ForumDocument
+}>> {
 	return await publicRequest({
 		method: 'GET',
 		endpoint: `v2/user/get-post-stats?userId=${userId}`
-	})
+	}) ?? [];
 }

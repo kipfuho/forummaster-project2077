@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { getCurrentUserV2 } from "../utils/fetch/v2/user";
 import { UserDocument } from "@/app/page";
 
+/**
+ * Provider for various context globally
+ */
 export default function ContextProvider({children}: {children: any}) {
 	const [user, setUser] = useState<UserDocument | null | undefined>();
 

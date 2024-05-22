@@ -55,6 +55,9 @@ export type CategoryDocument = {
   forums: string[];
 }
 
+/**
+ * Forum class
+ */
 export type ForumDocument = {
   _id: string;
   name: string;
@@ -69,6 +72,9 @@ export type ForumDocument = {
   }
 }
 
+/**
+ * Thread class
+ */
 export type ThreadDocument = {
   _id: string;
   forum: string;
@@ -88,6 +94,9 @@ export type ThreadDocument = {
   }
 }
 
+/**
+ * Message class
+ */
 export type MessageDocument = {
   _id: string;
   thread: string;
@@ -108,12 +117,18 @@ export type MessageDocument = {
   threadPage: Record<string, number>;
 }
 
+/**
+ * Tag class
+ */
 export type TagDocument = {
   _id: string;
   name: string;
   color: string;
 }
 
+/**
+ * Reaction class
+ */
 export type ReactionDocument = {
   _id: string;
   message: string;
@@ -122,6 +137,9 @@ export type ReactionDocument = {
   create_time: Date;
 }
 
+/**
+ * Alert class
+ */
 export type AlertDocument = {
   _id: string;
   user: string;
@@ -130,6 +148,9 @@ export type AlertDocument = {
   read: boolean;
 }
 
+/**
+ * Bookmark class
+ */
 export type BookmarkDocument = {
   _id: string;
   message: string;
@@ -139,6 +160,9 @@ export type BookmarkDocument = {
   create_time: Date;
 }
 
+/**
+ * Prefix class
+ */
 export type PrefixDocument = {
   _id: string;
   id: number;
@@ -146,6 +170,9 @@ export type PrefixDocument = {
   color: string;
 }
 
+/**
+ * ProfilePosting class
+ */
 export type ProfilePostingDocument = {
   _id: string;
   user: string;
@@ -159,7 +186,10 @@ export type ProfilePostingDocument = {
   create_time: Date;
 }
 
-// Home page
+/**
+ * Home component
+ * @path : hostname:/
+ */
 export default async function Home() {
   const categories: CategoryDocument[] = await getAllCategoryV2()
   if(categories) {
