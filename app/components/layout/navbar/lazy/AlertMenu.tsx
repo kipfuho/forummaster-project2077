@@ -10,10 +10,12 @@ export default function AlertMenu({user}: {user: UserDocument}) {
 	// States and handler for Menu
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+	
+  const handleClose: any = () => {
     setAnchorEl(null);
   };
 

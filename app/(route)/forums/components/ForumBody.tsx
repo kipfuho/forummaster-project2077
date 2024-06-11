@@ -10,11 +10,13 @@ const FilterThreadBox = dynamic(() => import('./forumBody/FilterThreadBox'));
 export default function ForumBody({
 	children,
 	forum,
-	prefixes
+	prefixes,
+	prefixIds
 }: {
 	children: ReactNode,
 	forum: ForumDocument,
-	prefixes: PrefixDocument[]
+	prefixes: PrefixDocument[],
+	prefixIds?: number[]
 }) {
 	const [anchor, setAnchor] = useState<null | HTMLElement>(null);
 
@@ -22,7 +24,16 @@ export default function ForumBody({
 		<div className="rounded bg-gray-600">
 			<FilterPrefix prefixes={prefixes}/>
 			<div className="flex justify-between bg-gray-500 rounded-t p-2">
-				<span>Filter go there!</span>
+				<Box>
+					{prefixIds &&
+						prefixIds.map((id, index) => (
+							<span
+								className="border border-transparent p-1 rounded bg-gray-600 text-gray-400"
+								key={index}
+							>Prefix:<span className="text-white">{prefixes[id - 1].name}</span></span>
+						))
+					}
+				</Box>
 				<Button
 					variant="outlined"
 					sx={{height: 25}}
@@ -32,6 +43,7 @@ export default function ForumBody({
 					anchor={anchor}
 					setAnchor={setAnchor}
 					forum={forum}
+					prefixes={prefixes}
 				/>
 			</div>
 			{children}

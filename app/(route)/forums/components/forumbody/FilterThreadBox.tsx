@@ -1,23 +1,26 @@
 import DebounceInput from "@/app/components/ui/DebouceInput";
 import { filterUserV2 } from "@/app/components/utils/fetch/v2/user";
-import { ForumDocument, UserDocument } from "@/app/page";
+import { ForumDocument, PrefixDocument, UserDocument } from "@/app/page";
 import { Box, Divider, Input, Menu, MenuItem, Select } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dynamic from "next/dynamic";
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { redirectFilterV2 } from "@/app/components/utils/fetch/v2/thread";
 import { SubmitButton } from "@/app/(route)/login/page";
+import FilterPrefixList from "./FilterPrefixList";
 
 const AuthorFilteredList = dynamic(() => import('./AuthorFilteredList'));
 
 export default function FilterThreadBox({
 	anchor, 
 	setAnchor, 
-	forum
+	forum,
+	prefixes
 }: {
 	anchor: null | HTMLElement, 
 	setAnchor: Dispatch<SetStateAction<HTMLElement | null>>, 
-	forum: ForumDocument
+	forum: ForumDocument,
+	prefixes: PrefixDocument[]
 }) {
 	const authorInputRef = useRef<HTMLInputElement>(null);
 	const [refAnchor, setRefAnchor] = useState<null | RefObject<HTMLInputElement>>(null);
@@ -27,10 +30,6 @@ export default function FilterThreadBox({
 	const handleClose = () => {
     setAnchor(null);
   };
-
-	const filterClick = () => {
-
-	}
 
 	useEffect(() => {
 		if(authorUsername.length > 2) {
@@ -67,15 +66,7 @@ export default function FilterThreadBox({
 						/>
 					</div>
 					<Divider sx={{borderColor: grey[400], marginY: '2px'}}/>
-					<div className="p-2">
-						<p className="text-[0.9rem]">Prefix:</p>
-						<Input
-							name='prefix'
-							placeholder="Prefix"
-							sx={{fontSize: 15}}
-							fullWidth
-						/>
-					</div>
+					<FilterPrefixList prefixes={prefixes}/>
 					<Divider sx={{borderColor: grey[400], marginY: '2px'}}/>
 					<div className="p-2">
 						<p className="text-[0.9rem]">Author:</p>
@@ -85,6 +76,7 @@ export default function FilterThreadBox({
 							handleDebounce={(value: string) => setAuthorUsername(value)}
 							name='author'
 							placeholder="Author"
+							autoComplete="off"
 							sx={{fontSize: 15}}
 							fullWidth
 						/>
