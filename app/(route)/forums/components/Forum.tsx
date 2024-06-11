@@ -19,7 +19,7 @@ export default async function Forum({
 	limit?: number, 
 	page?: number,
 	filterOptions: {
-		prefix: string[] | undefined,
+		prefix: number[] | undefined,
 		author: string | undefined,
 		last_update: number | undefined,
 		sort_type: string,
@@ -49,7 +49,7 @@ export default async function Forum({
 					link={`/forums/${forum._id}/page/`}
 					query={query}
 				/>
-				<ForumBody forum={forum} prefixes={prefixes}>
+				<ForumBody forum={forum} prefixes={prefixes} prefixIds={filterOptions.prefix}>
 					<ThreadList threads={threads}/>
 				</ForumBody>
 				<Pagination

@@ -199,6 +199,7 @@ export default async function Home() {
           <input
             className="rounded bg-gray-500 w-full p-2 focus:outline-none focus:brightness-[110%]"
             placeholder="Quick search..."
+            type="hidden"
           />
           {categories.map((category, index) => (
             <Category category={category} key={index}/>

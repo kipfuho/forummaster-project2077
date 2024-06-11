@@ -27,7 +27,7 @@ export default function AuthorFilteredList({
 					'disablePadding': true
 				}}
 			>
-				<Box sx={{width: 200, bgcolor: grey[700]}}>
+				<Box sx={{width: 350, bgcolor: grey[700]}}>
 					{authors.map((author, index) => (
 						<MenuItem
 							value={author.username}

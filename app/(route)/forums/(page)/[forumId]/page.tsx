@@ -15,12 +15,14 @@ export default async function ForumPage({
 }){
   const forum: ForumDocument | null = await getForumV2(params.forumId);
   const filterOptions = {
-    prefix: searchParams?.prefixId ? searchParams?.prefixId.split(',') : undefined,
+    prefix: searchParams?.prefixId ? searchParams?.prefixId.split(',').map((id) => Number(id)) : undefined,
     author: searchParams?.authorUsername,
     last_update: searchParams?.last_update ? Number.parseInt(searchParams.last_update) : undefined,
     sort_type: searchParams?.sort_type ? searchParams.sort_type : 'update_time',
     descending: searchParams?.ascending ? false : true
   }
+
+  console.log(filterOptions);
 
   if(forum) {
     return(
@@ -31,7 +33,7 @@ export default async function ForumPage({
     )
   } else {
     return (
-      <p>Somethign went wrong!</p>
+      <p>Something went wrong!</p>
     )
   }
 }

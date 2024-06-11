@@ -8,19 +8,19 @@ import LastestMessage from "./threadHead/LastestMessage";
 
 async function Item({thread}: {thread: ThreadDocument}) {
 	const threadAuthor: UserDocument | null = await getUserV2(thread.user);
-	
+
 	if(threadAuthor) {
 		return (
-			<Link className="flex" href={"/threads/" + thread._id}>
-				<div className="flex flex-grow">
-					<div className="px-1 self-center">
-						<UserAvatar user={threadAuthor} size={36}/>
-					</div>
+			<div className="flex flex-grow">
+				<div className="px-1 self-center">
+					<UserAvatar user={threadAuthor} size={36}/>
+				</div>
+				<Link className="flex flex-grow" href={"/threads/" + thread._id}>
 					<ThreadTitle thread={thread} author={threadAuthor}/>
 					<ThreadMetadata thread={thread}/>
-					<LastestMessage thread={thread}/>
-				</div>
-			</Link>
+				</Link>
+				<LastestMessage thread={thread}/>
+			</div>
 		)
 	} else {
 		return (

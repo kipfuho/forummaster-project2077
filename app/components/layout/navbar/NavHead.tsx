@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import SearchIcon from '@mui/icons-material/Search';
 import styles from "../layout.module.css"
+import SearchBox from "./lazy/SearchBox";
 
 // navigation bar header
 // contain a logo and simple search bar
@@ -19,14 +19,7 @@ export default function NavHead() {
         />
       </Link>
       <div className="flex flex-grow"/>
-      <div className="flex justify-center items-center rounded self-center bg-white text-black p-1 gap-x-2">
-        <span><SearchIcon/></span>
-        <input
-          className="focus:outline-none"
-          type="text"
-          placeholder="Search..."
-        />
-      </div>
+      <SearchBox/>
     </div>
   )
 }

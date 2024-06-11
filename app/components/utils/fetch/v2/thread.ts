@@ -2,6 +2,7 @@
 import { MessageDocument, ThreadDocument, UserDocument } from "@/app/page";
 import { nonPublicRequest, publicRequest } from "./common";
 import { redirect } from "next/navigation";
+import { getUserV2 } from "./user";
 
 /**
  * Find a thread by its id
@@ -102,9 +103,12 @@ export async function postThreadV2(
 	});
 }
 
-export async function redirectQuoteMessage(forumId: string, currentMesageId: string, limit: number = 20) {
+/**
+ * export async function redirectQuoteMessage(forumId: string, currentMesageId: string, limit: number = 20) {
 	
 }
+ * 
+ */
 
 /**
  * Redirect user to query URL
@@ -144,7 +148,7 @@ export async function filterThreadV2(
 	offset: number, 
 	limit: number, 
 	filterOptions: {
-		prefix?: string[], 
+		prefix?: number[], 
 		author?: string, 
 		last_update?: number, 
 		sort_type: string, 
@@ -174,7 +178,7 @@ export async function filterThreadV2(
 	}
 
 	return await publicRequest({
-		method: 'GET',
+		method: 'POST',
 		endpoint: 'v2/thread/get',
 		body
 	}) ?? { count: 0, threads: null}
@@ -218,4 +222,77 @@ export async function ReplyThreadV2(
 	})
 
 	return res ? {...res, type: 'success'} : {...res, type: 'fail'}
+}
+
+/**
+ * Redirect to search threads
+ * @param formData 
+ * @returns ThreadDocument[]
+ */
+export async function RedirectSearchThreadV2(formData: FormData) {
+	console.log("abc");
+	const title = formData.get('searchTitle');
+	const author = formData.get('author');
+	const forum = formData.get('forumId');
+
+	redirect(`/search/thread?forumId=${forum}&searchTitle=${title}&author=${author}`);
+}
+
+/**
+ * Search more threads satifies the conditions
+ * @param forumId 
+ * @param title 
+ * @param member 
+ * @param offset 
+ * @returns 
+ */
+export async function SearchThreadV2(
+	forumId: string | null,
+	title: string | null,
+	member: string | null,
+	offset: number
+): Promise<Array<{
+	thread: ThreadDocument,
+	author: UserDocument | null
+}>> {
+	if(forumId) {
+		const res: ThreadDocument[] =  await nonPublicRequest({
+			method: 'GET',
+			endpoint: `v2/thread/search?forumId=${forumId}&title=${title}&member=${member}&offset=${offset}`
+		}) ?? [];
+
+		return await Promise.all(res.map(async (thread) => {
+			const author = await getUserV2(thread.user);
+
+			return {
+				thread,
+				author
+			}
+		}));
+	} else {
+		const res: ThreadDocument[] = await nonPublicRequest({
+			method: 'GET',
+			endpoint: `v2/thread/search?title=${title}&member=${member}&offset=${offset}`
+		}) ?? [];
+
+		return await Promise.all(res.map(async (thread) => {
+			const author = await getUserV2(thread.user);
+
+			return {
+				thread,
+				author
+			}
+		}));
+	}
+}
+
+export async function CountSearchThreadV2(
+	forumId: string | null,
+	title: string | null,
+	member: string | null,
+): Promise<number> {
+	return await nonPublicRequest({
+		method: 'GET',
+		endpoint: `v2/thread/search/get-count?title=${title}&member=${member}&forumId=${forumId}`
+	}) ?? 0;
 }
